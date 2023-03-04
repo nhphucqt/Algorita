@@ -1,0 +1,2 @@
+@REM C:\raylib\w64devkit\bin\windres.exe minecreeper.rc -o minecreeper.rc.data &&^
+C:\msys64\mingw64\bin\mingw32-make.exe RAYLIB_PATH=C:/raylib/raylib PROJECT_NAME=main OBJS="main.cpp" BUILD_MODE=DEBUG 
