@@ -5,32 +5,30 @@
 #include <vector>
 #include <functional>
 
-#include "nodelib.h"
+#include "GraphicNode.h"
 
 // NOTE: Templated function cannot be seperated into multiple files
 
 double bezier(double S, double T, double t);
 
 template<typename T>
-bool nodeFadeIn(T* pNode, double* elapseTime) {
-    double inc = Animate::FADEIN_SPEED * *elapseTime;
-    if ((pNode->transparent+=inc) >= pNode->trueColor.a) {
-        pNode->currColor.a = pNode->trueColor.a;
+bool nodeFadeIn(T* pNode, double* elapseTime, double *currTime, double fadeTime) {
+    if (*currTime + *elapseTime >= fadeTime) {
+        pNode->transparent = 1;
         return true;
     } else {
-        pNode->currColor.a = pNode->transparent;
+        pNode->transparent = (*currTime + *elapseTime) / fadeTime;
         return false;
     }
 }
 
 template<typename T>
-bool nodeFadeOut(T* pNode, double* elapseTime) {
-    double dec = Animate::FADEOUT_SPEED * *elapseTime;
-    if ((pNode->transparent-=dec) <= 0) {
-        pNode->currColor.a = 0;
+bool nodeFadeOut(T* pNode, double* elapseTime, double *currTime, double fadeTime) {
+    if (*currTime + *elapseTime >= fadeTime) {
+        pNode->transparent = 0;
         return true;
     } else {
-        pNode->currColor.a = pNode->transparent;
+        pNode->transparent = 1.0 - (*currTime + *elapseTime) / fadeTime;
         return false;
     }
 }

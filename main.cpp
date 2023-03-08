@@ -5,17 +5,17 @@
 #include <functional>
 
 #include "libs/global.h"
-#include "libs/rvector2.h"
-#include "libs/nodelib.h"
-#include "libs/animation.h"
+#include "libs/rcore/rvector2.h"
+#include "libs/graphic/GraphicNode.h"
+#include "libs/graphic/animation.h"
 
 int main() {
     raylib::InitWindow(Core::WINDOW_WIDTH, Core::WINDOW_HEIGHT, "demo");
     raylib::SetTargetFPS(Core::FPS);
 
     const int NODE_SIZE = 50;
-    GraphicNode* node = new GraphicNode(200, 200, NODE_SIZE, CLITERAL(raylib::Color){230, 41, 55, 0}, CLITERAL(raylib::Color){230, 41, 55, 160}, true);
-    GraphicNode* node_2 = new GraphicNode(200-NODE_SIZE, 200, NODE_SIZE, CLITERAL(raylib::Color){0, 228, 48, 0}, CLITERAL(raylib::Color){0, 228, 48, 160}, true);
+    GraphicNode* node = new GraphicNode(200, 200, NODE_SIZE, false);
+    GraphicNode* node_2 = new GraphicNode(200-NODE_SIZE, 200, NODE_SIZE, false);
 
     std::queue<std::vector<std::function<bool()>>> queueOfScenes;
 
@@ -23,8 +23,8 @@ int main() {
     double* currTime = new double(0);
 
     queueOfScenes.push({
-        std::bind(&nodeFadeIn<GraphicNode>, node, elapseTime),
-        std::bind(&nodeFadeIn<GraphicNode>, node_2, elapseTime)
+        std::bind(&nodeFadeIn<GraphicNode>, node, elapseTime, currTime, Animate::FADEIN_TIME),
+        std::bind(&nodeFadeIn<GraphicNode>, node_2, elapseTime, currTime, Animate::FADEIN_TIME)
     });
 
     queueOfScenes.push({
@@ -32,10 +32,10 @@ int main() {
         std::bind(&nodeTransform<GraphicNode>, node_2, 500, 500+NODE_SIZE, elapseTime, currTime, Animate::TRANS_TIME)
     });
     queueOfScenes.push({
-        std::bind(&nodeFadeOut<GraphicNode>, node, elapseTime)
+        std::bind(&nodeFadeOut<GraphicNode>, node, elapseTime, currTime, Animate::FADEOUT_TIME)
     });
     queueOfScenes.push({
-        std::bind(&nodeFadeIn<GraphicNode>, node, elapseTime)
+        std::bind(&nodeFadeIn<GraphicNode>, node, elapseTime, currTime, Animate::FADEIN_TIME)
     });
     queueOfScenes.push({
         std::bind(&nodeTransform<GraphicNode>, node, 300, 500, elapseTime, currTime, Animate::TRANS_TIME),
@@ -69,10 +69,10 @@ int main() {
         std::bind(&nodeTransform<GraphicNode>, node_2, 500, 500+NODE_SIZE, elapseTime, currTime, Animate::TRANS_TIME)
     });
     queueOfScenes.push({
-        std::bind(&nodeFadeOut<GraphicNode>, node, elapseTime)
+        std::bind(&nodeFadeOut<GraphicNode>, node, elapseTime, currTime, Animate::FADEOUT_TIME)
     });
     queueOfScenes.push({
-        std::bind(&nodeFadeIn<GraphicNode>, node, elapseTime)
+        std::bind(&nodeFadeIn<GraphicNode>, node, elapseTime, currTime, Animate::FADEIN_TIME)
     });
     queueOfScenes.push({
         std::bind(&nodeTransform<GraphicNode>, node, 300, 500, elapseTime, currTime, Animate::TRANS_TIME),
@@ -102,8 +102,8 @@ int main() {
         std::bind(&nodeTransform<GraphicNode>, node_2, 1000, 600, elapseTime, currTime, Animate::TRANS_TIME)
     });
     queueOfScenes.push({
-        std::bind(&nodeFadeOut<GraphicNode>, node, elapseTime),
-        std::bind(&nodeFadeOut<GraphicNode>, node_2, elapseTime)
+        std::bind(&nodeFadeOut<GraphicNode>, node, elapseTime, currTime, Animate::FADEOUT_TIME),
+        std::bind(&nodeFadeOut<GraphicNode>, node_2, elapseTime, currTime, Animate::FADEOUT_TIME)
     });
 
     while (!raylib::WindowShouldClose()) {
