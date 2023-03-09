@@ -2,7 +2,7 @@
 
 GraphicNode::GraphicNode() {}
 
-GraphicNode::GraphicNode(double _x, double _y, int _s, bool _sqr) {
+GraphicNode::GraphicNode(double _x, double _y, int _s, bool _sqr, int _v) {
     lx = x = _x; ly = y = _y; size = _s;
     bsize = Graphic::NODE_BORDER_WIDTH;
     backColor[0] = Color::NODE_BACKGROUND;
@@ -13,6 +13,9 @@ GraphicNode::GraphicNode(double _x, double _y, int _s, bool _sqr) {
     bordColor[1] = Color::NODE_BORDER_FOCUS;
     isSqr = _sqr;
     isFocus = false;
+    val = _v;
+    assert(Core::NODE_MIN_VALUE <= val && val <= Core::NODE_MAX_VALUE);
+    text = StyledText(val, &Font::jb_mono_med_36);
 }
 
 void GraphicNode::draw() {
@@ -28,5 +31,6 @@ void GraphicNode::draw() {
             raylib::DrawCircleLines(center.x, center.y, r, TRNSP(bordColor[isFocus], transparent));
         }
     }
+    text.draw(toVector(x+(size-text.dim.x)/2, y+(size-text.dim.y)/2), TRNSP(foreColor[isFocus], transparent));
 }
 
