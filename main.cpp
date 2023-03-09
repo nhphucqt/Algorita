@@ -5,17 +5,19 @@
 #include <functional>
 
 #include "libs/global.h"
-#include "libs/rcore/rvector2.h"
 #include "libs/graphic/GraphicNode.h"
+#include "libs/core/SinglyNode.h"
 #include "libs/graphic/animation.h"
 
 int main() {
-    raylib::InitWindow(Core::WINDOW_WIDTH, Core::WINDOW_HEIGHT, "demo");
-    raylib::SetTargetFPS(Core::FPS);
+    raylib::InitWindow(Window::WIDTH, Window::HEIGHT, "demo");
+    raylib::SetTargetFPS(Window::FPS);
+
+    Font::jb_mono_med_36 = raylib::LoadFontEx("./assets/fonts/JetBrainsMono-Medium.ttf", 36, 0, 250);
 
     const int NODE_SIZE = 50;
-    GraphicNode* node = new GraphicNode(200, 200, NODE_SIZE, false);
-    GraphicNode* node_2 = new GraphicNode(200-NODE_SIZE, 200, NODE_SIZE, false);
+    SinglyNode* node = new SinglyNode(200, 200, NODE_SIZE, true, 12);
+    GraphicNode* node_2 = new GraphicNode(200-NODE_SIZE, 200, NODE_SIZE, true, 5);
 
     std::queue<std::vector<std::function<bool()>>> queueOfScenes;
 
@@ -50,7 +52,7 @@ int main() {
     });
     queueOfScenes.push({
         std::bind(&nodeTransform<GraphicNode>, node, 0, 0, elapseTime, currTime, Animate::TRANS_TIME),
-        std::bind(&nodeTransform<GraphicNode>, node_2, Core::WINDOW_WIDTH-NODE_SIZE, Core::WINDOW_HEIGHT-NODE_SIZE, elapseTime, currTime, Animate::TRANS_TIME)
+        std::bind(&nodeTransform<GraphicNode>, node_2, Window::WIDTH-NODE_SIZE, Window::HEIGHT-NODE_SIZE, elapseTime, currTime, Animate::TRANS_TIME)
     });
     queueOfScenes.push({
         std::bind(&nodeTransform<GraphicNode>, node, 450, 450, elapseTime, currTime, Animate::TRANS_TIME),
@@ -87,7 +89,7 @@ int main() {
     });
     queueOfScenes.push({
         std::bind(&nodeTransform<GraphicNode>, node, 0, 0, elapseTime, currTime, Animate::TRANS_TIME),
-        std::bind(&nodeTransform<GraphicNode>, node_2, Core::WINDOW_WIDTH-NODE_SIZE, Core::WINDOW_HEIGHT-NODE_SIZE, elapseTime, currTime, Animate::TRANS_TIME)
+        std::bind(&nodeTransform<GraphicNode>, node_2, Window::WIDTH-NODE_SIZE, Window::HEIGHT-NODE_SIZE, elapseTime, currTime, Animate::TRANS_TIME)
     });
     queueOfScenes.push({
         std::bind(&nodeTransform<GraphicNode>, node, 450, 450, elapseTime, currTime, Animate::TRANS_TIME),
@@ -124,6 +126,8 @@ int main() {
     delete node_2;
     delete elapseTime;
     delete currTime;
+
+    raylib::UnloadFont(Font::jb_mono_med_36);
 
     return 0;
 }
