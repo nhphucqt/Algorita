@@ -39,7 +39,25 @@ namespace Color {
 }
 
 namespace Font {
-    inline raylib::Font jb_mono_med_36;
+    const int defaultSize = 32;
+    inline raylib::Font* defaultFont;
+    inline raylib::Font jb_mono_med_def;
+
+    inline void setDefaultFont(raylib::Font* font) {
+        defaultFont = font;
+    }
+
+    inline void loadFont() {
+        // Load fonts
+        jb_mono_med_def = raylib::LoadFontEx("./assets/fonts/JetBrainsMono-Medium.ttf", defaultSize, 0, 250);
+
+        // Set default font
+        setDefaultFont(&jb_mono_med_def);
+    }
+
+    inline void unloadFont() {
+        raylib::UnloadFont(jb_mono_med_def);
+    }
 }
 
 #endif
