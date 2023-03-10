@@ -4,19 +4,27 @@
 #include <queue>
 #include <functional>
 
+namespace raylib {
+    #include "raylib.h"
+}
+
 #include "libs/global.h"
 #include "libs/graphic/GraphicNode.h"
 #include "libs/core/SinglyNode.h"
 #include "libs/graphic/animation.h"
 
 int main() {
+    raylib::SetConfigFlags(raylib::FLAG_MSAA_4X_HINT);
+    raylib::SetConfigFlags(raylib::FLAG_WINDOW_ALWAYS_RUN);
+
     raylib::InitWindow(Window::WIDTH, Window::HEIGHT, "demo");
     raylib::SetTargetFPS(Window::FPS);
 
-    Font::jb_mono_med_36 = raylib::LoadFontEx("./assets/fonts/JetBrainsMono-Medium.ttf", 36, 0, 250);
+    // Load
+    Font::loadFont();
 
     const int NODE_SIZE = 50;
-    SinglyNode* node = new SinglyNode(200, 200, NODE_SIZE, true, 12);
+    SinglyNode* node = new SinglyNode(200, 200, NODE_SIZE, false, 12);
     GraphicNode* node_2 = new GraphicNode(200-NODE_SIZE, 200, NODE_SIZE, true, 5);
 
     std::queue<std::vector<std::function<bool()>>> queueOfScenes;
@@ -122,12 +130,14 @@ int main() {
 
     raylib::CloseWindow();
 
+
+    // Unload
+    Font::unloadFont();
+
     delete node;
     delete node_2;
     delete elapseTime;
     delete currTime;
-
-    raylib::UnloadFont(Font::jb_mono_med_36);
 
     return 0;
 }
