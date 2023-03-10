@@ -15,7 +15,7 @@ GraphicNode::GraphicNode(double _x, double _y, int _s, bool _sqr, int _v) {
     isFocus = false;
     val = _v;
     assert(Core::NODE_MIN_VALUE <= val && val <= Core::NODE_MAX_VALUE);
-    text = StyledText(val, &Font::jb_mono_med_36);
+    text = StyledText(val, Font::defaultFont);
 }
 
 void GraphicNode::draw() {
@@ -25,11 +25,8 @@ void GraphicNode::draw() {
     } else {
         double radius = (double) size / 2.0;
         raylib::Vector2 center = raylib::Vector2{(float)(x+radius),(float)(y+radius)};
-        // raylib::DrawCircleV(center, radius, TRNSP(bordColor[isFocus], transparent));
         raylib::DrawCircleV(center, radius, TRNSP(backColor[isFocus], transparent));
-        for (double r = radius; r > radius-bsize; r-=0.5) {
-            raylib::DrawCircleLines(center.x, center.y, r, TRNSP(bordColor[isFocus], transparent));
-        }
+        raylib::DrawRing(center, radius-bsize, radius, 0, 360, 36, TRNSP(bordColor[isFocus], transparent));
     }
     text.draw(toVector(x+(size-text.dim.x)/2, y+(size-text.dim.y)/2), TRNSP(foreColor[isFocus], transparent));
 }
