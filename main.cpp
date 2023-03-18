@@ -9,8 +9,10 @@ namespace raylib {
 }
 
 #include "libs/global.h"
+
 #include "libs/graphic/GraphicNode.h"
 #include "libs/core/SinglyNode.h"
+
 #include "libs/graphic/animation.h"
 
 int main() {
@@ -25,7 +27,8 @@ int main() {
 
     const int NODE_SIZE = 50;
     SinglyNode* node = new SinglyNode(200, 200, NODE_SIZE, false, 12);
-    GraphicNode* node_2 = new GraphicNode(200-NODE_SIZE, 200, NODE_SIZE, true, 5);
+    SinglyNode* node_2 = new SinglyNode(200-NODE_SIZE, 200, NODE_SIZE, true, 5);
+    node->setNext(node_2);
 
     std::queue<std::vector<std::function<bool()>>> queueOfScenes;
 
@@ -125,7 +128,6 @@ int main() {
             node->draw();
             node_2->draw();
         raylib::EndDrawing();
-        std::cerr << node_2->x << ' ' << node_2->y << '\n';
     }
 
     raylib::CloseWindow();
