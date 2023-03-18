@@ -4,12 +4,16 @@
 #include <string>
 #include "../global.h"
 #include "../graphic/GraphicNode.h"
+#include "../graphic/GraphicTrackArrow.h"
 
 class SinglyNode : public GraphicNode {
 public:
     SinglyNode *pNext;
+    GraphicTrackArrow aNext;
     SinglyNode();
-    SinglyNode(double _x, double _y, int _s, bool _sqr, int _v);
+    SinglyNode(float _x, float _y, float _s, bool _sqr, int _v);
+    void setNext(SinglyNode* pNode);
+    void draw();
 };
 
 #endif
