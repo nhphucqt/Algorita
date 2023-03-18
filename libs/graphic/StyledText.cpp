@@ -19,5 +19,5 @@ void StyledText::draw(const raylib::Vector2 &p, const raylib::Color &color) {
 }
 
 void StyledText::draw(int x, int y, const raylib::Color &color) {
-    draw(toVector(x,y), color);
+    draw(toVector2(x,y), color);
 }

@@ -7,7 +7,7 @@
 namespace raylib {
     #include "raylib.h"
 }
-#include "../core/ccppf.h"
+#include "../core/ccppfunc.h"
 #include "../rcore/rvector2.h"
 
 class StyledText {
