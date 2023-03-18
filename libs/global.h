@@ -19,27 +19,39 @@ namespace Window {
 }
 
 namespace Graphic {
+    // NODE GRAPHIC
     const int NODE_BORDER_WIDTH = 4;
+
+    // ARROW GRAPHIC
+    const int ARROW_LINE_WIDTH = 4;
+    const int ARROW_HEAD_SIZE = 4;
 }
 
 namespace Animate {
-    const double FADEIN_TIME = 0.5;
-    const double FADEOUT_TIME = 0.5;
-    const double TRANS_TIME = 1.5;
+    const float FADEIN_TIME = 0.5;
+    const float FADEOUT_TIME = 0.5;
+    const float TRANS_TIME = 1.5;
 }
 
+#define rCol raylib::Color
 namespace Color {
-    const raylib::Color NODE_BACKGROUND = raylib::WHITE;
-    // const raylib::Color NODE_BACKGROUND = raylib::BLUE;
-    const raylib::Color NODE_BACKGROUND_FOCUS = raylib::GREEN;
-    const raylib::Color NODE_FOREGROUND = raylib::BLACK;
-    const raylib::Color NODE_FOREGROUND_FOCUS = raylib::WHITE;
-    const raylib::Color NODE_BORDER = raylib::BLACK;
-    const raylib::Color NODE_BORDER_FOCUS = raylib::BLACK;
+    // NODE COLOR
+    const rCol NODE_BACKGROUND = raylib::WHITE;
+    // rCol NODE_BACKGROUND = raylib::BLUE;
+    const rCol NODE_BACKGROUND_FOCUS = raylib::GREEN;
+    const rCol NODE_FOREGROUND = raylib::BLACK;
+    const rCol NODE_FOREGROUND_FOCUS = raylib::WHITE;
+    const rCol NODE_BORDER = raylib::BLACK;
+    const rCol NODE_BORDER_FOCUS = raylib::BLACK;
+
+    // ARROW COLOR
+    const rCol ARROW_LINE = raylib::BLACK;
+    const rCol ARROW_HEAD = raylib::RED;
 }
+#undef rCol
 
 namespace Font {
-    const int defaultSize = 32;
+    const int FONT_DEFAULT_SIZE = 32;
     inline raylib::Font* defaultFont;
     inline raylib::Font jb_mono_med_def;
 
@@ -49,7 +61,7 @@ namespace Font {
 
     inline void loadFont() {
         // Load fonts
-        jb_mono_med_def = raylib::LoadFontEx("./assets/fonts/JetBrainsMono-Medium.ttf", defaultSize, 0, 250);
+        jb_mono_med_def = raylib::LoadFontEx("./assets/fonts/JetBrainsMono-Medium.ttf", FONT_DEFAULT_SIZE, 0, 250);
 
         // Set default font
         setDefaultFont(&jb_mono_med_def);
