@@ -12,7 +12,7 @@ double bezier(double S, double T, double t) {
     std::pair<double,double> B(T,0);
     std::pair<double,double> C(0,S);
     std::pair<double,double> D(T,S);
-    // // A -> B -> C -> D
+    // A -> B -> C -> D
     double tA = -p*p*p + 3*p*p - 3*p + 1;
     double tB = 3*p*p*p - 6*p*p + 3*p;
     double tC = -3*p*p*p + 3*p*p;
