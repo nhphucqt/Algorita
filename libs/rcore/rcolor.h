@@ -7,6 +7,6 @@ namespace raylib {
     #include "raylib.h"
 }
 
-raylib::Color TRNSP(raylib::Color color, double transparent);
+raylib::Color TRNSP(raylib::Color color, float transparent);
 
 #endif
