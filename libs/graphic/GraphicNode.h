@@ -14,16 +14,16 @@ namespace raylib {
 class GraphicNode {
 public:
     // Position
-	double x, y;
-    double lx, ly;
+	float x, y;
+    float lx, ly;
 
     // Shape and Dimension
-	int size, bsize;
+	float size, bsize;
 	bool isSqr; // 1 -> square | 0 -> circle
 
     // Color
     raylib::Color backColor[2], foreColor[2], bordColor[2];
-    double transparent;
+    float transparent;
 
     // Node value
     int val;
@@ -34,9 +34,10 @@ public:
 
     // Constructors
     GraphicNode();
-    GraphicNode(double _x, double _y, int _s, bool _sqr, int _v);
+    GraphicNode(float _x, float _y, float _s, bool _sqr, int _v);
 
     // Methods
+    raylib::Vector2 getCenter() const;
     void draw();
 };
 
