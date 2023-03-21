@@ -10,7 +10,7 @@ SinglyNode::SinglyNode(float _x, float _y, float _s, bool _sqr, int _v) : Graphi
 
 void SinglyNode::setNext(SinglyNode* pNode) {
     pNext = pNode;
-    aNext = GraphicTrackArrow(&x, &y, &pNode->x, &pNode->y, toVector2(size/2,size/2), toVector2(pNode->size/2,pNode->size/2));
+    aNext = GraphicTrackArrow(&x, &y, &pNode->x, &pNode->y, &size, &pNode->size, outerShape, pNode->outerShape);
 }
 
 void SinglyNode::draw() {
