@@ -22,16 +22,18 @@ namespace Window {
     const int WIDTH = 1440;
     const int HEIGHT = 900;
     
-    const int FPS = 360;
+    // const int FPS = 360;
+    const int FPS = 720;
 }
 
 namespace Graphic {
     // NODE GRAPHIC
-    const int NODE_BORDER_WIDTH = 4;
+    const float NODE_BORDER_WIDTH = 4;
 
     // ARROW GRAPHIC
-    const int ARROW_LINE_WIDTH = 4;
-    const int ARROW_HEAD_SIZE = 4;
+    const float ARROW_LINE_WIDTH = 4;
+    const float ARROW_HEAD_LENGTH = 16;
+    const float ARROW_HEAD_WIDTH = 16;
 }
 
 namespace Animate {
@@ -53,7 +55,8 @@ namespace Color {
 
     // ARROW COLOR
     const rCol ARROW_LINE = raylib::BLACK;
-    const rCol ARROW_HEAD = raylib::RED;
+    // const rCol ARROW_HEAD = raylib::RED;
+    const rCol ARROW_HEAD = raylib::BLACK;
 }
 #undef rCol
 
