@@ -1,8 +1,15 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-namespace raylib {
-    #include "raylib.h"
+#include "conf_raylib.h"
+#include <cmath>
+
+namespace Geo {
+    const double PI = acos(-1);
+    const double RAD30 = PI / 6; // PI / 6
+    const double RAD45 = PI / 4; // PI / 4
+    const double RAD60 = PI / 3; // PI / 3
+    const double RAD90 = PI / 2; // PI / 2
 }
 
 namespace Core {
