@@ -2,28 +2,29 @@
 #define GRAPHIC_TRACK_ARROW_H
 
 #include <vector>
+#include <functional>
+#include <iostream>
 
-namespace raylib {
-    #include "raylib.h"
-}
+#include "../conf_raylib.h"
 #include "../global.h"
 #include "../core/ccppclass.h"
+#include "../core/ccppfunc.h"
 #include "../rcore/rvector2.h"
+
 
 class GraphicTrackArrow {
 public:
     int lineWidth, headSize;
     raylib::Color lineColor, headColor;
     TrVector pA, pB;
-    raylib::Vector2 tranA;
-    raylib::Vector2 tranB;
+    float *sA, *sB;
+    std::function<double(raylib::Vector2)> ftA, ftB;
     float transparent;
     bool isTrack;
     GraphicTrackArrow();
-    GraphicTrackArrow(const TrVector &A, const TrVector &B, const raylib::Vector2 &tA, const raylib::Vector2 &tB);
-    GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, const raylib::Vector2 &tA, const raylib::Vector2 &tB);
-    GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float tAx, float tAy, float tBx, float tBy);
-    GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By);
+    GraphicTrackArrow(const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<double(raylib::Vector2)> &_ftA, const std::function<double(raylib::Vector2)> &_ftB);
+    GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB, const std::function<double(raylib::Vector2)> &_ftA, const std::function<double(raylib::Vector2)> &_ftB);
+    GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB);
     void draw();
 };
 
