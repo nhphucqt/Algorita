@@ -14,7 +14,7 @@
 
 class GraphicTrackArrow {
 public:
-    int lineWidth, headSize;
+    float lineWidth, headLength, headWidth;
     raylib::Color lineColor, headColor;
     TrVector pA, pB;
     float *sA, *sB;
