@@ -10,6 +10,7 @@ GraphicNode::GraphicNode() {
     bordColor[1] = Color::NODE_BORDER_FOCUS;
     isFocus = false;
     outerShape = cf::outerNull;
+    transparent = 1.0;
 }
 
 GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v) : GraphicNode() {
