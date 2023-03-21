@@ -13,3 +13,24 @@ std::string cf::num2str(int x) {
         return ans;
     }
 }
+
+double cf::outerNull(const raylib::Vector2 &v) {
+    return 0;
+}
+
+double cf::outerCirc(float *size, const raylib::Vector2 &v) {
+    return *size / 2;
+}
+
+double cf::outerSqur(float *size, const raylib::Vector2 &v) {
+    double a = angle(X_AXIS, v);
+    while (a > Geo::RAD90) {
+        a -= Geo::RAD90;
+    }
+    if (a > Geo::RAD45) {
+        a = Geo::RAD90 - a;
+    }
+    std::cerr << " +++ " << a * 180 / Geo::PI << '\n';
+    return *size / 2 / cos(a);
+}
+
