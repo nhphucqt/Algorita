@@ -1,6 +1,6 @@
 #include "animation.h"
 
-double bezier(double S, double T, double t) {
+double Animate::bezier(double S, double T, double t) {
     double p = t / T;
 
     // std::pair<double,double> A(0,0);
@@ -43,7 +43,7 @@ double bezier(double S, double T, double t) {
 }
 
 
-void runScenes(std::queue<std::vector<std::function<bool()>>> &queueOfScenes, double* currTime, double* elapseTime) {
+void Animate::runScenes(std::queue<std::vector<std::function<bool()>>> &queueOfScenes, double* currTime, double* elapseTime) {
     if (!queueOfScenes.empty()) {
         for (int i = (int)queueOfScenes.front().size()-1; i >= 0; --i) {
             if (queueOfScenes.front()[i]()) {
