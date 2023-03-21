@@ -4,9 +4,7 @@
 #include <queue>
 #include <functional>
 
-namespace raylib {
-    #include "raylib.h"
-}
+#include "libs/conf_raylib.h"
 
 #include "libs/global.h"
 
@@ -26,8 +24,8 @@ int main() {
     Font::loadFont();
 
     const int NODE_SIZE = 50;
-    SinglyNode* node = new SinglyNode(200, 200, NODE_SIZE, false, 12);
-    SinglyNode* node_2 = new SinglyNode(200-NODE_SIZE, 200, NODE_SIZE, true, 5);
+    SinglyNode* node = new SinglyNode(200, 200, NODE_SIZE, true, 12);
+    SinglyNode* node_2 = new SinglyNode(200-NODE_SIZE, 200, NODE_SIZE, false, 5);
     node->setNext(node_2);
 
     std::queue<std::vector<std::function<bool()>>> queueOfScenes;
