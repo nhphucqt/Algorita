@@ -9,6 +9,7 @@ GraphicNode::GraphicNode() {
     bordColor[0] = Color::NODE_BORDER;
     bordColor[1] = Color::NODE_BORDER_FOCUS;
     isFocus = false;
+    outerShape = cf::outerNull;
 }
 
 GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v) : GraphicNode() {
@@ -17,6 +18,11 @@ GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v) : Grap
     size = _s;
     isSqr = _sqr;
     val = _v;
+    if (isSqr) {
+        outerShape = std::bind(&cf::outerSqur, &size, std::placeholders::_1);
+    } else {
+        outerShape = std::bind(&cf::outerCirc, &size, std::placeholders::_1);
+    }
     assert(Core::NODE_MIN_VALUE <= val && val <= Core::NODE_MAX_VALUE);
     text = StyledText(val, Font::defaultFont);
 }
@@ -30,7 +36,7 @@ void GraphicNode::draw() {
         raylib::DrawRectangle(x, y, size, size, TRNSP(backColor[isFocus], transparent));
         raylib::DrawRectangleLinesEx(raylib::Rectangle{x,y,size,size}, bsize, TRNSP(bordColor[isFocus], transparent));
     } else {
-        float radius = (float) size / 2.0;
+        float radius = size / 2.0;
         raylib::Vector2 center = raylib::Vector2{(float)(x+radius),(float)(y+radius)};
         raylib::DrawCircleV(center, radius, TRNSP(backColor[isFocus], transparent));
         raylib::DrawRing(center, radius-bsize, radius, 0, 360, 36, TRNSP(bordColor[isFocus], transparent));

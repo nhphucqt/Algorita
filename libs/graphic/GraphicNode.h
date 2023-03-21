@@ -3,12 +3,12 @@
 
 #include <cmath>
 #include <assert.h>
+#include <functional>
 
-namespace raylib {
-    #include "raylib.h"
-}
+#include "../conf_raylib.h"
 #include "../global.h"
 #include "../rcore/rcolor.h"
+#include "../core/ccppfunc.h"
 #include "StyledText.h"
 
 class GraphicNode {
@@ -31,6 +31,9 @@ public:
 
     // Events
     bool isFocus;
+
+    // Functors
+    std::function<double(raylib::Vector2)> outerShape;
 
     // Constructors
     GraphicNode();
