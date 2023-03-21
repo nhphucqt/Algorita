@@ -30,7 +30,7 @@ double cf::outerSqur(float *size, const raylib::Vector2 &v) {
     if (a > Geo::RAD45) {
         a = Geo::RAD90 - a;
     }
-    std::cerr << " +++ " << a * 180 / Geo::PI << '\n';
+    // std::cerr << " +++ " << a * 180 / Geo::PI << '\n';
     return *size / 2 / cos(a);
 }
 
