@@ -3,9 +3,7 @@
 
 #include <cmath>
 
-namespace raylib {
-    #include "raylib.h"
-}
+#include "../conf_raylib.h"
 
 raylib::Color TRNSP(raylib::Color color, float transparent);
 
