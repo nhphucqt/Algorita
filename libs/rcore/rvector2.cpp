@@ -1,5 +1,13 @@
 #include "rvector2.h"
 
+raylib::Vector2 unitVector(const raylib::Vector2 &v) {
+    return v / veclen(v);
+}
+
+raylib::Vector2 normVector(const raylib::Vector2 &v) { // Counter-clockwise
+    return raylib::Vector2{-v.y, v.x} / veclen(v);
+}
+
 raylib::Vector2 operator - (const raylib::Vector2 &a, const raylib::Vector2 &b) {
     return raylib::Vector2{a.x-b.x, a.y-b.y};
 }
@@ -43,7 +51,23 @@ double angle(const raylib::Vector2 &a, const raylib::Vector2 &b) { // radian
     return fabs(angle2(a, b));
 }
 
-raylib::Vector2 trans(const raylib::Vector2 &v, double dist) {
+bool CCW(const raylib::Vector2 &a, const raylib::Vector2 &b, const raylib::Vector2 &c) {
+    return (b - a) % (c - b) > 0;
+}
+
+bool CW(const raylib::Vector2 &a, const raylib::Vector2 &b, const raylib::Vector2 &c) {
+    return (b - a) % (c - b) < 0;
+}
+
+raylib::Vector2 trans(const raylib::Vector2 &dir, double dist) {
     // std::cerr << " >> " << veclen(v)  << '\n';
-    return (v / veclen(v)) * dist;
+    return (dir / veclen(dir)) * dist;
+}
+
+raylib::Vector2 trans(const raylib::Vector2 &v, const raylib::Vector2 &dir, double dist) {
+    return v + trans(dir, dist);
+}
+
+raylib::Vector2 rotate(const raylib::Vector2 &v, double a) { // a rad
+    return raylib::Vector2{(float)(v.x*cos(a) - v.y*sin(a)), (float)(v.y*cos(a) + v.x*sin(a))};
 }
