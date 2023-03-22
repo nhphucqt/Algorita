@@ -6,6 +6,7 @@
 // #include <iostream>
 #include "../conf_raylib.h"
 
+const raylib::Vector2 Z_VECT = raylib::Vector2{0, 0};
 const raylib::Vector2 X_AXIS = raylib::Vector2{1, 0};
 const raylib::Vector2 Y_AXIS = raylib::Vector2{0, 1};
 
@@ -14,6 +15,9 @@ raylib::Vector2 toVector2(const T &x, const T &y) {
     return raylib::Vector2{(float)(x),(float)(y)};
 }
 
+raylib::Vector2 resizeVector(const raylib::Vector2 &v, double k);
+
+raylib::Vector2 revVector(const raylib::Vector2 &v);
 raylib::Vector2 unitVector(const raylib::Vector2 &v);
 raylib::Vector2 normVector(const raylib::Vector2 &v); // Counter-clockwise
 

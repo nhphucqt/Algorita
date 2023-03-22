@@ -1,5 +1,13 @@
 #include "rvector2.h"
 
+raylib::Vector2 revVector(const raylib::Vector2 &v) {
+    return raylib::Vector2{-v.x, -v.y};
+}
+
+raylib::Vector2 resizeVector(const raylib::Vector2 &v, double k) {
+    return v / veclen(v) * k;
+}
+
 raylib::Vector2 unitVector(const raylib::Vector2 &v) {
     return v / veclen(v);
 }
@@ -59,9 +67,9 @@ bool CW(const raylib::Vector2 &a, const raylib::Vector2 &b, const raylib::Vector
     return (b - a) % (c - b) < 0;
 }
 
+
 raylib::Vector2 trans(const raylib::Vector2 &dir, double dist) {
-    // std::cerr << " >> " << veclen(v)  << '\n';
-    return (dir / veclen(dir)) * dist;
+    return resizeVector(dir, dist);
 }
 
 raylib::Vector2 trans(const raylib::Vector2 &v, const raylib::Vector2 &dir, double dist) {
