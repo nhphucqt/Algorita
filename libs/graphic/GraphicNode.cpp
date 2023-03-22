@@ -9,7 +9,7 @@ GraphicNode::GraphicNode() {
     bordColor[0] = Color::NODE_BORDER;
     bordColor[1] = Color::NODE_BORDER_FOCUS;
     isFocus = false;
-    outerShape = cf::outerNull;
+    outerShapeIn = outerShapeOut = cf::outerNull;
     transparent = 1.0;
 }
 
@@ -19,17 +19,26 @@ GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v) : Grap
     size = _s;
     isSqr = _sqr;
     val = _v;
-    if (isSqr) {
-        outerShape = std::bind(&cf::outerSqur, &size, std::placeholders::_1);
-    } else {
-        outerShape = std::bind(&cf::outerCirc, &size, std::placeholders::_1);
-    }
     assert(Core::NODE_MIN_VALUE <= val && val <= Core::NODE_MAX_VALUE);
     text = StyledText(val, Font::defaultFont);
 }
 
 raylib::Vector2 GraphicNode::getCenter() const {
     return raylib::Vector2{x+size/2, y+size/2};
+}
+
+void GraphicNode::vanish() {
+    transparent = 0.0;
+}
+
+void GraphicNode::appear() {
+    transparent = 1.0;
+}
+
+void GraphicNode::setValue(int x) {
+    assert(Core::NODE_MIN_VALUE <= val && val <= Core::NODE_MAX_VALUE);
+    val = x;
+    text = StyledText(val, Font::defaultFont);
 }
 
 void GraphicNode::draw() {

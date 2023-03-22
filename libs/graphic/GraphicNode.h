@@ -33,7 +33,7 @@ public:
     bool isFocus;
 
     // Functors
-    std::function<double(raylib::Vector2)> outerShape;
+    std::function<raylib::Vector2(raylib::Vector2)> outerShapeIn, outerShapeOut;
 
     // Constructors
     GraphicNode();
@@ -41,9 +41,10 @@ public:
 
     // Methods
     raylib::Vector2 getCenter() const;
+    void vanish();
+    void appear();
+    void setValue(int x);
     void draw();
 };
-
-
 
 #endif
