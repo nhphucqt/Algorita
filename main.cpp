@@ -10,6 +10,7 @@
 
 #include "libs/graphic/GraphicNode.h"
 #include "libs/core/SinglyNode.h"
+#include "libs/core/DoublyNode.h"
 
 #include "libs/graphic/animation.h"
 
@@ -24,8 +25,8 @@ int main() {
     Font::loadFont();
 
     const int NODE_SIZE = 50;
-    SinglyNode* node = new SinglyNode(200, 200, NODE_SIZE, true, 12);
-    SinglyNode* node_2 = new SinglyNode(200-NODE_SIZE, 200, NODE_SIZE, true, 5);
+    DoublyNode* node = new DoublyNode(200, 200, NODE_SIZE, false, 12);
+    DoublyNode* node_2 = new DoublyNode(50, 200, NODE_SIZE, false, 5);
     node->setNext(node_2);
 
     std::queue<std::vector<std::function<bool()>>> queueOfScenes;
@@ -36,6 +37,13 @@ int main() {
     queueOfScenes.push({
         std::bind(&Animate::fadeIn<GraphicNode>, node, elapseTime, currTime, Animate::FADEIN_TIME),
         std::bind(&Animate::fadeIn<GraphicNode>, node_2, elapseTime, currTime, Animate::FADEIN_TIME)
+    });
+
+    node->aNext.vanish();
+    node_2->aPrev.vanish();
+    queueOfScenes.push({
+        std::bind(&Animate::fadeIn<GraphicTrackArrow>, &node->aNext, elapseTime, currTime, Animate::FADEIN_TIME),
+        std::bind(&Animate::fadeIn<GraphicTrackArrow>, &node_2->aPrev, elapseTime, currTime, Animate::FADEIN_TIME)
     });
 
     queueOfScenes.push({
@@ -114,7 +122,9 @@ int main() {
     });
     queueOfScenes.push({
         std::bind(&Animate::fadeOut<GraphicNode>, node, elapseTime, currTime, Animate::FADEOUT_TIME),
-        std::bind(&Animate::fadeOut<GraphicNode>, node_2, elapseTime, currTime, Animate::FADEOUT_TIME)
+        std::bind(&Animate::fadeOut<GraphicNode>, node_2, elapseTime, currTime, Animate::FADEOUT_TIME),
+        std::bind(&Animate::fadeOut<GraphicTrackArrow>, &node->aNext, elapseTime, currTime, Animate::FADEOUT_TIME),
+        std::bind(&Animate::fadeOut<GraphicTrackArrow>, &node_2->aPrev, elapseTime, currTime, Animate::FADEOUT_TIME),
     });
 
     while (!raylib::WindowShouldClose()) {
