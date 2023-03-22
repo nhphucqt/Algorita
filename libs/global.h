@@ -46,7 +46,7 @@ namespace Animate {
 namespace Color {
     // NODE COLOR
     const rCol NODE_BACKGROUND = raylib::WHITE;
-    // rCol NODE_BACKGROUND = raylib::BLUE;
+    // const rCol NODE_BACKGROUND = raylib::BLUE;
     const rCol NODE_BACKGROUND_FOCUS = raylib::GREEN;
     const rCol NODE_FOREGROUND = raylib::BLACK;
     const rCol NODE_FOREGROUND_FOCUS = raylib::WHITE;
@@ -55,8 +55,10 @@ namespace Color {
 
     // ARROW COLOR
     const rCol ARROW_LINE = raylib::BLACK;
-    // const rCol ARROW_HEAD = raylib::RED;
-    const rCol ARROW_HEAD = raylib::BLACK;
+    const rCol ARROW_LINE_FOCUS = raylib::ORANGE;
+    const rCol ARROW_HEAD = raylib::RED;
+    // const rCol ARROW_HEAD = raylib::BLACK;
+    const rCol ARROW_HEAD_FOCUS = raylib::ORANGE;
 }
 #undef rCol
 
