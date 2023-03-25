@@ -14,8 +14,8 @@
 class GraphicNode {
 public:
     // Position
-	float x, y;
-    float lx, ly;
+    float cx, cy; // core position
+	float x, y;   // graphic position
 
     // Shape and Dimension
 	float size, bsize;

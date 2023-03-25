@@ -10,12 +10,12 @@ GraphicNode::GraphicNode() {
     bordColor[1] = Color::NODE_BORDER_FOCUS;
     isFocus = false;
     outerShapeIn = outerShapeOut = cf::outerNull;
-    transparent = 1.0;
+    transparent = 0.0; // vanish at first
 }
 
 GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v) : GraphicNode() {
-    lx = x = _x; 
-    ly = y = _y; 
+    cx = x = _x;
+    cy = y = _y;
     size = _s;
     isSqr = _sqr;
     val = _v;
