@@ -1,5 +1,47 @@
 #include "animation.h"
 
+Animate::QueueOfScenes::QueueOfScenes() {
+    currTime = 0.0;
+    q = std::queue<std::vector<std::function<bool()>>>();
+}
+
+void Animate::QueueOfScenes::pushToFrontScene(const std::function<bool()> &func) {
+    q.front().push_back(func);
+}
+
+void Animate::QueueOfScenes::pushToBackScene(const std::function<bool()> &func) {
+    q.back().push_back(func);
+}
+
+void Animate::QueueOfScenes::pushToNewScene(const std::function<bool()> &func) {
+    q.push({func});
+}
+
+void Animate::QueueOfScenes::pushScene(const std::vector<std::function<bool()>> &scene) {
+    q.push(scene);
+}
+
+void Animate::QueueOfScenes::addBlankScene() {
+    q.push(std::vector<std::function<bool()>>());
+}
+
+void Animate::QueueOfScenes::run() {
+    if (!q.empty()) {
+        for (int i = (int)q.front().size()-1; i >= 0; --i) {
+            if (q.front()[i]()) {
+                q.front()[i] = q.front().back();
+                q.front().pop_back();
+            }
+        }
+        if (q.front().empty()) {
+            q.pop();
+            currTime = 0;
+        } else {
+            currTime += elapseTime;
+        }
+    }
+}
+
 double Animate::bezier(double S, double T, double t) {
     double p = t / T;
 
@@ -40,22 +82,4 @@ double Animate::bezier(double S, double T, double t) {
     //     return S * (nl * p * p + 0.984375);
     // }
     // --
-}
-
-
-void Animate::runScenes(std::queue<std::vector<std::function<bool()>>> &queueOfScenes, double* currTime, double* elapseTime) {
-    if (!queueOfScenes.empty()) {
-        for (int i = (int)queueOfScenes.front().size()-1; i >= 0; --i) {
-            if (queueOfScenes.front()[i]()) {
-                queueOfScenes.front()[i] = queueOfScenes.front().back();
-                queueOfScenes.front().pop_back();
-            }
-        }
-        if (queueOfScenes.front().empty()) {
-            queueOfScenes.pop();
-            *currTime = 0;
-        } else {
-            *currTime += *elapseTime;
-        }
-    }
 }
