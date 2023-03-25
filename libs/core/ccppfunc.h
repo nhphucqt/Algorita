@@ -15,6 +15,7 @@ namespace cf {
         return x * x;
     }
     std::string num2str(int x);
+    
     raylib::Vector2 outerNull(const raylib::Vector2 &v);
     raylib::Vector2 outerCirc(float *size, const raylib::Vector2 &v);
     raylib::Vector2 outerSqur(float *size, const raylib::Vector2 &v);
