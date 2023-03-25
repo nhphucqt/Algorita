@@ -5,6 +5,7 @@
 #include <cmath>
 
 namespace Geo {
+    const double EPS = 1e-3;
     const double PI = acos(-1);
     const double RAD30 = PI / 6; // PI / 6
     const double RAD45 = PI / 4; // PI / 4
@@ -28,18 +29,28 @@ namespace Window {
 
 namespace Graphic {
     // NODE GRAPHIC
+    const float NODE_SIZE = 50;
     const float NODE_BORDER_WIDTH = 4;
+    const float NODE_DIST = 50;
 
     // ARROW GRAPHIC
     const float ARROW_LINE_WIDTH = 4;
     const float ARROW_HEAD_LENGTH = 16;
     const float ARROW_HEAD_WIDTH = 16;
+
+    // STACK GRAPHIC
+    const int STACK_ORG_X = (Window::WIDTH - NODE_SIZE) / 2;
+    const int STACK_ORG_Y = 50;
+    const int STACK_NODE_DIST = NODE_SIZE + NODE_SIZE / 1.5;
 }
 
 namespace Animate {
-    const float FADEIN_TIME = 0.5;
-    const float FADEOUT_TIME = 0.5;
-    const float TRANS_TIME = 1.5;
+    const float FADEIN_TIME = 0.25;
+    const float FADEOUT_TIME = 0.25;
+    const float TRANS_TIME = 0.25;
+
+
+    inline double elapseTime = 0;
 }
 
 #define rCol raylib::Color
@@ -56,8 +67,8 @@ namespace Color {
     // ARROW COLOR
     const rCol ARROW_LINE = raylib::BLACK;
     const rCol ARROW_LINE_FOCUS = raylib::ORANGE;
-    const rCol ARROW_HEAD = raylib::RED;
-    // const rCol ARROW_HEAD = raylib::BLACK;
+    // const rCol ARROW_HEAD = raylib::RED;
+    const rCol ARROW_HEAD = raylib::BLACK;
     const rCol ARROW_HEAD_FOCUS = raylib::ORANGE;
 }
 #undef rCol
