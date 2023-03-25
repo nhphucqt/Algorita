@@ -12,7 +12,7 @@ GraphicTrackArrow::GraphicTrackArrow() {
     sA = sB = 0;
     isTrack = false;
     isFocus = false;
-    transparent = 1.0;
+    transparent = 0.0; // vanish at first
 }
 
 GraphicTrackArrow::GraphicTrackArrow(const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<raylib::Vector2(raylib::Vector2)> &_ftA, const std::function<raylib::Vector2(raylib::Vector2)> &_ftB) : GraphicTrackArrow() {
@@ -44,6 +44,9 @@ void GraphicTrackArrow::draw() {
         if (dist(cA, cB) <= *sA/2 + *sB/2) {
             return;
         }
+        // if (fabs(dist(cA, cB)) < Geo::EPS) {
+        //     return;
+        // }
         raylib::Vector2 AB = cB - cA;
         raylib::Vector2 BA = cA - cB;
 
