@@ -12,7 +12,9 @@ public:
     GraphicTrackArrow aNext;
     SinglyNode();
     SinglyNode(float _x, float _y, float _s, bool _sqr);
+    SinglyNode(float _x, float _y, float _s, bool _sqr, SinglyNode* newNext);
     SinglyNode(float _x, float _y, float _s, bool _sqr, int _v);
+    SinglyNode(float _x, float _y, float _s, bool _sqr, int _v, SinglyNode* newNext);
     void setNext(SinglyNode* pNode);
     void draw();
 };

@@ -15,7 +15,13 @@ SinglyNode::SinglyNode(float _x, float _y, float _s, bool _sqr, int _v) : Graphi
     }
 }
 
+SinglyNode::SinglyNode(float _x, float _y, float _s, bool _sqr, int _v, SinglyNode* newNext) : SinglyNode(_x, _y, _s, _sqr, _v) {
+    setNext(newNext);
+}
+
 SinglyNode::SinglyNode(float _x, float _y, float _s, bool _sqr) : SinglyNode(_x, _y, _s, _sqr, 0) {}
+
+SinglyNode::SinglyNode(float _x, float _y, float _s, bool _sqr, SinglyNode* newNext) : SinglyNode(_x, _y, _s, _sqr, 0, newNext) {}
 
 void SinglyNode::setNext(SinglyNode* pNode) {
     pNext = pNode;
