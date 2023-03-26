@@ -14,13 +14,12 @@ GraphicNode::GraphicNode() {
 }
 
 GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v) : GraphicNode() {
-    cx = x = _x;
-    cy = y = _y;
+    lx = x = _x;
+    ly = y = _y;
     size = _s;
     isSqr = _sqr;
-    val = _v;
-    assert(Core::NODE_MIN_VALUE <= val && val <= Core::NODE_MAX_VALUE);
-    text = StyledText(val, Font::defaultFont);
+    assert(Core::NODE_MIN_VALUE <= _v && _v <= Core::NODE_MAX_VALUE);
+    val = StyledText(_v, Font::defaultFont);
 }
 
 raylib::Vector2 GraphicNode::getCenter() const {
@@ -36,12 +35,14 @@ void GraphicNode::appear() {
 }
 
 void GraphicNode::setValue(int x) {
-    assert(Core::NODE_MIN_VALUE <= val && val <= Core::NODE_MAX_VALUE);
-    val = x;
-    text = StyledText(val, Font::defaultFont);
+    assert(Core::NODE_MIN_VALUE <= x && x <= Core::NODE_MAX_VALUE);
+    val = StyledText(x, Font::defaultFont);
 }
 
 void GraphicNode::draw() {
+    if (transparent == 0.0) {
+        return;
+    }
     if (isSqr) {
         raylib::DrawRectangle(x, y, size, size, TRNSP(backColor[isFocus], transparent));
         raylib::DrawRectangleLinesEx(raylib::Rectangle{x,y,size,size}, bsize, TRNSP(bordColor[isFocus], transparent));
@@ -51,6 +52,6 @@ void GraphicNode::draw() {
         raylib::DrawCircleV(center, radius, TRNSP(backColor[isFocus], transparent));
         raylib::DrawRing(center, radius-bsize, radius, 0, 360, 36, TRNSP(bordColor[isFocus], transparent));
     }
-    text.draw(toVector2(x+(size-text.dim.x)/2, y+(size-text.dim.y)/2), TRNSP(foreColor[isFocus], transparent));
+    val.draw(toVector2(x+(size-val.dim.x)/2, y+(size-val.dim.y)/2), TRNSP(foreColor[isFocus], transparent));
 }
 

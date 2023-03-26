@@ -14,8 +14,8 @@
 class GraphicNode {
 public:
     // Position
-    float cx, cy; // core position
-	float x, y;   // graphic position
+	float x, y; // graphic position
+    float lx, ly; // last graphic position
 
     // Shape and Dimension
 	float size, bsize;
@@ -26,8 +26,7 @@ public:
     float transparent;
 
     // Node value
-    int val;
-    StyledText text;
+    StyledText val;
 
     // Events
     bool isFocus;
