@@ -9,9 +9,9 @@
 #include "libs/global.h"
 
 #include "libs/graphic/GraphicNode.h"
-#include "libs/core/SinglyNode.h"
-#include "libs/core/DoublyNode.h"
-#include "libs/core/VStack.h"
+#include "libs/graphic/GraphicSinglyNode.h"
+#include "libs/graphic/GraphicDoublyNode.h"
+#include "libs/graphic/GraphicStack.h"
 
 #include "libs/graphic/animation.h"
 
@@ -25,7 +25,7 @@ int main() {
     // Load
     Font::loadFont();
 
-    VStack st;
+    GraphicStack st;
     st.push(1);
     st.push(2);
     st.push(3);
@@ -41,7 +41,7 @@ int main() {
 
     while (!raylib::WindowShouldClose()) {
         Animate::elapseTime = raylib::GetFrameTime();
-        std::cerr << "Elapse time: " << Animate::elapseTime << '\n';
+        // std::cerr << "Elapse time: " << Animate::elapseTime << '\n';
         Animate::queueOfScenes.run();
         raylib::BeginDrawing();
             raylib::ClearBackground(raylib::WHITE);

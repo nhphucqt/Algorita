@@ -9,9 +9,9 @@
 #include "libs/global.h"
 
 #include "libs/graphic/GraphicNode.h"
-#include "libs/core/SinglyNode.h"
-#include "libs/core/DoublyNode.h"
-#include "libs/core/VStack.h"
+#include "libs/core/GraphicSinglyNode.h"
+#include "libs/core/GraphicDoublyNode.h"
+#include "libs/core/GraphicStack.h"
 
 #include "libs/graphic/animation.h"
 
@@ -25,7 +25,7 @@ int main() {
     // Load
     Font::loadFont();
 
-    VStack st;
+    GraphicStack st;
     st.push(1);
     st.push(2);
     st.push(3);
