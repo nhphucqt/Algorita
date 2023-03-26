@@ -14,7 +14,8 @@ namespace cf {
     T sqr(T x) {
         return x * x;
     }
-    std::string num2str(int x);
+    std::string num2str(int num);
+    int str2num(const std::string &str);
     
     raylib::Vector2 outerNull(const raylib::Vector2 &v);
     raylib::Vector2 outerCirc(float *size, const raylib::Vector2 &v);

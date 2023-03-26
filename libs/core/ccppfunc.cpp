@@ -1,18 +1,27 @@
 #include "ccppfunc.h"
 
-std::string cf::num2str(int x) {
-    if (x == 0) {
+std::string cf::num2str(int num) {
+    if (num == 0) {
         return "0";
     } else {
-        std::string ans;
-        while (x > 0) {
-            ans += x % 10 +  '0';
-            x /= 10;
+        std::string str;
+        while (num > 0) {
+            str += num % 10 +  '0';
+            num /= 10;
         }
-        std::reverse(ans.begin(),ans.end());
-        return ans;
+        std::reverse(str.begin(),str.end());
+        return str;
     }
 }
+
+int cf::str2num(const std::string &str) {
+    int num = 0;
+    for (int i = 0; i < (int)str.size(); ++i) {
+        num = num * 10 + (str[i] - '0');
+    }
+    return num;
+}
+
 
 raylib::Vector2 cf::outerNull(const raylib::Vector2 &v) {
     return Z_VECT;

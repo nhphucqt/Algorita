@@ -2,11 +2,20 @@
 
 Animate::QueueOfScenes::QueueOfScenes() {
     currTime = 0.0;
-    q = std::queue<std::vector<std::function<bool()>>>();
+    q = std::list<std::list<std::function<bool()>>>();
 }
 
 void Animate::QueueOfScenes::pushToFrontScene(const std::function<bool()> &func) {
     q.front().push_back(func);
+}
+
+void Animate::QueueOfScenes::pushToKthScene(int k, const std::function<bool()> &func) {
+    assert(k < (int)q.size());
+    std::list<std::list<std::function<bool()>>>::iterator it = q.begin();
+    while (k--) {
+        ++it;
+    }
+    it->push_back(func);
 }
 
 void Animate::QueueOfScenes::pushToBackScene(const std::function<bool()> &func) {
@@ -14,27 +23,53 @@ void Animate::QueueOfScenes::pushToBackScene(const std::function<bool()> &func) 
 }
 
 void Animate::QueueOfScenes::pushToNewScene(const std::function<bool()> &func) {
-    q.push({func});
+    q.push_back({func});
 }
 
-void Animate::QueueOfScenes::pushScene(const std::vector<std::function<bool()>> &scene) {
-    q.push(scene);
+void Animate::QueueOfScenes::pushToNewKthScene(int k, const std::function<bool()> &func) {
+    assert(k <= (int)q.size());
+    addBlankSceneToKth(k);
+    pushToKthScene(k, func);
+}
+
+void Animate::QueueOfScenes::pushSceneToBack(const std::list<std::function<bool()>> &scene) {
+    q.push_back(scene);
+}
+
+void Animate::QueueOfScenes::pushSceneToKth(int k, const std::list<std::function<bool()>> &funcList) {
+    assert(k <= (int)q.size());
+    std::list<std::list<std::function<bool()>>>::iterator it = q.begin();
+    while (k--) {
+        ++it;
+    }
+    q.insert(it, funcList);
 }
 
 void Animate::QueueOfScenes::addBlankScene() {
-    q.push(std::vector<std::function<bool()>>());
+    q.push_back(std::list<std::function<bool()>>());
+}
+
+void Animate::QueueOfScenes::addBlankSceneToKth(int k) {
+    assert(k <= (int)q.size());
+    std::list<std::list<std::function<bool()>>>::iterator it = q.begin();
+    while (k--) {
+        ++it;
+    }
+    q.insert(it, std::list<std::function<bool()>>());
 }
 
 void Animate::QueueOfScenes::run() {
     if (!q.empty()) {
-        for (int i = (int)q.front().size()-1; i >= 0; --i) {
-            if (q.front()[i]()) {
-                q.front()[i] = q.front().back();
-                q.front().pop_back();
+        for (auto it = q.front().begin(); it != q.front().end(); ) {
+            std::cerr << q.size() << ' ' << q.front().size() << '\n';
+            std::cerr << &(*it) << '\n';
+            ++it;
+            if ((*prev(it))()) {
+                q.front().erase(prev(it));
             }
         }
         if (q.front().empty()) {
-            q.pop();
+            q.pop_front();
             currTime = 0;
         } else {
             currTime += elapseTime;
