@@ -9,9 +9,9 @@
 #include "libs/global.h"
 
 #include "libs/graphic/GraphicNode.h"
-#include "libs/core/GraphicSinglyNode.h"
-#include "libs/core/GraphicDoublyNode.h"
-#include "libs/core/GraphicStack.h"
+#include "libs/graphic/GraphicSinglyNode.h"
+#include "libs/graphic/GraphicDoublyNode.h"
+#include "libs/graphic/GraphicStack.h"
 
 #include "libs/graphic/animation.h"
 
@@ -35,10 +35,13 @@ int main() {
     st.push(7);
     st.push(8);
     st.push(9);
-    
+    st.push(10);
+
+    while (st.pop());
+
     while (!raylib::WindowShouldClose()) {
         Animate::elapseTime = raylib::GetFrameTime();
-        std::cerr << "Elapse time: " << Animate::elapseTime << '\n';
+        // std::cerr << "Elapse time: " << Animate::elapseTime << '\n';
         Animate::queueOfScenes.run();
         raylib::BeginDrawing();
             raylib::ClearBackground(raylib::WHITE);

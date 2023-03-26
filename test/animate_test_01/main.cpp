@@ -9,8 +9,8 @@
 #include "libs/global.h"
 
 #include "libs/graphic/GraphicNode.h"
-#include "libs/core/GraphicSinglyNode.h"
-#include "libs/core/GraphicDoublyNode.h"
+#include "libs/graphic/GraphicSinglyNode.h"
+#include "libs/graphic/GraphicDoublyNode.h"
 
 #include "libs/graphic/animation.h"
 
