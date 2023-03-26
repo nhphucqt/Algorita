@@ -25,6 +25,7 @@ namespace Window {
     
     // const int FPS = 360;
     const int FPS = 720;
+    // const int FPS = 1;
 }
 
 namespace Graphic {
@@ -47,7 +48,7 @@ namespace Graphic {
 namespace Animate {
     const float FADEIN_TIME = 0.25;
     const float FADEOUT_TIME = 0.25;
-    const float TRANS_TIME = 0.25;
+    const float TRANS_TIME = 0.5;
 
 
     inline double elapseTime = 0;

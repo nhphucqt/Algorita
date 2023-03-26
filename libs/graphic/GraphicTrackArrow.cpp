@@ -38,6 +38,9 @@ void GraphicTrackArrow::appear() {
 }
 
 void GraphicTrackArrow::draw() {
+    if (transparent == 0.0) {
+        return;
+    }
     if (isTrack) {
         raylib::Vector2 cA = pA + toVector2(*sA/2, *sA/2);
         raylib::Vector2 cB = pB + toVector2(*sB/2, *sB/2);
