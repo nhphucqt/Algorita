@@ -30,26 +30,33 @@ namespace Window {
 
 namespace Graphic {
     // NODE GRAPHIC
-    const float NODE_SIZE = 50;
+    const float NODE_SIZE = 40;
     const float NODE_BORDER_WIDTH = 4;
-    const float NODE_DIST = 50;
+    const float NODE_DIST = NODE_SIZE + NODE_SIZE * 1.1;
 
     // ARROW GRAPHIC
     const float ARROW_LINE_WIDTH = 4;
     const float ARROW_HEAD_LENGTH = 16;
     const float ARROW_HEAD_WIDTH = 16;
 
+    // SINGLY LINKED LIST GRAPHIC
+    const int SLL_ORG_X = 200;
+    const int SLL_ORG_Y = 300;
+    const int SLL_NODE_DIST = (int)NODE_DIST;
+
     // STACK GRAPHIC
     const int STACK_ORG_X = (Window::WIDTH - NODE_SIZE) / 2;
     const int STACK_ORG_Y = 50;
-    const int STACK_NODE_DIST = NODE_SIZE + NODE_SIZE / 1.5;
+    const int STACK_NODE_DIST = (int)NODE_DIST;
 }
 
 namespace Animate {
-    const float FADEIN_TIME = 0.25;
-    const float FADEOUT_TIME = 0.25;
+    const float FADEIN_TIME = 0.5;
+    const float FADEOUT_TIME = 0.5;
     const float TRANS_TIME = 0.5;
-
+    const float TRAVEL_TIME = 0.5;
+    const float SLIDE_TIME = 0.5;
+    const float FOCUS_TIME = 0.5;
 
     inline double elapseTime = 0;
 }
@@ -63,7 +70,7 @@ namespace Color {
     const rCol NODE_FOREGROUND = raylib::BLACK;
     const rCol NODE_FOREGROUND_FOCUS = raylib::WHITE;
     const rCol NODE_BORDER = raylib::BLACK;
-    const rCol NODE_BORDER_FOCUS = raylib::BLACK;
+    const rCol NODE_BORDER_FOCUS = raylib::GREEN;
 
     // ARROW COLOR
     const rCol ARROW_LINE = raylib::BLACK;
@@ -75,7 +82,7 @@ namespace Color {
 #undef rCol
 
 namespace Font {
-    const int FONT_DEFAULT_SIZE = 32;
+    const int FONT_DEFAULT_SIZE = 28;
     inline raylib::Font* defaultFont;
     inline raylib::Font jb_mono_med_def;
 
