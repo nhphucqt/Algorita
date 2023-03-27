@@ -14,16 +14,17 @@
 
 class GraphicStack {
 private:
-    bool realPush(int val); // ALWAYS PUSH TO NEW SCENE
+    GraphicSinglyNode* pHead;
+    CoreStack core;
+    
+    bool animatePush(int val); // ALWAYS PUSH TO NEW SCENE
 
-    bool animatePop(); // ALWAYS PUSH TO NEW SCENE
-    bool realPop(); // ALWAYS PUSH TO NEW SCENE
+    bool animatePop_1(); // ALWAYS PUSH TO NEW SCENE
+    bool animatePop_2(); // ALWAYS PUSH TO NEW SCENE
 
     bool transformAllNodes(int Tx, int Ty);
 
 public:
-    GraphicSinglyNode* pHead;
-    CoreStack core;
 
     GraphicStack();
 

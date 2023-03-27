@@ -9,10 +9,12 @@ GraphicTrackArrow::GraphicTrackArrow() {
     headColor[0] = Color::ARROW_HEAD;
     headColor[1] = Color::ARROW_HEAD_FOCUS;
     pA = pB = TrVector(nullptr, nullptr);
+    transA = transB = Z_VECT;
     sA = sB = 0;
     isTrack = false;
     isFocus = false;
     transparent = 0.0; // vanish at first
+    percent = 0.0;
 }
 
 GraphicTrackArrow::GraphicTrackArrow(const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<raylib::Vector2(raylib::Vector2)> &_ftA, const std::function<raylib::Vector2(raylib::Vector2)> &_ftB) : GraphicTrackArrow() {
@@ -37,8 +39,24 @@ void GraphicTrackArrow::appear() {
     transparent = 1.0;
 }
 
+void GraphicTrackArrow::setTransparent(float _t) {
+    transparent = _t;
+}
+
+void GraphicTrackArrow::minimize() {
+    percent = 0.0;
+}
+
+void GraphicTrackArrow::maximize() {
+    percent = 1.0;
+}
+
+void GraphicTrackArrow::setPercent(float _p) {
+    percent = _p;
+}
+
 void GraphicTrackArrow::draw() {
-    if (transparent == 0.0) {
+    if (transparent == 0.0 || percent == 0.0) {
         return;
     }
     if (isTrack) {
@@ -56,6 +74,17 @@ void GraphicTrackArrow::draw() {
         raylib::Vector2 newA = cA + ftA(AB);
         raylib::Vector2 newB = cB + ftB(BA);
 
+        // transform newA & newB
+        newA = newA + transA;
+        newB = newB + transB;
+
+        // update AB & BA
+        AB = newB - newA;
+        BA = newA - newB;
+
+        newB = trans(newA, AB, percent * dist(newA, newB));
+
+        // create arrow head
         raylib::Vector2 pCentr = trans(newB, BA, headLength);
         raylib::Vector2 pLeft = trans(pCentr, normVector(AB), headWidth/2);
         raylib::Vector2 pRight = trans(pCentr, normVector(BA), headWidth/2);
@@ -65,3 +94,4 @@ void GraphicTrackArrow::draw() {
         raylib::DrawTriangle(pRight, pLeft, newB, TRNSP(headColor[isFocus], transparent));
     }
 }
+

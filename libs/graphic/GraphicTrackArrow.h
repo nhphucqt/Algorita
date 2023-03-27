@@ -18,9 +18,11 @@ public:
     float lineWidth, headLength, headWidth;
     raylib::Color lineColor[2], headColor[2];
     TrVector pA, pB;
+    raylib::Vector2 transA, transB;
     float *sA, *sB;
     std::function<raylib::Vector2(raylib::Vector2)> ftA, ftB;
     float transparent;
+    float percent;
     bool isTrack, isFocus;
 
     GraphicTrackArrow();
@@ -30,6 +32,12 @@ public:
 
     void vanish();
     void appear();
+    void setTransparent(float _t);
+
+    void minimize();
+    void maximize();
+    void setPercent(float _p);
+
     void draw();
 };
 

@@ -25,24 +25,26 @@ void GraphicStack::push(int val) {
             std::bind(&transformAllNodes, this, 0, Graphic::STACK_NODE_DIST)
         );
         Animate::queueOfScenes.pushToNewScene(
-            std::bind(&realPush, this, val)
+            std::bind(&animatePush, this, val)
         );
     }
 }
 
-bool GraphicStack::realPush(int val) { // ALWAYS PUSH TO NEW SCENE
+bool GraphicStack::animatePush(int val) { // ALWAYS PUSH TO NEW SCENE
     // std::cerr << "realPush\n";
     GraphicSinglyNode* newNode = new GraphicSinglyNode(Graphic::STACK_ORG_X, Graphic::STACK_ORG_Y, Graphic::NODE_SIZE, false, val, pHead);
     pHead = newNode;
     Animate::queueOfScenes.pushFadeInToNewKthScene(1, pHead);
-    Animate::queueOfScenes.pushFadeInToKthScene(1, &pHead->aNext);
+    pHead->aNext.appear();
+    Animate::queueOfScenes.pushSlideInToKthScene(2, &pHead->aNext);
+    // Animate::queueOfScenes.pushFadeInToKthScene(1, &pHead->aNext);
     return true;
 }
 
 bool GraphicStack::pop() {
     if (core.pop()) {
         Animate::queueOfScenes.pushToNewScene(
-            std::bind(&animatePop, this)
+            std::bind(&animatePop_1, this)
         );
         return true;
     } else {
@@ -50,17 +52,17 @@ bool GraphicStack::pop() {
     }
 }
 
-bool GraphicStack::animatePop() {
+bool GraphicStack::animatePop_1() {
     // std::cerr << "animatePop\n";
     assert(pHead != nullptr);
     // std::cerr << "pop\n";
     Animate::queueOfScenes.pushFadeOutToNewKthScene(1, pHead);
     Animate::queueOfScenes.pushFadeOutToKthScene(1, &pHead->aNext);
-    Animate::queueOfScenes.pushToNewKthScene(2, std::bind(&realPop, this));
+    Animate::queueOfScenes.pushToNewKthScene(2, std::bind(&animatePop_2, this));
     return true;
 }
 
-bool GraphicStack::realPop() { // ALWAYS PUSH TO NEW SCENE
+bool GraphicStack::animatePop_2() { // ALWAYS PUSH TO NEW SCENE
     // std::cerr << "realPop " << pHead << '\n';
     assert(pHead != nullptr);
     GraphicSinglyNode* tmp = pHead;
