@@ -12,6 +12,7 @@
 #include "libs/graphic/GraphicSinglyNode.h"
 #include "libs/graphic/GraphicDoublyNode.h"
 #include "libs/graphic/GraphicStack.h"
+#include "libs/graphic/GraphicSinglyLinkedList.h"
 
 #include "libs/graphic/animation.h"
 
@@ -25,19 +26,26 @@ int main() {
     // Load
     Font::loadFont();
 
-    GraphicStack st;
-    st.push(1);
-    st.push(2);
-    st.push(3);
-    st.push(4);
-    st.push(5);
-    st.push(6);
-    st.push(7);
-    st.push(8);
-    st.push(9);
-    st.push(10);
+    GraphicSinglyLinkedList li;
 
-    while (st.pop());
+    li.pushFront(1);
+    li.pushFront(2);
+    li.pushFront(3);
+    li.pushFront(4);
+    li.pushFront(5);
+    li.pushBack(6);
+    // li.pushBack(7);
+    // li.pushBack(8);
+    // li.pushBack(9);
+    li.pushFront(10);
+    li.pushAtKth(3, 11);
+    li.popFront();
+    li.popFront();
+    li.popBack();
+    li.popBack();
+    li.popAtKth(1);
+
+    // while (st.pop());
 
     while (!raylib::WindowShouldClose()) {
         Animate::elapseTime = raylib::GetFrameTime();
@@ -45,7 +53,7 @@ int main() {
         Animate::queueOfScenes.run();
         raylib::BeginDrawing();
             raylib::ClearBackground(raylib::WHITE);
-            st.draw();
+            li.draw();
         raylib::EndDrawing();
     }
 
@@ -55,7 +63,7 @@ int main() {
     // Unload
     Font::unloadFont();
 
-    st.destroy();
+    li.destroy();
 
     return 0;
 }
