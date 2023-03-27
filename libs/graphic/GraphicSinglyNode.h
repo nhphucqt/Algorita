@@ -16,6 +16,7 @@ public:
     GraphicSinglyNode(float _x, float _y, float _s, bool _sqr, int _v);
     GraphicSinglyNode(float _x, float _y, float _s, bool _sqr, int _v, GraphicSinglyNode* newNext);
     void setNext(GraphicSinglyNode* pNode);
+    void unSetNext();
     void draw();
 };
 

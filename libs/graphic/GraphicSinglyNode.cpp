@@ -28,6 +28,11 @@ void GraphicSinglyNode::setNext(GraphicSinglyNode* pNode) {
     aNext = GraphicTrackArrow(&x, &y, &pNode->x, &pNode->y, &size, &pNode->size, outerShapeOut, pNode->outerShapeIn);
 }
 
+void GraphicSinglyNode::unSetNext() {
+    pNext = nullptr;
+    aNext.isTrack = false;
+}
+
 void GraphicSinglyNode::draw() {
     aNext.draw();
     GraphicNode::draw();
