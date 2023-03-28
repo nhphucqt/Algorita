@@ -4,9 +4,9 @@
 #include <string>
 #include <assert.h>
 
-#include "../conf_raylib.h"
-#include "../core/ccppfunc.h"
-#include "../rcore/rvector2.h"
+#include "../../conf_raylib.h"
+#include "../../core/ccppfunc.h"
+#include "../../rcore/rvector2.h"
 
 class StyledText {
 public:

@@ -2,7 +2,7 @@
 #define GRAPHIC_SINGLY_NODE_H
 
 #include <string>
-#include "../global.h"
+#include "../../global.h"
 #include "GraphicNode.h"
 #include "GraphicTrackArrow.h"
 

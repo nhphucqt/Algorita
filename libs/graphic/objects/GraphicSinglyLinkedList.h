@@ -3,9 +3,9 @@
 
 #include <assert.h>
 
-#include "../core/CoreSinglyLinkedList.h"
+#include "../../core/objects/CoreSinglyLinkedList.h"
 #include "GraphicSinglyNode.h"
-#include "animation.h"
+#include "../animation.h"
 
 class GraphicSinglyLinkedList {
 private:

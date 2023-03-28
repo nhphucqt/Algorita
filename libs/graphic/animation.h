@@ -6,7 +6,6 @@
 #include <vector>
 #include <functional>
 
-#include "GraphicNode.h"
 #include "../core/ccppclass.h"
 #include "../core/ccppfunc.h"
 

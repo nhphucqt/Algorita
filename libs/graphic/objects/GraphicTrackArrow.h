@@ -5,12 +5,12 @@
 #include <functional>
 #include <iostream>
 
-#include "../conf_raylib.h"
-#include "../global.h"
-#include "../core/ccppclass.h"
-#include "../core/ccppfunc.h"
-#include "../rcore/rvector2.h"
-#include "../rcore/rcolor.h"
+#include "../../conf_raylib.h"
+#include "../../global.h"
+#include "../../core/ccppclass.h"
+#include "../../core/ccppfunc.h"
+#include "../../rcore/rvector2.h"
+#include "../../rcore/rcolor.h"
 
 
 class GraphicTrackArrow {

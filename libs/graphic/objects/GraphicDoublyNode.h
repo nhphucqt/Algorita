@@ -1,9 +1,9 @@
 #ifndef GRAPHIC_DOUBLY_NODE_H
 #define GRAPHIC_DOUBLY_NODE_H
 
-#include "../core/ccppfunc.h"
-#include "../graphic/GraphicNode.h"
-#include "../graphic/GraphicTrackArrow.h"
+#include "../../core/ccppfunc.h"
+#include "GraphicNode.h"
+#include "GraphicTrackArrow.h"
 
 class GraphicDoublyNode : public GraphicNode {
 public:

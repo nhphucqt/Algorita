@@ -5,12 +5,12 @@
 #include <iostream>
 #include <functional>
 
-#include "../global.h"
-#include "../core/ccppfunc.h"
+#include "../../global.h"
+#include "../../core/ccppfunc.h"
 #include "GraphicSinglyNode.h"
-#include "animation.h"
+#include "../animation.h"
 
-#include "../core/CoreStack.h"
+#include "../../core/objects/CoreStack.h"
 
 class GraphicStack {
 private:

@@ -5,10 +5,10 @@
 #include <assert.h>
 #include <functional>
 
-#include "../conf_raylib.h"
-#include "../global.h"
-#include "../rcore/rcolor.h"
-#include "../core/ccppfunc.h"
+#include "../../conf_raylib.h"
+#include "../../global.h"
+#include "../../rcore/rcolor.h"
+#include "../../core/ccppfunc.h"
 #include "StyledText.h"
 
 class GraphicNode {

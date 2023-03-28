@@ -3,7 +3,7 @@
 
 #include <assert.h>
 
-#include "../global.h"
+#include "../../global.h"
 #include "CoreSinglyNode.h"
 
 class CoreStack {

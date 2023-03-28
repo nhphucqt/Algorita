@@ -14,7 +14,9 @@ $compile_command = "C:/msys64/mingw64/bin/mingw32-make.exe"
 $all_cpp = (
     "libs/rcore/*.cpp",
     "libs/core/*.cpp",
-    "libs/graphic/*.cpp"
+    "libs/graphic/*.cpp",
+    "libs/core/objects/*.cpp",
+    "libs/graphic/objects/*.cpp"
 )
 
 $compile_args = (
