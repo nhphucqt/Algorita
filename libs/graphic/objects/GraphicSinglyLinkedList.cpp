@@ -36,6 +36,58 @@ bool GraphicSinglyLinkedList::transformAllNodesFrom(int Tx, int Ty, GraphicSingl
     return true;
 }
 
+void GraphicSinglyLinkedList::initialize(int initSize) { // Randomly initialize
+    std::vector<int> vals;
+    for (int i = 0; i < initSize; ++i) {
+        vals.push_back(GetRandomValue(Core::NODE_MIN_VALUE, Core::NODE_MAX_VALUE));
+    }
+    initialize(vals);
+}
+
+void GraphicSinglyLinkedList::initialize(std::vector<int> vals) { // Initialize with given values
+    core.initialize(vals);
+    Animate::queueOfScenes.pushToNewScene(std::bind(&animateInitialize, this, vals));
+}
+
+bool GraphicSinglyLinkedList::animateInitialize(std::vector<int> vals) {
+    int Kth = 0;
+    Animate::queueOfScenes.addBlankSceneToKth(++Kth);
+    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+        registerNode(curr);
+        Animate::queueOfScenes.pushSlideOutToKthScene(Kth, &curr->aNext);
+    }
+    Animate::queueOfScenes.addBlankSceneToKth(++Kth);
+    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+        Animate::queueOfScenes.pushFadeOutToKthScene(Kth, curr);
+    }
+    Animate::queueOfScenes.addBlankSceneToKth(++Kth);
+    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+        Animate::queueOfScenes.pushToKthScene(Kth, std::bind(&unRegisterAndDeleteNode, this, curr));
+    }
+    pHead = nullptr;
+    GraphicSinglyNode* curr = pHead;
+    for (int i = 0; i < (int)vals.size(); ++i) {
+        if (pHead == nullptr) {
+            pHead = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, vals[i]);
+            curr = pHead;
+        } else {
+            GraphicSinglyNode* newNode = new GraphicSinglyNode(curr->x + Graphic::SLL_NODE_DIST, curr->y, Graphic::NODE_SIZE, false, vals[i]);
+            curr->setNext(newNode);
+            curr = curr->pNext;
+        }
+    }
+    Animate::queueOfScenes.addBlankSceneToKth(++Kth);
+    for (curr = pHead; curr != nullptr; curr = curr->pNext) {
+        Animate::queueOfScenes.pushFadeInToKthScene(Kth, curr);
+    }
+    Animate::queueOfScenes.addBlankSceneToKth(++Kth);
+    for (curr = pHead; curr != nullptr; curr = curr->pNext) {
+        curr->aNext.appear();
+        Animate::queueOfScenes.pushSlideInToKthScene(Kth, &curr->aNext);
+    }
+    return true;
+}
+
 void GraphicSinglyLinkedList::pushFront(int val) {
     core.pushFront(val);
     Animate::queueOfScenes.pushToNewScene(std::bind(&animatePushFront, this, val));
@@ -70,42 +122,34 @@ bool GraphicSinglyLinkedList::animatePushBack(int val) {
         pHead = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, val);
         Animate::queueOfScenes.pushFadeInToNewKthScene(1, pHead);
     } else {
-        int Kth = 1;
-        GraphicSinglyNode* pTail = pHead;
-        for (; pTail->pNext != nullptr; pTail = pTail->pNext) {
-            Animate::queueOfScenes.pushFocusToNewKthScene(Kth++, pTail);
+        int Kth = 0;
+        GraphicSinglyNode* curr = pHead;
+        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr);
+        for (; curr->pNext != nullptr; curr = curr->pNext) {
+            Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, &curr->aNext);
+            Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr->pNext);
+            Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr);
+            Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, &curr->aNext);
         }
-        Animate::queueOfScenes.pushToNewKthScene(Kth++, [pTail]() {
-            pTail->isFocus = true;
-            return true;
-        });
-        GraphicSinglyNode* newNode = new GraphicSinglyNode(pTail->x + Graphic::SLL_NODE_DIST, pTail->y, Graphic::NODE_SIZE, false, val);
-        pTail->setNext(newNode);
-        pTail->aNext.appear();
-        Animate::queueOfScenes.pushToNewKthScene(Kth++, [newNode]() {
-            newNode->isFocus = true;
-            return true;
-        });
-        Animate::queueOfScenes.pushFadeInToNewKthScene(Kth++, newNode);
-        Animate::queueOfScenes.pushSlideInToNewKthScene(Kth++, &pTail->aNext);
-        Animate::queueOfScenes.pushToNewKthScene(Kth++, [pTail]() {
-            pTail->isFocus = false;
-            return true;
-        });
-        Animate::queueOfScenes.pushToNewKthScene(Kth++, [newNode]() {
-            newNode->isFocus = false;
-            return true;
-        });
+        GraphicSinglyNode* newNode = new GraphicSinglyNode(curr->x + Graphic::SLL_NODE_DIST, curr->y, Graphic::NODE_SIZE, false, val);
+        curr->setNext(newNode);
+        curr->aNext.appear();
+        curr->aNext.focus();
+        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, newNode);
+        Animate::queueOfScenes.pushFadeInToKthScene(Kth, newNode);
+        Animate::queueOfScenes.pushSlideInToNewKthScene(++Kth, &curr->aNext);
+        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr);
+        Animate::queueOfScenes.pushUnfocusToKthScene(Kth, newNode);
+        Animate::queueOfScenes.pushUnfocusToKthScene(Kth, &curr->aNext);
     }
     return true;
 }
 
 void GraphicSinglyLinkedList::pushAtKth(int k, int val) {
-    // std::cerr << core.size() << " = " << core.size() << '\n';
     if (k == 0) {
         pushFront(val);
     } else if (core.size() == k) {
-        std::cerr << "PushAtKth -> PushBack " << val << '\n';
+        // std::cerr << "PushAtKth -> PushBack " << val << '\n';
         pushBack(val);
     } else {
         core.pushAtKth(k, val);
@@ -213,6 +257,20 @@ bool GraphicSinglyLinkedList::animatePopAtKth(int k) {
     return true;
 }
 
+bool GraphicSinglyLinkedList::search(int val) {
+    Animate::queueOfScenes.pushToNewScene(std::bind(&animateSearch, this, val));
+    return core.search(val);
+}
+
+bool GraphicSinglyLinkedList::animateSearch(int val) {
+    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+        if (curr->nVal == val) {
+            Animate::queueOfScenes.pushFocusToNewKthScene(1, curr);
+            
+        }
+    }
+}
+
 void GraphicSinglyLinkedList::draw() {
     for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
         curr->draw();
@@ -224,9 +282,14 @@ void GraphicSinglyLinkedList::draw() {
 
 
 void GraphicSinglyLinkedList::destroy() {
+    core.destroy();
     while (pHead != nullptr) {
         GraphicSinglyNode* tmp = pHead;
         pHead = pHead->pNext;
         delete tmp;
     }
+    for (auto node : separatedNodes) {
+        delete node;
+    }
+    separatedNodes.clear();
 }
