@@ -7,7 +7,7 @@
 
 #include "../conf_raylib.h"
 #include "../global.h"
-#include "../rcore/rvector2.h" 
+#include "../rcore/rVector2.h" 
 
 namespace cf {
     template<typename T>
@@ -16,15 +16,19 @@ namespace cf {
     }
     std::string num2str(int num);
     int str2num(const std::string &str);
-    
-    raylib::Vector2 outerNull(const raylib::Vector2 &v);
-    raylib::Vector2 outerCirc(float *size, const raylib::Vector2 &v);
-    raylib::Vector2 outerSqur(float *size, const raylib::Vector2 &v);
 
-    raylib::Vector2 outerCircLeft(float *size, const raylib::Vector2 &v);
-    raylib::Vector2 outerCircRight(float *size, const raylib::Vector2 &v);
-    raylib::Vector2 outerSqurLeft(float *size, const raylib::Vector2 &v);
-    raylib::Vector2 outerSqurRight(float *size, const raylib::Vector2 &v);
+    int str2num(const char* str);
+
+    int getRandomNode();
+    
+    Vector2 outerNull(const Vector2 &v);
+    Vector2 outerCirc(float *size, const Vector2 &v);
+    Vector2 outerSqur(float *size, const Vector2 &v);
+
+    Vector2 outerCircLeft(float *size, const Vector2 &v);
+    Vector2 outerCircRight(float *size, const Vector2 &v);
+    Vector2 outerSqurLeft(float *size, const Vector2 &v);
+    Vector2 outerSqurRight(float *size, const Vector2 &v);
 }
 
 #endif
