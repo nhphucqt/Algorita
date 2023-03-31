@@ -7,7 +7,7 @@
 
 #include "../../conf_raylib.h"
 #include "../../global.h"
-#include "../../rcore/rcolor.h"
+#include "../../rcore/rColor.h"
 #include "../../core/ccppfunc.h"
 #include "StyledText.h"
 
@@ -22,26 +22,30 @@ public:
 	bool isSqr; // 1 -> square | 0 -> circle
 
     // Color
-    raylib::Color backColor[2], foreColor[2], bordColor[2];
+    Color backColor[2], foreColor[2], bordColor[2];
     float transparent;
+    float focusPercent;
 
     // Node value
+    int nVal;
     StyledText val;
 
     // Events
     bool isFocus;
 
     // Functors
-    std::function<raylib::Vector2(raylib::Vector2)> outerShapeIn, outerShapeOut;
+    std::function<Vector2(Vector2)> outerShapeIn, outerShapeOut;
 
     // Constructors
     GraphicNode();
     GraphicNode(float _x, float _y, float _s, bool _sqr, int _v);
 
     // Methods
-    raylib::Vector2 getCenter() const;
+    Vector2 getCenter() const;
     void vanish();
     void appear();
+    void unfocus();
+    void focus();
     void setValue(int x);
     void draw();
 };
