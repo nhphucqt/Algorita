@@ -13,6 +13,13 @@ int CoreSinglyLinkedList::size() const {
     return _size;
 }
 
+void CoreSinglyLinkedList::initialize(std::vector<int> vals) {
+    destroy();
+    for (int i = 0; i < (int)vals.size(); ++i) {
+        pushBack(vals[i]);
+    }
+}
+
 void CoreSinglyLinkedList::pushFront(int val) {
     ++_size;
     CoreSinglyNode* newNode = new CoreSinglyNode(val, pHead);
@@ -86,10 +93,28 @@ bool CoreSinglyLinkedList::popAtKth(int k) {
     return true;
 }
 
+bool CoreSinglyLinkedList::search(int val) {
+    for (CoreSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+        if (curr->val == val) {
+            return true;
+        }
+    }
+    return false;
+}
+
+int CoreSinglyLinkedList::searchAll(int val) {
+    int cnt = 0;
+    for (CoreSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+        cnt += curr->val == val;
+    }
+    return cnt;
+}
+
 void CoreSinglyLinkedList::destroy() {
     while (pHead != nullptr) {
         CoreSinglyNode* tmp = pHead;
         pHead = pHead->pNext;
         delete tmp;
     }
+    _size = 0;
 }
