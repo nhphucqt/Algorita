@@ -98,23 +98,23 @@ namespace Animate {
             A->aNext.setPercent(_percent);
             return true;
         }
-        raylib::Vector2 cA = A->aNext.pA + toVector2(*A->aNext.sA / 2, *A->aNext.sA / 2);
-        raylib::Vector2 cB = A->aNext.pB + toVector2(*A->aNext.sB / 2, *A->aNext.sB / 2);
-        raylib::Vector2 cC = toVector2(C->x, C->y) + toVector2(C->size / 2, C->size / 2);
+        Vector2 cA = A->aNext.pA + toVector2(*A->aNext.sA / 2, *A->aNext.sA / 2);
+        Vector2 cB = A->aNext.pB + toVector2(*A->aNext.sB / 2, *A->aNext.sB / 2);
+        Vector2 cC = toVector2(C->x, C->y) + toVector2(C->size / 2, C->size / 2);
 
         if (dist(cA, cB) <= *A->aNext.sA / 2 + *A->aNext.sB / 2) {
             return false;
         }
 
-        raylib::Vector2 AB = cB - cA;
-        raylib::Vector2 BA = cA - cB;
-        raylib::Vector2 CA = cA - cC;
+        Vector2 AB = cB - cA;
+        Vector2 BA = cA - cB;
+        Vector2 CA = cA - cC;
 
-        raylib::Vector2 newB = cB + A->aNext.ftB(BA);
-        raylib::Vector2 newC = cC + C->outerShapeIn(CA);
+        Vector2 newB = cB + A->aNext.ftB(BA);
+        Vector2 newC = cC + C->outerShapeIn(CA);
 
         // newB -> newC
-        raylib::Vector2 BC = newC - newB;
+        Vector2 BC = newC - newB;
 
         A->aNext.transB = BC * (*currTime / travelTime);
 
@@ -127,17 +127,26 @@ namespace Animate {
     template<typename T>
     bool focus(T* obj, double* currTime, double focusTime = FOCUS_TIME) {
         if (*currTime + elapseTime >= focusTime) {
-            obj->isFocus = false;
+            obj->focus();
             return true;
         }
-        obj->isFocus = true;
+        obj->focusPercent = (*currTime + elapseTime) / focusTime;
+        return false;
+    }
+
+    template<typename T>
+    bool unfocus(T* obj, double* currTime, double unfocusTime = UNFOCUS_TIME) {
+        if (*currTime + elapseTime >= unfocusTime) {
+            obj->unfocus();
+            return true;
+        }
+        obj->focusPercent = 1.0 - (*currTime + elapseTime) / unfocusTime;
         return false;
     }
 
     class QueueOfScenes {
     public:
         double currTime;
-        // std::queue<std::vector<std::function<bool()>>> q;
         std::list<std::list<std::function<bool()>>> q;
 
         QueueOfScenes();
@@ -233,8 +242,13 @@ namespace Animate {
         }
 
         template<typename T>
-        void pushFocusToKthScene(int k, T* obj, double focusTime = FOCUS_TIME) {
-            pushToKthScene(k, std::bind(&focus<T>, obj, &currTime, focusTime));
+        void pushFocusToKthScene(int k, T* obj, double unfocusTime = UNFOCUS_TIME) {
+            pushToKthScene(k, std::bind(&focus<T>, obj, &currTime, unfocusTime));
+        }
+
+        template<typename T>
+        void pushUnfocusToKthScene(int k, T* obj, double unfocusTime = UNFOCUS_TIME) {
+            pushToKthScene(k, std::bind(&unfocus<T>, obj, &currTime, unfocusTime));
         }
 
         // Push To New Scene
@@ -296,6 +310,12 @@ namespace Animate {
         void pushFocusToNewKthScene(int k, T* obj, double focusTime = FOCUS_TIME) {
             addBlankSceneToKth(k);
             pushFocusToKthScene(k, obj, focusTime);
+        }
+
+        template<typename T>
+        void pushUnfocusToNewKthScene(int k, T* obj, double unfocusTime = UNFOCUS_TIME) {
+            addBlankSceneToKth(k);
+            pushUnfocusToKthScene(k, obj, unfocusTime);
         }
     };
 

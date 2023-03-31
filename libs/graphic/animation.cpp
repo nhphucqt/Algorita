@@ -61,8 +61,8 @@ void Animate::QueueOfScenes::addBlankSceneToKth(int k) {
 void Animate::QueueOfScenes::run() {
     if (!q.empty()) {
         for (auto it = q.front().begin(); it != q.front().end(); ) {
-            std::cerr << q.size() << ' ' << q.front().size() << '\n';
-            std::cerr << &(*it) << '\n';
+            // std::cerr << q.size() << ' ' << q.front().size() << '\n';
+            // std::cerr << &(*it) << '\n';
             ++it;
             if ((*prev(it))()) {
                 q.front().erase(prev(it));
