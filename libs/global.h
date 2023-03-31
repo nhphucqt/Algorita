@@ -4,6 +4,12 @@
 #include "conf_raylib.h"
 #include <cmath>
 
+namespace App {
+    const char* const title = "Algorita";
+    const char* const author = "Nguyen Hoang Phuc";
+    const char* const note = "Project Lab CS162";
+}
+
 namespace Geo {
     const double EPS = 1e-3;
     const double PI = acos(-1);
@@ -29,6 +35,9 @@ namespace Window {
 }
 
 namespace Graphic {
+    // GUI
+    const int MAX_SIZE_INPUT = 100; // Including '\0' character
+
     // NODE GRAPHIC
     const float NODE_SIZE = 40;
     const float NODE_BORDER_WIDTH = 4;
@@ -36,8 +45,8 @@ namespace Graphic {
 
     // ARROW GRAPHIC
     const float ARROW_LINE_WIDTH = 4;
-    const float ARROW_HEAD_LENGTH = 16;
-    const float ARROW_HEAD_WIDTH = 16;
+    const float ARROW_HEAD_LENGTH = 12;
+    const float ARROW_HEAD_WIDTH = 12;
 
     // SINGLY LINKED LIST GRAPHIC
     const int SLL_ORG_X = 200;
@@ -51,55 +60,61 @@ namespace Graphic {
 }
 
 namespace Animate {
-    const float FADEIN_TIME = 0.5;
-    const float FADEOUT_TIME = 0.5;
-    const float TRANS_TIME = 0.5;
-    const float TRAVEL_TIME = 0.5;
-    const float SLIDE_TIME = 0.5;
-    const float FOCUS_TIME = 0.5;
+    const float FADEIN_TIME = 0.25;
+    const float FADEOUT_TIME = 0.25;
+    const float TRANS_TIME = 0.25;
+    const float TRAVEL_TIME = 0.25;
+    const float SLIDE_TIME = 0.25;
+    const float FOCUS_TIME = 0.15;
+    const float UNFOCUS_TIME = 0.15;
 
     inline double elapseTime = 0;
 }
 
-#define rCol raylib::Color
-namespace Color {
+#define rCol Color
+namespace Gcolor {
     // NODE COLOR
-    const rCol NODE_BACKGROUND = raylib::WHITE;
-    // const rCol NODE_BACKGROUND = raylib::BLUE;
-    const rCol NODE_BACKGROUND_FOCUS = raylib::GREEN;
-    const rCol NODE_FOREGROUND = raylib::BLACK;
-    const rCol NODE_FOREGROUND_FOCUS = raylib::WHITE;
-    const rCol NODE_BORDER = raylib::BLACK;
-    const rCol NODE_BORDER_FOCUS = raylib::GREEN;
+    const rCol NODE_BACKGROUND = WHITE;
+    // const rCol NODE_BACKGROUND = BLUE;
+    const rCol NODE_BACKGROUND_FOCUS = GREEN;
+    const rCol NODE_FOREGROUND = BLACK;
+    const rCol NODE_FOREGROUND_FOCUS = WHITE;
+    const rCol NODE_BORDER = BLACK;
+    const rCol NODE_BORDER_FOCUS = GREEN;
 
     // ARROW COLOR
-    const rCol ARROW_LINE = raylib::BLACK;
-    const rCol ARROW_LINE_FOCUS = raylib::ORANGE;
-    // const rCol ARROW_HEAD = raylib::RED;
-    const rCol ARROW_HEAD = raylib::BLACK;
-    const rCol ARROW_HEAD_FOCUS = raylib::ORANGE;
+    const rCol ARROW_LINE = BLACK;
+    const rCol ARROW_LINE_FOCUS = ORANGE;
+    // const rCol ARROW_HEAD = RED;
+    const rCol ARROW_HEAD = BLACK;
+    const rCol ARROW_HEAD_FOCUS = ORANGE;
+
+    const rCol TEXT_BUTTON_BACKGROUND = DARKGRAY;
+    const rCol TEXT_BUTTON_BACKGROUND_FOCUS = GRAY;
+    const rCol TEXT_BUTTON_FOREGROUND = WHITE;
+    const rCol TEXT_BUTTON_FOREGROUND_FOCUS = WHITE;
 }
 #undef rCol
 
-namespace Font {
+namespace Gfont {
     const int FONT_DEFAULT_SIZE = 28;
-    inline raylib::Font* defaultFont;
-    inline raylib::Font jb_mono_med_def;
+    inline Font* defaultFont;
+    inline Font jb_mono_med_def;
 
-    inline void setDefaultFont(raylib::Font* font) {
+    inline void setDefaultFont(Font* font) {
         defaultFont = font;
     }
 
     inline void loadFont() {
         // Load fonts
-        jb_mono_med_def = raylib::LoadFontEx("./assets/fonts/JetBrainsMono-Medium.ttf", FONT_DEFAULT_SIZE, 0, 250);
+        jb_mono_med_def = LoadFontEx("./assets/fonts/JetBrainsMono-Medium.ttf", FONT_DEFAULT_SIZE, 0, 250);
 
         // Set default font
         setDefaultFont(&jb_mono_med_def);
     }
 
     inline void unloadFont() {
-        raylib::UnloadFont(jb_mono_med_def);
+        UnloadFont(jb_mono_med_def);
     }
 }
 
