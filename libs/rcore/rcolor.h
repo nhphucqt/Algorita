@@ -5,6 +5,8 @@
 
 #include "../conf_raylib.h"
 
-raylib::Color TRNSP(raylib::Color color, float transparent);
+Color TRNSP(Color color, float transparent);
+
+Color TRANSCOLOR(const Color &source, const Color &destination, float percent);
 
 #endif
