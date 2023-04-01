@@ -15,11 +15,11 @@
 #include "libs/graphic/animation.h"
 
 int main() {
-    raylib::SetConfigFlags(raylib::FLAG_MSAA_4X_HINT);
-    raylib::SetConfigFlags(raylib::FLAG_WINDOW_ALWAYS_RUN);
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
+    SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
 
-    raylib::InitWindow(Window::WIDTH, Window::HEIGHT, "demo");
-    raylib::SetTargetFPS(Window::FPS);
+    InitWindow(Window::WIDTH, Window::HEIGHT, "demo");
+    SetTargetFPS(Window::FPS);
 
     // Load
     Font::loadFont();
@@ -78,18 +78,18 @@ int main() {
     Animate::queueOfScenes.pushFadeOutToBackScene(&node->aNext);
     Animate::queueOfScenes.pushFadeOutToBackScene(&node_2->aPrev);
 
-    while (!raylib::WindowShouldClose()) {
-        Animate::elapseTime = raylib::GetFrameTime();
+    while (!WindowShouldClose()) {
+        Animate::elapseTime = GetFrameTime();
         std::cerr << "Elapse time: " << Animate::elapseTime << '\n';
         Animate::queueOfScenes.run();
-        raylib::BeginDrawing();
-            raylib::ClearBackground(raylib::WHITE);
+        BeginDrawing();
+            ClearBackground(WHITE);
             node->draw();
             node_2->draw();
-        raylib::EndDrawing();
+        EndDrawing();
     }
 
-    raylib::CloseWindow();
+    CloseWindow();
 
 
     // Unload

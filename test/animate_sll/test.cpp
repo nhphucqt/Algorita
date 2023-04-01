@@ -17,14 +17,14 @@
 #include "libs/graphic/animation.h"
 
 int main() {
-    raylib::SetConfigFlags(raylib::FLAG_MSAA_4X_HINT);
-    raylib::SetConfigFlags(raylib::FLAG_WINDOW_ALWAYS_RUN);
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
+    SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
 
-    raylib::InitWindow(Window::WIDTH, Window::HEIGHT, "demo");
-    raylib::SetTargetFPS(Window::FPS);
+    InitWindow(Window::WIDTH, Window::HEIGHT, "demo");
+    SetTargetFPS(Window::FPS);
 
     // Load
-    Font::loadFont();
+    Gfont::loadFont();
 
     GraphicSinglyLinkedList li;
 
@@ -47,21 +47,21 @@ int main() {
 
     // while (st.pop());
 
-    while (!raylib::WindowShouldClose()) {
-        Animate::elapseTime = raylib::GetFrameTime();
+    while (!WindowShouldClose()) {
+        Animate::elapseTime = GetFrameTime();
         // std::cerr << "Elapse time: " << Animate::elapseTime << '\n';
         Animate::queueOfScenes.run();
-        raylib::BeginDrawing();
-            raylib::ClearBackground(raylib::WHITE);
+        BeginDrawing();
+            ClearBackground(WHITE);
             li.draw();
-        raylib::EndDrawing();
+        EndDrawing();
     }
 
-    raylib::CloseWindow();
+    CloseWindow();
 
 
     // Unload
-    Font::unloadFont();
+    Gfont::unloadFont();
 
     li.destroy();
 
