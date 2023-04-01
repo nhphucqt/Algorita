@@ -4,10 +4,10 @@ GraphicTrackArrow::GraphicTrackArrow() {
     lineWidth = Graphic::ARROW_LINE_WIDTH;
     headLength = Graphic::ARROW_HEAD_LENGTH;
     headWidth = Graphic::ARROW_HEAD_WIDTH;
-    lineColor[0] = Color::ARROW_LINE;
-    lineColor[1] = Color::ARROW_LINE_FOCUS;
-    headColor[0] = Color::ARROW_HEAD;
-    headColor[1] = Color::ARROW_HEAD_FOCUS;
+    lineColor[0] = Gcolor::ARROW_LINE;
+    lineColor[1] = Gcolor::ARROW_LINE_FOCUS;
+    headColor[0] = Gcolor::ARROW_HEAD;
+    headColor[1] = Gcolor::ARROW_HEAD_FOCUS;
     pA = pB = TrVector(nullptr, nullptr);
     transA = transB = Z_VECT;
     sA = sB = 0;
@@ -17,7 +17,7 @@ GraphicTrackArrow::GraphicTrackArrow() {
     percent = 0.0;
 }
 
-GraphicTrackArrow::GraphicTrackArrow(const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<raylib::Vector2(raylib::Vector2)> &_ftA, const std::function<raylib::Vector2(raylib::Vector2)> &_ftB) : GraphicTrackArrow() {
+GraphicTrackArrow::GraphicTrackArrow(const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB) : GraphicTrackArrow() {
     pA = A; pB = B;
     sA = _sA; sB = _sB;
     ftA = _ftA;
@@ -25,7 +25,7 @@ GraphicTrackArrow::GraphicTrackArrow(const TrVector &A, const TrVector &B, float
     isTrack = true;
 }
 
-GraphicTrackArrow::GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB, const std::function<raylib::Vector2(raylib::Vector2)> &_ftA, const std::function<raylib::Vector2(raylib::Vector2)> &_ftB)
+GraphicTrackArrow::GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB)
 : GraphicTrackArrow(TrVector(Ax,Ay), TrVector(Bx,By), _sA, _sB, _ftA, _ftB) {}
 
 GraphicTrackArrow::GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB) 
@@ -41,6 +41,16 @@ void GraphicTrackArrow::appear() {
 
 void GraphicTrackArrow::setTransparent(float _t) {
     transparent = _t;
+}
+
+void GraphicTrackArrow::focus() {
+    focusPercent = 1.0;
+    isFocus = true;
+}
+
+void GraphicTrackArrow::unfocus() {
+    focusPercent = 0.0;
+    isFocus = false;
 }
 
 void GraphicTrackArrow::minimize() {
@@ -60,19 +70,19 @@ void GraphicTrackArrow::draw() {
         return;
     }
     if (isTrack) {
-        raylib::Vector2 cA = pA + toVector2(*sA/2, *sA/2);
-        raylib::Vector2 cB = pB + toVector2(*sB/2, *sB/2);
+        Vector2 cA = pA + toVector2(*sA/2, *sA/2);
+        Vector2 cB = pB + toVector2(*sB/2, *sB/2);
         if (dist(cA, cB) <= *sA/2 + *sB/2) {
             return;
         }
         // if (fabs(dist(cA, cB)) < Geo::EPS) {
         //     return;
         // }
-        raylib::Vector2 AB = cB - cA;
-        raylib::Vector2 BA = cA - cB;
+        Vector2 AB = cB - cA;
+        Vector2 BA = cA - cB;
 
-        raylib::Vector2 newA = cA + ftA(AB);
-        raylib::Vector2 newB = cB + ftB(BA);
+        Vector2 newA = cA + ftA(AB);
+        Vector2 newB = cB + ftB(BA);
 
         // transform newA & newB
         newA = newA + transA;
@@ -85,13 +95,14 @@ void GraphicTrackArrow::draw() {
         newB = trans(newA, AB, percent * dist(newA, newB));
 
         // create arrow head
-        raylib::Vector2 pCentr = trans(newB, BA, headLength);
-        raylib::Vector2 pLeft = trans(pCentr, normVector(AB), headWidth/2);
-        raylib::Vector2 pRight = trans(pCentr, normVector(BA), headWidth/2);
+        Vector2 pCentr = trans(newB, BA, headLength);
+        Vector2 pLeft = trans(pCentr, normVector(AB), headWidth/2);
+        Vector2 pRight = trans(pCentr, normVector(BA), headWidth/2);
 
         assert(CCW(pLeft, pRight, newB));
-        raylib::DrawLineEx(newA, pCentr, lineWidth, TRNSP(lineColor[isFocus], transparent));
-        raylib::DrawTriangle(pRight, pLeft, newB, TRNSP(headColor[isFocus], transparent));
+
+        DrawLineEx(newA, pCentr, lineWidth, TRNSP(TRANSCOLOR(lineColor[0], lineColor[1], focusPercent), transparent));
+        DrawTriangle(pRight, pLeft, newB, TRNSP(TRANSCOLOR(headColor[0], headColor[1], focusPercent), transparent));
     }
 }
 
