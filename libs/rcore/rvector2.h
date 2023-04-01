@@ -6,42 +6,42 @@
 // #include <iostream>
 #include "../conf_raylib.h"
 
-const raylib::Vector2 Z_VECT = raylib::Vector2{0, 0};
-const raylib::Vector2 X_AXIS = raylib::Vector2{1, 0};
-const raylib::Vector2 Y_AXIS = raylib::Vector2{0, 1};
+const Vector2 Z_VECT = Vector2{0, 0};
+const Vector2 X_AXIS = Vector2{1, 0};
+const Vector2 Y_AXIS = Vector2{0, 1};
 
 template<typename T>
-raylib::Vector2 toVector2(const T &x, const T &y) {
-    return raylib::Vector2{(float)(x),(float)(y)};
+Vector2 toVector2(const T &x, const T &y) {
+    return Vector2{(float)(x),(float)(y)};
 }
 
-raylib::Vector2 resizeVector(const raylib::Vector2 &v, double k);
+Vector2 resizeVector(const Vector2 &v, double k);
 
-raylib::Vector2 revVector(const raylib::Vector2 &v);
-raylib::Vector2 unitVector(const raylib::Vector2 &v);
-raylib::Vector2 normVector(const raylib::Vector2 &v); // Counter-clockwise
+Vector2 revVector(const Vector2 &v);
+Vector2 unitVector(const Vector2 &v);
+Vector2 normVector(const Vector2 &v); // Counter-clockwise
 
-raylib::Vector2 operator - (const raylib::Vector2 &a, const raylib::Vector2 &b);
-raylib::Vector2 operator + (const raylib::Vector2 &a, const raylib::Vector2 &b);
+Vector2 operator - (const Vector2 &a, const Vector2 &b);
+Vector2 operator + (const Vector2 &a, const Vector2 &b);
 
-raylib::Vector2 operator * (const raylib::Vector2 &v, double k);
-raylib::Vector2 operator / (const raylib::Vector2 &v, double k);
+Vector2 operator * (const Vector2 &v, double k);
+Vector2 operator / (const Vector2 &v, double k);
 
-double vsqrlen(const raylib::Vector2 &v);
-double veclen(const raylib::Vector2 &v);
-double dist(const raylib::Vector2 &a, const raylib::Vector2 &b);
+double vsqrlen(const Vector2 &v);
+double veclen(const Vector2 &v);
+double dist(const Vector2 &a, const Vector2 &b);
 
-double operator % (const raylib::Vector2 &a, const raylib::Vector2 &b);
-double operator * (const raylib::Vector2 &a, const raylib::Vector2 &b);
+double operator % (const Vector2 &a, const Vector2 &b);
+double operator * (const Vector2 &a, const Vector2 &b);
 
-bool CCW(const raylib::Vector2 &a, const raylib::Vector2 &b, const raylib::Vector2 &c);
-bool CW(const raylib::Vector2 &a, const raylib::Vector2 &b, const raylib::Vector2 &c);
+bool CCW(const Vector2 &a, const Vector2 &b, const Vector2 &c);
+bool CW(const Vector2 &a, const Vector2 &b, const Vector2 &c);
 
-double angle2(const raylib::Vector2 &a, const raylib::Vector2 &b); // radian
-double angle(const raylib::Vector2 &a, const raylib::Vector2 &b); // radian
+double angle2(const Vector2 &a, const Vector2 &b); // radian
+double angle(const Vector2 &a, const Vector2 &b); // radian
 
-raylib::Vector2 trans(const raylib::Vector2 &dir, double dist);
-raylib::Vector2 trans(const raylib::Vector2 &v, const raylib::Vector2 &dir, double dist);
-raylib::Vector2 rotate(const raylib::Vector2 &v, double a); // a rad
+Vector2 trans(const Vector2 &dir, double dist);
+Vector2 trans(const Vector2 &v, const Vector2 &dir, double dist);
+Vector2 rotate(const Vector2 &v, double a); // a rad
 
 #endif
