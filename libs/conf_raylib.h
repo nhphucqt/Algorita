@@ -2,7 +2,7 @@
 #define CONF_RAYLIB_H
 
 #include "raylib.h"
-#include "libs/raygui.h"
+#include "libs/external/raygui.h"
 
 #undef PI
 
