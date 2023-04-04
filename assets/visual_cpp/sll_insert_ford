@@ -1,0 +1,3 @@
+Node* node = new Node(v);
+node->next = head;
+head = node;

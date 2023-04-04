@@ -1,0 +1,9 @@
+if (head == nullptr) return NOT_FOUND;
+int id = 0;
+Node* cur = head;
+while (curr->val != v) {
+    id++; cur = cur->next;
+    if (curr == NULL)
+        return NOT_FOUND;
+}
+return id;
