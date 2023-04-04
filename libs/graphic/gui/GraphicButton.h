@@ -5,7 +5,7 @@
 
 #include "../../conf_raylib.h"
 #include "../../global.h"
-#include "../objects/StyledText.h"
+#include "../gui/StyledText.h"
 #include "../../rcore/rRectangle.h"
 
 class GraphicTextButton {

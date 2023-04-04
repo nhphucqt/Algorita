@@ -9,7 +9,7 @@
 #include "../../global.h"
 #include "../../rcore/rColor.h"
 #include "../../core/ccppfunc.h"
-#include "StyledText.h"
+#include "../gui/StyledText.h"
 
 class GraphicNode {
 public:
@@ -25,6 +25,7 @@ public:
     Color backColor[2], foreColor[2], bordColor[2];
     float transparent;
     float focusPercent;
+    float focusBorderPercent;
 
     // Node value
     int nVal;
@@ -32,6 +33,7 @@ public:
 
     // Events
     bool isFocus;
+    bool isFocusBorder;
 
     // Functors
     std::function<Vector2(Vector2)> outerShapeIn, outerShapeOut;
@@ -44,8 +46,10 @@ public:
     Vector2 getCenter() const;
     void vanish();
     void appear();
-    void unfocus();
     void focus();
+    void unfocus();
+    void focusBorder();
+    void unfocusBorder();
     void setValue(int x);
     void draw();
 };

@@ -9,9 +9,11 @@ GraphicNode::GraphicNode() {
     bordColor[0] = Gcolor::NODE_BORDER;
     bordColor[1] = Gcolor::NODE_BORDER_FOCUS;
     isFocus = false;
+    isFocusBorder = false;
     outerShapeIn = outerShapeOut = cf::outerNull;
     transparent = 0.0; // vanish at first
     focusPercent = 0.0; // unfocus at first
+    focusBorderPercent = 0.0; // unfocus at first
 }
 
 GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v) : GraphicNode() {
@@ -36,16 +38,25 @@ void GraphicNode::appear() {
     transparent = 1.0;
 }
 
-void GraphicNode::unfocus() {
-    focusPercent = 0.0;
+void GraphicNode::focus() {
+    focusPercent = 1.0;
     isFocus = true;
 }
 
-void GraphicNode::focus() {
-    focusPercent = 1.0;
+void GraphicNode::unfocus() {
+    focusPercent = 0.0;
     isFocus = false;
 }
-void unfocus();
+
+void GraphicNode::focusBorder() {
+    focusBorderPercent = 1.0;
+    isFocusBorder = true;
+}
+
+void GraphicNode::unfocusBorder() {
+    focusBorderPercent = 0.0;
+    isFocusBorder = false;
+}
 
 void GraphicNode::setValue(int x) {
     assert(Core::NODE_MIN_VALUE <= x && x <= Core::NODE_MAX_VALUE);
@@ -58,7 +69,7 @@ void GraphicNode::draw() {
     }
     Color background = TRNSP(TRANSCOLOR(backColor[0], backColor[1], focusPercent), transparent);
     Color foreground = TRNSP(TRANSCOLOR(foreColor[0], foreColor[1], focusPercent), transparent);
-    Color border = TRNSP(TRANSCOLOR(bordColor[0], bordColor[1], focusPercent), transparent);
+    Color border = TRNSP(TRANSCOLOR(bordColor[0], bordColor[1], focusBorderPercent), transparent);
     if (isSqr) {
         DrawRectangle(x, y, size, size, background);
         DrawRectangleLinesEx(Rectangle{x,y,size,size}, bsize, border);
