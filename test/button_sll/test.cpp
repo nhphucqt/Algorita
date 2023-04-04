@@ -15,7 +15,7 @@
 #include "libs/graphic/objects/GraphicSinglyLinkedList.h"
 #include "libs/graphic/gui/GraphicButton.h"
 
-#include "libs/graphic/animation.h"
+#include "libs/animation/animation.h"
 
 int main() {
     SetRandomSeed(time(nullptr));
