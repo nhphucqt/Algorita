@@ -2,82 +2,103 @@
 
 Screen::ScreenSinglyLinkedList::ScreenSinglyLinkedList() { // Ensure that obj has to be destroy before (prevent MEMORY LEAKING)
     obj = GraphicSinglyLinkedList();
-    inputSearch = GuiTextBoxState(Rectangle{173, 700, 100, 40}, "", Graphic::MAX_SIZE_INPUT, false);
-    inputInsertFord = GuiTextBoxState(Rectangle{181, 792, 75, 40}, "", Graphic::MAX_SIZE_INPUT, false);
-    inputInsertBack = GuiTextBoxState(Rectangle{357, 792, 75, 40}, "", Graphic::MAX_SIZE_INPUT, false);
-    inputInsertMiddPos = GuiTextBoxState(Rectangle{533, 792, 75, 40}, "", Graphic::MAX_SIZE_INPUT, false);
-    inputInsertMiddVal = GuiTextBoxState(Rectangle{659, 792, 75, 40}, "", Graphic::MAX_SIZE_INPUT, false);
-    inputRemoveMidd = GuiTextBoxState{Rectangle{533, 840, 146, 40}, "", Graphic::MAX_SIZE_INPUT, false};
+    inputSearchFirst = GuiTextBoxState(Rectangle{175, 760, 45, 35}, "", Graphic::MAX_SIZE_INPUT, false);
+    inputInsertFord = GuiTextBoxState(Rectangle{191, 795, 45, 35}, "", Graphic::MAX_SIZE_INPUT, false);
+    inputInsertBack = GuiTextBoxState(Rectangle{367, 795, 45, 35}, "", Graphic::MAX_SIZE_INPUT, false);
+    inputInsertMiddPos = GuiTextBoxState(Rectangle{507, 795, 45, 35}, "", Graphic::MAX_SIZE_INPUT, false);
+    inputInsertMiddVal = GuiTextBoxState(Rectangle{597, 795, 45, 35}, "", Graphic::MAX_SIZE_INPUT, false);
+    inputRemoveMidd = GuiTextBoxState{Rectangle{597, 830, 45, 35}, "", Graphic::MAX_SIZE_INPUT, false};
 
-    currOperationType = -1;
-    currOperation = -1;
+    exitMessage = StyledText(std::string(), Gfont::defaultFont);
+
+    ALOG.setMainObj(&obj);
 }
 
 void Screen::ScreenSinglyLinkedList::draw() {
-    // std::cerr << GetRandomValue(Core::NODE_MIN_VALUE, Core::NODE_MAX_VALUE) << '\n';
     obj.draw();
-    if (GuiButton(Rectangle{0, 645, 120, 50}, "Create") || currOperationType == TYPE_OPERATION_CREATE) {
-        currOperationType = TYPE_OPERATION_CREATE;
-        if (GuiButton(Rectangle{130, 650, 106, 40}, "Empty")) {
-            obj.initialize(0);
+    // Create type Button
+    if (GuiButton(Rectangle{0, 690, 100, 35}, "Create") || currOperationType == OperationType::CREATE) {
+        currOperationType = OperationType::CREATE;
+        if (GuiButton(Rectangle{110, 690, 80, 35}, "Empty")) {
+            exitMessage.assign(obj.initialize(0).message);
         }
-        if (GuiButton(Rectangle{246, 650, 112, 40}, "Random")) {
-            obj.initialize(GetRandomValue(1, 10));
-        }
-    }
-    if (GuiButton(Rectangle{0, 695, 120, 50}, "Search") || currOperationType == TYPE_OPERATION_SEARCH) {
-        currOperationType = TYPE_OPERATION_SEARCH;
-        GuiLabel(Rectangle{125, 700, 48, 40}, "v = ");
-        inputSearch.draw();
-        if (GuiButton(Rectangle{285, 700, 40, 40}, "Go")) {
-            currOperation = OPERATION_SEARCH;
+        if (GuiButton(Rectangle{200, 690, 90, 35}, "Random")) {
+            exitMessage.assign(obj.initialize(GetRandomValue(1, Core::MAX_NUM_NODE_SLL)).message);
         }
     }
-    if (GuiButton(Rectangle{0, 745, 120, 50}, "Insert") || currOperationType == TYPE_OPERATION_INSERT) {
-        currOperationType = TYPE_OPERATION_INSERT;
-        if (GuiButton(Rectangle{130, 752, 166, 40}, "i = 0 (Head)") || currOperation == OPERATION_INSERT_FORD) {
-            currOperation = OPERATION_INSERT_FORD;
-            GuiLabel(Rectangle{130, 792, 51, 40}, "v = ");
+    // Search type Button
+    if (GuiButton(Rectangle{0, 725, 100, 35}, "Search") || currOperationType == OperationType::SEARCH) {
+        currOperationType = OperationType::SEARCH;
+        if (GuiButton(Rectangle{110, 725, 150, 35}, "First value") || currOperation == Operation::SEARCH_FIRST) {
+            currOperation = Operation::SEARCH_FIRST;
+            GuiLabel(Rectangle{130, 760, 45, 35}, "v = ");
+            inputSearchFirst.draw();
+            if (GuiButton(Rectangle{220, 760, 40, 35}, "Go")) {
+                // exitMessage.assign(obj.searchFirst(inputSearchFirst.getNum()).message);
+                codeblock.load(CPath::SLL_SEARCH_FIRST);
+                ALOG.clearGroup();
+                exitMessage.assign(obj.searchFirst(inputSearchFirst.getNum(), &ALOG).message);
+                ALOG.run(&codeblock);
+            }   
+        }
+    }
+    // Insert type Button
+    if (GuiButton(Rectangle{0, 760, 100, 35}, "Insert") || currOperationType == OperationType::INSERT) {
+        currOperationType = OperationType::INSERT;
+        if (GuiButton(Rectangle{110, 760, 166, 35}, "i = 0 (Head)") || currOperation == Operation::INSERT_FORD) {
+            currOperation = Operation::INSERT_FORD;
+            GuiLabel(Rectangle{146, 795, 45, 35}, "v = ");
             inputInsertFord.draw();
-            if (GuiButton(Rectangle{256, 792, 40, 40}, "Go")) {
-                obj.pushFront(inputInsertFord.getNum());
+            if (GuiButton(Rectangle{236, 795, 40, 35}, "Go")) {
+                exitMessage.assign(obj.pushFront(inputInsertFord.getNum()).message);
             }
         }
-        if (GuiButton(Rectangle{306, 752, 166, 40}, "i = N-1 (Tail)") || currOperation == OPERATION_INSERT_BACK) {
-            currOperation = OPERATION_INSERT_BACK;
-            GuiLabel(Rectangle{306, 792, 51, 40}, "v = ");
+        if (GuiButton(Rectangle{286, 760, 166, 35}, "i = N-1 (Tail)") || currOperation == Operation::INSERT_BACK) {
+            currOperation = Operation::INSERT_BACK;
+            GuiLabel(Rectangle{322, 795, 45, 35}, "v = ");
             inputInsertBack.draw();
-            if (GuiButton(Rectangle{432, 792, 40, 40}, "Go")) {
-                obj.pushBack(inputInsertBack.getNum());
+            if (GuiButton(Rectangle{412, 795, 40, 35}, "Go")) {
+                exitMessage.assign(obj.pushBack(inputInsertBack.getNum()).message);
             }
         }
-        if (GuiButton(Rectangle{482, 752, 292, 40}, "Specific position i") || currOperation == OPERATION_INSERT_MIDD) {
-            currOperation = OPERATION_INSERT_MIDD;
-            GuiLabel(Rectangle{482, 792, 51, 40}, "i = ");
+        if (GuiButton(Rectangle{462, 760, 220, 35}, "Specific position i") || currOperation == Operation::INSERT_MIDD) {
+            currOperation = Operation::INSERT_MIDD;
+            GuiLabel(Rectangle{462, 795, 45, 35}, "i = ");
             inputInsertMiddPos.draw();
-            GuiLabel(Rectangle{608, 792, 51, 40}, "v = ");
+            GuiLabel(Rectangle{552, 795, 45, 35}, "v = ");
             inputInsertMiddVal.draw();
-            if (GuiButton(Rectangle{734, 792, 40, 40}, "Go")) {
-                obj.pushAtKth(inputInsertMiddPos.getNum(), inputInsertMiddVal.getNum());
+            if (GuiButton(Rectangle{642, 795, 40, 35}, "Go")) {
+                exitMessage.assign(obj.pushAtKth(inputInsertMiddPos.getNum(), inputInsertMiddVal.getNum()).message);
             }
         }
     }
-    if (GuiButton(Rectangle{0, 795, 120, 50}, "Remove") || currOperationType == TYPE_OPERATION_REMOVE) {
-        currOperationType = TYPE_OPERATION_REMOVE;
-        if (GuiButton(Rectangle{130, 800, 166, 40}, "i = 0 (Head)")) {
-            obj.popFront();
+    // Remove type Button
+    if (GuiButton(Rectangle{0, 795, 100, 35}, "Remove") || currOperationType == OperationType::REMOVE) {
+        currOperationType = OperationType::REMOVE;
+        if (GuiButton(Rectangle{110, 795, 166, 35}, "i = 0 (Head)")) {
+            exitMessage.assign(obj.popFront().message);
         } 
-        if (GuiButton(Rectangle{306, 800, 166, 40}, "i = N-1 (Tail)")) {
-            obj.popBack();
+        if (GuiButton(Rectangle{286, 795, 166, 35}, "i = N-1 (Tail)")) {
+            exitMessage.assign(obj.popBack().message);
         }
-        if (GuiButton(Rectangle{482, 800, 237, 40}, "Specific position i") || currOperation == OPERATION_REMOVE_MIDD) {
-            currOperation = OPERATION_REMOVE_MIDD;
-            GuiLabel(Rectangle{482, 840, 51, 40}, "i = ");
+        if (GuiButton(Rectangle{462, 795, 220, 35}, "Specific position i") || currOperation == Operation::REMOVE_MIDD) {
+            currOperation = Operation::REMOVE_MIDD;
+            GuiLabel(Rectangle{552, 830, 45, 35}, "i = ");
             inputRemoveMidd.draw();
-            if (GuiButton(Rectangle{679, 840, 40, 40}, "Go")) {
-                obj.popAtKth(inputRemoveMidd.getNum());
+            if (GuiButton(Rectangle{642, 830, 40, 35}, "Go")) {
+                exitMessage.assign(obj.popAtKth(inputRemoveMidd.getNum()).message);
             }
         }
+    }
+    codeblock.draw(Window::DIMENSION - codeblock.getBlockDimension());
+    exitMessage.draw(10, 865, RED);
+
+    if (GuiButton(Rectangle{500, Window::HEIGHT-35, 35, 35}, "<")) {
+        ALOG.runPrev(&codeblock);
+    }
+
+    if (GuiButton(Rectangle{500+35+5, Window::HEIGHT-35, 35, 35}, ">")) {
+        ALOG.runNext(&codeblock);
     }
 }
 

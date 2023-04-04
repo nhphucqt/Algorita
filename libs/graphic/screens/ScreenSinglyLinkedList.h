@@ -7,28 +7,26 @@
 
 #include "../objects/GraphicSinglyLinkedList.h"
 #include "../../rcore/rguiTextBox.h"
+#include "../../animation/ListOfOperationsGroups.h"
+#include "../gui/Codeblock.h"
 
 namespace Screen {
     class ScreenSinglyLinkedList {
     private:
-        const int TYPE_OPERATION_CREATE = 0;
-        const int TYPE_OPERATION_SEARCH = 1;
-        const int TYPE_OPERATION_INSERT = 2;
-        const int TYPE_OPERATION_REMOVE = 3;
+        enum OperationType {OTNULL, CREATE, SEARCH, INSERT, REMOVE} currOperationType;
+        enum Operation {ONULL, SEARCH_FIRST, INSERT_FORD, INSERT_BACK, INSERT_MIDD, REMOVE_MIDD} currOperation;
 
-        const int OPERATION_SEARCH = 0;
-        const int OPERATION_INSERT_FORD = 1;
-        const int OPERATION_INSERT_BACK = 2;
-        const int OPERATION_INSERT_MIDD = 3;
-        const int OPERATION_REMOVE_MIDD = 4;
-
-        int currOperationType;
-        int currOperation;
         GraphicSinglyLinkedList obj;
 
-        GuiTextBoxState inputSearch, inputInsertFord, inputInsertBack;
+        GuiTextBoxState inputSearchFirst;
+        GuiTextBoxState inputInsertFord, inputInsertBack;
         GuiTextBoxState inputInsertMiddPos, inputInsertMiddVal;
         GuiTextBoxState inputRemoveMidd;
+
+        StyledText exitMessage;
+
+        ListOfOperationsGroups<GraphicSinglyLinkedList> ALOG;
+        Codeblock codeblock;
 
     public:
         ScreenSinglyLinkedList();

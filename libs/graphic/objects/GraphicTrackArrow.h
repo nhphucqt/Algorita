@@ -31,6 +31,8 @@ public:
     GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB);
     GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB);
 
+    void copyAttribute(const GraphicTrackArrow &arrow);
+
     void vanish();
     void appear();
     void setTransparent(float _t);

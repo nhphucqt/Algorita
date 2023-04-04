@@ -12,7 +12,12 @@ const Vector2 Y_AXIS = Vector2{0, 1};
 
 template<typename T>
 Vector2 toVector2(const T &x, const T &y) {
-    return Vector2{(float)(x),(float)(y)};
+    return Vector2{(float)(x), (float)(y)};
+}
+
+template<typename T>
+Vector2 toSqrVector2(const T &x) {
+    return Vector2{(float)(x), (float)(x)};
 }
 
 Vector2 resizeVector(const Vector2 &v, double k);

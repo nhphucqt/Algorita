@@ -1,5 +1,9 @@
 #include "rRectangle.h"
 
+Rectangle toRectangle(const Vector2 &pos, const Vector2 &dim) {
+    return Rectangle{pos.x, pos.y, dim.x, dim.y};
+}
+
 Vector2 centerRect(const Rectangle &rect, float w, float h) {
     return Vector2{rect.x + (rect.width - w) / 2, rect.y + (rect.height - h) / 2};
 }
