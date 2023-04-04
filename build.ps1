@@ -23,6 +23,7 @@ $all_lib_dirs = $all_lib_dirs | % {$_ -replace '\\','/'}
 # echo $all_lib_dirs
 
 $all_libs_cpp = $all_lib_dirs | % {$_ + "/*.cpp"}
+$all_libs_cpp = $all_libs_cpp | where{(Get-ChildItem $_) -like "*.cpp"}
 
 echo $all_libs_cpp
 
