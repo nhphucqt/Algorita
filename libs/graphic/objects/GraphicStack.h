@@ -8,7 +8,7 @@
 #include "../../global.h"
 #include "../../core/ccppfunc.h"
 #include "GraphicSinglyNode.h"
-#include "../animation.h"
+#include "../../animation/animation.h"
 
 #include "../../core/objects/CoreStack.h"
 
