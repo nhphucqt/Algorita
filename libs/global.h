@@ -4,10 +4,14 @@
 #include "conf_raylib.h"
 #include <cmath>
 
+namespace CPath {
+    const char* const SLL_INSERT_FORD = "assets/visual_cpp/sll_insert_ford";
+    const char* const SLL_SEARCH_FIRST = "assets/visual_cpp/sll_search_first";
+}
 namespace App {
     const char* const title = "Algorita";
     const char* const author = "Nguyen Hoang Phuc";
-    const char* const note = "Project Lab CS162";
+    const char* const description = "Project Lab CS162";
 }
 
 namespace Geo {
@@ -22,16 +26,19 @@ namespace Geo {
 namespace Core {
     const int NODE_MIN_VALUE = 0;
     const int NODE_MAX_VALUE = 99;
+
+    const int MAX_NUM_NODE_SLL = 10;
 }
 
 namespace Window {
     // WXGA+ | 16 : 10
     const int WIDTH = 1440;
     const int HEIGHT = 900;
+    const Vector2 DIMENSION = Vector2{WIDTH, HEIGHT};
     
     // const int FPS = 360;
     const int FPS = 720;
-    // const int FPS = 1;
+    // const int FPS = 10;
 }
 
 namespace Graphic {
@@ -59,11 +66,19 @@ namespace Graphic {
     const int STACK_NODE_DIST = (int)NODE_DIST;
 }
 
+namespace Gui {
+    const int CODEBLOCK_LINE_PADDING_X = 10;
+    const int CODEBLOCK_LINE_PADDING_Y = 8;
+    const int CODEBLOCK_BLOCK_PADDING_X = 0;
+    const int CODEBLOCK_BLOCK_PADDING_Y = 0;
+    const int CODEBLOCK_SPACING = 1;
+}
+
 namespace Animate {
     const float FADEIN_TIME = 0.25;
     const float FADEOUT_TIME = 0.25;
     const float TRANS_TIME = 0.25;
-    const float TRAVEL_TIME = 0.25;
+    const float TRAVEL_TIME = 0.5;
     const float SLIDE_TIME = 0.25;
     const float FOCUS_TIME = 0.15;
     const float UNFOCUS_TIME = 0.15;
@@ -89,32 +104,49 @@ namespace Gcolor {
     const rCol ARROW_HEAD = BLACK;
     const rCol ARROW_HEAD_FOCUS = ORANGE;
 
+    // TEXT BUTTON COLOR
     const rCol TEXT_BUTTON_BACKGROUND = DARKGRAY;
     const rCol TEXT_BUTTON_BACKGROUND_FOCUS = GRAY;
     const rCol TEXT_BUTTON_FOREGROUND = WHITE;
     const rCol TEXT_BUTTON_FOREGROUND_FOCUS = WHITE;
+
+    // CODEBLOCK COLOR
+    const rCol CODEBLOCK_BACKGROUND = Color{75, 101, 186, 255};
+    const rCol CODEBLOCK_BACKGROUND_FOCUS = BLACK;
+    const rCol CODEBLOCK_FOREGROUND = WHITE;
+    const rCol CODEBLOCK_FOREGROUND_FOCUS = WHITE;
 }
 #undef rCol
 
 namespace Gfont {
     const int FONT_DEFAULT_SIZE = 28;
+    const int FONT_CODE_SIZE = 16;
     inline Font* defaultFont;
+    inline Font* codeFont;
     inline Font jb_mono_med_def;
+    inline Font consolas_code;
 
     inline void setDefaultFont(Font* font) {
         defaultFont = font;
     }
 
+    inline void setCodeFont(Font* font) {
+        codeFont = font;
+    }
+
     inline void loadFont() {
         // Load fonts
         jb_mono_med_def = LoadFontEx("./assets/fonts/JetBrainsMono-Medium.ttf", FONT_DEFAULT_SIZE, 0, 250);
+        consolas_code = LoadFontEx("./assets/fonts/Consolas-Bold.ttf", FONT_CODE_SIZE, 0, 250);
 
         // Set default font
         setDefaultFont(&jb_mono_med_def);
+        setCodeFont(&consolas_code);
     }
 
     inline void unloadFont() {
         UnloadFont(jb_mono_med_def);
+        UnloadFont(consolas_code);
     }
 }
 
