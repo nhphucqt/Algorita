@@ -13,7 +13,7 @@
 #include "libs/graphic/GraphicDoublyNode.h"
 #include "libs/graphic/GraphicStack.h"
 
-#include "libs/graphic/animation.h"
+#include "libs/animation/animation.h"
 
 int main() {
     SetConfigFlags(FLAG_MSAA_4X_HINT);

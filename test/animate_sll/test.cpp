@@ -14,7 +14,7 @@
 #include "libs/graphic/objects/GraphicStack.h"
 #include "libs/graphic/objects/GraphicSinglyLinkedList.h"
 
-#include "libs/graphic/animation.h"
+#include "libs/animation/animation.h"
 
 int main() {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
