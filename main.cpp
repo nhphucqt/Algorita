@@ -14,7 +14,7 @@
 #include "libs/graphic/objects/GraphicStack.h"
 #include "libs/graphic/objects/GraphicSinglyLinkedList.h"
 #include "libs/graphic/gui/GraphicButton.h"
-#include "libs/graphic/animation.h"
+#include "libs/animation/animation.h"
 #include "libs/graphic/screens/globalLayout.h"
 
 #include "libs/graphic/screens/ScreenSinglyLinkedList.h"
@@ -39,6 +39,7 @@ int main() {
     while (!WindowShouldClose()) {
         Animate::elapseTime = GetFrameTime(); // DO NOT DELETE
         Animate::queueOfScenes.run();
+        // std::cerr << " >> q.size() = " << Animate::queueOfScenes.q.size() << '\n';
         BeginDrawing();
             ClearBackground(WHITE);
             Layout::drawTopNavigation();
