@@ -18,6 +18,7 @@ void CoreSinglyLinkedList::initialize(std::vector<int> vals) {
     for (int i = 0; i < (int)vals.size(); ++i) {
         pushBack(vals[i]);
     }
+    _size = vals.size();
 }
 
 void CoreSinglyLinkedList::pushFront(int val) {
@@ -108,6 +109,25 @@ int CoreSinglyLinkedList::searchAll(int val) {
         cnt += curr->val == val;
     }
     return cnt;
+}
+
+CoreSinglyLinkedList CoreSinglyLinkedList::copy() const {
+    CoreSinglyLinkedList copyObj;
+    copyObj._size = _size;
+    if (pHead != nullptr) {
+        copyObj.pHead = new CoreSinglyNode(pHead->val);
+        CoreSinglyNode* copyCurr = copyObj.pHead;
+        for (CoreSinglyNode* curr = pHead->pNext; curr != nullptr; curr = curr->pNext) {
+            copyCurr->pNext = new CoreSinglyNode(curr->val);
+            copyCurr = copyCurr->pNext;
+        }
+    }
+    return copyObj;
+}
+
+void CoreSinglyLinkedList::makeCopy(const CoreSinglyLinkedList &src) {
+    destroy();
+    *this = src.copy();
 }
 
 void CoreSinglyLinkedList::destroy() {

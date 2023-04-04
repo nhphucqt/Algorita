@@ -31,6 +31,9 @@ public:
     bool search(int val);
     int searchAll(int val);
 
+    CoreSinglyLinkedList copy() const;
+    void makeCopy(const CoreSinglyLinkedList &src);
+
     void destroy();
 };
 
