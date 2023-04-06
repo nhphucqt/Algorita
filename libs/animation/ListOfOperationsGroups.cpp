@@ -6,35 +6,48 @@
 template<typename T>
 ListOfOperationsGroups<T>::ListOfOperationsGroups() {
     mainObj = nullptr;    
-    curOper = 0;
+    iter = groups.end();
 }
+
+template<typename T>
+typename std::list<OperationsGroups<T>>::iterator ListOfOperationsGroups<T>::curGroup() const {
+    return prev(iter);
+}
+
 
 template<typename T>
 void ListOfOperationsGroups<T>::setMainObj(T* _mainObj) {
     mainObj = _mainObj;
 }
 
-
 template<typename T>
-void ListOfOperationsGroups<T>::pushBackGroup(const OperationsGroups<T> &g) {
-    groups.push_back(g);
+void ListOfOperationsGroups<T>::addNewGroup() {
+    groups.push_front(OperationsGroups<T>());
+    groups.front().resetOperCur();
+    std::cerr << "LOG::addNewGroup -> iter end " << (iter == groups.end()) << '\n';
+    std::cerr << "LOG::addNewGroup -> iter end " << (groups.front().opers.iter == groups.front().opers.q.end()) << '\n';
 }
 
 template<typename T>
-ExitStatus ListOfOperationsGroups<T>::runNext(Codeblock* codeblock) {
-    if (curOper+1 < (int)groups.size()) {
-        curOper++;
-        runAt(curOper, codeblock);
-        return ExitStatus(true, "");
-    } 
-    return ExitStatus(false, "");
+OperationsGroups<T>* ListOfOperationsGroups<T>::backGroup() {
+    return &(*groups.begin());
 }
 
 template<typename T>
 ExitStatus ListOfOperationsGroups<T>::runPrev(Codeblock* codeblock) {
-    if (curOper-1 >= 0) {
-        curOper--;
-        runAt(curOper, codeblock);
+    if (iter != groups.end()) {
+        iter++;
+        runAt(curGroup(), codeblock);
+        return ExitStatus(true, "");
+    }
+    return ExitStatus(false, "");
+}
+
+template<typename T>
+ExitStatus ListOfOperationsGroups<T>::runNext(Codeblock* codeblock) {
+    if (curGroup() != groups.begin()) {
+        iter--;
+        runAt(curGroup(), codeblock);
         return ExitStatus(true, "");
     }
     return ExitStatus(false, "");
@@ -44,14 +57,16 @@ template<typename T>
 void ListOfOperationsGroups<T>::run(Codeblock* codeblock) {
     // std::cerr << "ALOG run ------------- \n";
     // std::cerr << "ALOG size " << groups.size() << '\n';
-    if (!groups.empty()) {
-        curOper = 0;
-        groups[0].run(mainObj, false, codeblock);
-        for (curOper = 1; curOper < (int)groups.size(); ++curOper) {
-            // groups[curOper].run(mainObj, true, codeblock);
-            groups[curOper].run(mainObj, false, codeblock);
+    if (iter != groups.begin()) {
+    // if (0 <= curOper && curOper < (int)groups.size()) {
+        std::cerr << " >> Running curOper\n";
+        if (curGroup()->run()) {
+            if (*curGroup()->getIsReversed()) {
+                iter++;
+            } else {
+                iter--;
+            }
         }
-        groups[0].passObj(mainObj);
     }
 }
 
@@ -60,16 +75,32 @@ void ListOfOperationsGroups<T>::run(Codeblock* codeblock) {
 template<typename T>
 void ListOfOperationsGroups<T>::runAt(int id, Codeblock* codeblock) {
     assert(0 <= id && id < (int)groups.size());
-    groups[id].run(mainObj, false, codeblock);
-    groups[id].passObj(mainObj);
+    typename std::list<OperationsGroups<T>>::iterator curr = groups.begin();
+    while (id--) {
+        curr++;
+    }
+    curr->run();
+    curr->passStaObj(mainObj);
+}
+
+template<typename T>
+void ListOfOperationsGroups<T>::runAt(typename std::list<OperationsGroups<T>>::iterator id, Codeblock* codeblock) {
+    // assert(0 <= id && id < (int)groups.size());
+    // typename std::list<OperationsGroups<T>>::iterator curr = groups.begin();
+    // while (id--) {
+    //     curr++;
+    // }
+    id->run();
+    id->passStaObj(mainObj);
 }
 
 template<typename T>
 void ListOfOperationsGroups<T>::clearGroup() {
-    for (int i = 0; i < (int)groups.size(); ++i) {
-        groups[i].destroy();
+    for (typename std::list<OperationsGroups<T>>::iterator curr = groups.begin(); curr != groups.end(); ++curr) {
+        curr->destroy();
     }
     groups.clear();
+    iter = groups.end();
 }
 
 template<typename T>

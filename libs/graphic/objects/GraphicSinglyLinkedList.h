@@ -3,7 +3,6 @@
 
 #include <assert.h>
 #include <vector>
-#include <map>
 
 #include "GraphicSinglyNode.h"
 #include "../../core/objects/CoreSinglyLinkedList.h"
@@ -17,65 +16,60 @@ class GraphicSinglyLinkedList {
 // private:
 public:
     GraphicSinglyNode* pHead;
-    CoreSinglyLinkedList core;
-    std::list<GraphicSinglyNode*> separatedNodes;
+    int size;
 
-    bool registerNode(GraphicSinglyNode* node);
-    bool unRegisterNode(GraphicSinglyNode* node);
-    bool unRegisterAndDeleteNode(GraphicSinglyNode* node);
+    void transformAllNodesFrom(int k, int Tx, int Ty);
 
-    void animateUnfocusAllNodes();
+    void unfocusAllNodes(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
 
-    bool transformAllNodes(int Tx, int Ty);
-    bool transformAllNodesFrom(int Tx, int Ty, GraphicSinglyNode* start);
+    void appearAllNodes(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
+    void vanishAllNodes(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
 
-    bool animateInitialize(std::vector<int> vals);
+    void animateUnfocusAllNodes(bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
 
-    bool animatePushFront(int val);
-    bool animatePushBack(int val);
-    bool animatePushAtKth(int k, int val);
+    void animateVanishAllNodes(bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
+    void animateAppearAllNodes(bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
 
-    bool animatePopFront();
-    bool animatePopBack();
-    bool animatePopAtKth(int k);
+    void animateFadeInAtKthNode(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
+    void animateFadeOutAtKthNode(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
 
-    bool animateSearchFirst(int val);
+    void animateFadeInAtKthArrow(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
+    void animateFadeOutAtKthArrow(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
 
-    void animateFocusAtKthNode(int k, bool isNewScene);
-    void animateUnfocusAtKthNode(int k, bool isNewScene);
+    void animateFocusAtKthNode(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
+    void animateUnfocusAtKthNode(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
 
-    void animateFocusAtKthNodeBorder(int k, bool isNewScene);
-    void animateUnfocusAtKthNodeBorder(int k, bool isNewScene);
+    void animateFocusAtKthNodeBorder(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
+    void animateUnfocusAtKthNodeBorder(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
 
-    void animateFocusAtKthArrow(int k, bool isNewScene);
-    void animateUnfocusAtKthArrow(int k, bool isNewScene);
+    void animateFocusAtKthArrow(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
+    void animateUnfocusAtKthArrow(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
 
+    void animateTransformAtKthNode(int k, int Tx, int Ty, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
+    void animateDisplaceAtKthNode(int k, int Dx, int Dy, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
+
+    void animateSlideInAtKthArrow(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
+    void animateSlideOutAtKthArrow(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
+
+    void animateTransformAllNodesFrom(int k, int Tx, int Ty, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
+
+    void animateDelay(bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group);
 public:
 
     GraphicSinglyLinkedList();
 
     GraphicSinglyNode* KthNode(int k) const;
 
-    void unfocusAllNodes();
+    ExitStatus initialize(int initSize, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG, Codeblock* codeblock); // Randomly initialize
+    ExitStatus initialize(std::vector<int> vals, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG, Codeblock* codeblock); // Initialize with given values
 
-    ExitStatus initialize(int initSize); // Randomly initialize
-    ExitStatus initialize(std::vector<int> vals); // Initialize with given values
-
-    ExitStatus pushFront(int val);
-    ExitStatus pushBack(int val);
-    ExitStatus pushAtKth(int k, int val);
-
-    ExitStatus popFront();
-    ExitStatus popBack();
-    ExitStatus popAtKth(int val);
-
-    ExitStatus searchFirst(int val);
-    ExitStatus searchFirst(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
+    ExitStatus pushFront(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG, Codeblock* codeblock);
+    
+    ExitStatus searchFirst(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG, Codeblock* codeblock);
 
     void draw();
 
-    void makeCopy(const GraphicSinglyLinkedList &src);
-    void copyAttributes(const GraphicSinglyLinkedList &src);
+    void makeCopy(GraphicSinglyLinkedList* src);
 
     void destroy();
 };

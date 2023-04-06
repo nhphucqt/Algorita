@@ -1,7 +1,8 @@
 #ifndef LIST_OF_OPERATIONS_GROUPS_H
 #define LIST_OF_OPERATIONS_GROUPS_H
 
-#include <vector>
+// #include <vector>
+#include <list>
 
 #include "animation.h"
 #include "OperationsGroups.h"
@@ -10,20 +11,26 @@
 
 template<typename T>
 class ListOfOperationsGroups {
-// private:
-public:
+// public:
+private:
     T* mainObj;
-    std::vector<OperationsGroups<T>> groups;
-    int curOper;
+    std::list<OperationsGroups<T>> groups;
+    typename std::list<OperationsGroups<T>>::iterator iter;
 
 public:
     ListOfOperationsGroups();
 
+    typename std::list<OperationsGroups<T>>::iterator curGroup() const;
+
     void run(Codeblock* codeblock = nullptr);
     void runAt(int id, Codeblock* codeblock = nullptr);
+    void runAt(typename std::list<OperationsGroups<T>>::iterator id, Codeblock* codeblock);
 
     void setMainObj(T* _mainObj);
-    void pushBackGroup(const OperationsGroups<T> &g);
+
+    void addNewGroup();
+
+    OperationsGroups<T>* backGroup();
 
     ExitStatus runNext(Codeblock* codeblock = nullptr);
     ExitStatus runPrev(Codeblock* codeblock = nullptr);

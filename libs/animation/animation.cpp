@@ -42,79 +42,128 @@ double Animate::bezier(double S, double T, double t) {
     // --
 }
 
+bool Animate::delay(double* currTime, bool* isReversed) {
+    return *currTime + elapseTime >= DELAY_TIME;
+}
+
 Animate::QueueOfScenes::QueueOfScenes() {
-    currTime = 0.0;
     q = std::list<std::list<std::function<bool()>>>();
+    resetCur();
+
+    std::cerr << "QOS::() iter end -> " << (iter == q.end()) << '\n';
+
 }
 
-void Animate::QueueOfScenes::pushToFrontScene(const std::function<bool()> &func) {
-    q.front().push_back(func);
+void Animate::QueueOfScenes::setReverse(bool _r) {
+    isReversed = _r;
 }
 
-void Animate::QueueOfScenes::pushToKthScene(int k, const std::function<bool()> &func) {
-    assert(k < (int)q.size());
-    std::list<std::list<std::function<bool()>>>::iterator it = q.begin();
-    while (k--) {
-        ++it;
+void Animate::QueueOfScenes::clearScenes() {
+    q.clear();
+    resetCur();
+    std::cerr << "QOS::clearS() iter end -> " << (iter == q.end()) << '\n';
+}
+
+std::list<std::list<std::function<bool()>>>::iterator Animate::QueueOfScenes::curScene() const {
+    if (!isReversed) {
+        return prev(iter);
     }
-    it->push_back(func);
+    return iter;
+}
+
+
+void Animate::QueueOfScenes::resetCur() {
+    isReversed = false;
+    currTime = 0.0;
+    iter = q.end();
+    std::cerr << "QOS::resetCur() iter end -> " << (iter == q.end()) << '\n';
+}
+
+bool Animate::QueueOfScenes::isLeftEnd() const {
+    std::cerr << "QOS::isLeftEnd()\n";
+    return iter == q.begin();
+}
+
+bool Animate::QueueOfScenes::isRightEnd() const {
+    std::cerr << "QOS::isRightEnd()\n";
+    return iter == q.end();
+}
+
+bool Animate::QueueOfScenes::isEnd() const {
+    std::cerr << "QOS::isEnd()\n";
+    return isLeftEnd() || isRightEnd();
+}
+
+bool Animate::QueueOfScenes::canRun() const {
+    std::cerr << "QOS::canRun()\n";
+    return (!isReversed && !isLeftEnd()) || (isReversed && !isRightEnd());
+}
+
+bool Animate::QueueOfScenes::goTo() {
+    std::cerr << "QOS::goTo()\n";
+    assert(canRun());
+    if (!isReversed) {
+        return goNext();
+    } else {
+        return goPrev();
+    }
+}
+
+bool Animate::QueueOfScenes::goNext() {
+    std::cerr << "QOS::goNext()\n";
+    assert(!isLeftEnd());
+    return --iter == q.begin();
+}
+
+bool Animate::QueueOfScenes::goPrev() {
+    std::cerr << "QOS::goPrev()\n";
+    assert(!isRightEnd());
+    return ++iter == q.end();
 }
 
 void Animate::QueueOfScenes::pushToBackScene(const std::function<bool()> &func) {
-    q.back().push_back(func);
+    q.front().push_back(func);
+    std::cerr << "QOS::pushToBack() iter end -> " << (iter == q.end()) << '\n';
 }
 
 void Animate::QueueOfScenes::pushToNewScene(const std::function<bool()> &func) {
-    q.push_back({func});
-}
-
-void Animate::QueueOfScenes::pushToNewKthScene(int k, const std::function<bool()> &func) {
-    assert(k <= (int)q.size());
-    addBlankSceneToKth(k);
-    pushToKthScene(k, func);
-}
-
-void Animate::QueueOfScenes::pushSceneToBack(const std::list<std::function<bool()>> &scene) {
-    q.push_back(scene);
-}
-
-void Animate::QueueOfScenes::pushSceneToKth(int k, const std::list<std::function<bool()>> &funcList) {
-    assert(k <= (int)q.size());
-    std::list<std::list<std::function<bool()>>>::iterator it = q.begin();
-    while (k--) {
-        ++it;
-    }
-    q.insert(it, funcList);
+    addBlankScene();
+    pushToBackScene(func);
+    std::cerr << "QOS::pushToNew() iter end -> " << (iter == q.end()) << '\n';
 }
 
 void Animate::QueueOfScenes::addBlankScene() {
-    q.push_back(std::list<std::function<bool()>>());
+    q.push_front(std::list<std::function<bool()>>());
+    std::cerr << "QOS::addBlank() iter end -> " << (iter == q.end()) << '\n';
 }
 
-void Animate::QueueOfScenes::addBlankSceneToKth(int k) {
-    assert(k <= (int)q.size());
-    std::list<std::list<std::function<bool()>>>::iterator it = q.begin();
-    while (k--) {
-        ++it;
-    }
-    q.insert(it, std::list<std::function<bool()>>());
-}
 
-void Animate::QueueOfScenes::run() {
-    if (!q.empty()) {
-        for (auto it = q.front().begin(); it != q.front().end(); ) {
-            // std::cerr << q.size() << ' ' << q.front().size() << '\n';
-            // std::cerr << &(*it) << '\n';
-            ++it;
-            if ((*prev(it))()) {
-                q.front().erase(prev(it));
-            }
-        }
-        if (q.front().empty()) {
-            q.pop_front();
-            currTime = 0;
-        } else {
-            currTime += elapseTime;
-        }
+bool Animate::QueueOfScenes::run() {
+    // std::cerr << " before cSceme >> " << iter << '\n';
+
+    std::cerr << "QOS::run() iter end -> " << (iter == q.end()) << '\n';
+
+    std::cerr << " check can move\n";
+    if (!canRun()) {
+        return true;
     }
+    std::cerr << " check is end\n";
+    currTime += elapseTime;
+    bool done = true;
+
+    std::cerr << " iter == q.end() " << (iter == q.end()) << '\n';
+    std::cerr << " curS == q.end() " << (curScene() == q.end()) << '\n';
+
+    for (std::list<std::function<bool()>>::iterator curAnim = curScene()->begin(); curAnim != curScene()->end(); ++curAnim) {
+        std::cerr << " enter loop\n";
+        // std::cerr << " iter,i -> " << iter << ' ' << i << ' ' << q.size() << ' ' << q[iter].size() << '\n';
+        done &= (*curAnim)();
+    }
+    std::cerr << " done\n";
+    if (done) {
+        goTo();
+        currTime = 0.0;
+    }
+    // std::cerr << " after cSceme >> " << iter << '\n';
+    return false;
 }

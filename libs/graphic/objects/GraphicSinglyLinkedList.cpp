@@ -2,52 +2,8 @@
 
 GraphicSinglyLinkedList::GraphicSinglyLinkedList() {
     pHead = nullptr;
+    size = 0;
 }
-
-bool GraphicSinglyLinkedList::registerNode(GraphicSinglyNode* node) {
-    separatedNodes.push_back(node);
-    return true;
-}
-
-bool GraphicSinglyLinkedList::unRegisterNode(GraphicSinglyNode* node) {
-    separatedNodes.remove(node);
-    return true;
-}
-
-bool GraphicSinglyLinkedList::unRegisterAndDeleteNode(GraphicSinglyNode* node) {
-    unRegisterNode(node);
-    delete node;
-    return true;
-}
-
-void GraphicSinglyLinkedList::animateUnfocusAllNodes() {
-    Animate::queueOfScenes.pushToNewScene(
-        std::bind(
-            &Animate::unfocusAllNodes<GraphicSinglyLinkedList, GraphicSinglyNode>, 
-            this, 
-            &Animate::queueOfScenes.currTime, 
-            Animate::UNFOCUS_TIME
-        )
-    );
-}
-
-bool GraphicSinglyLinkedList::transformAllNodes(int Tx, int Ty) {
-    Animate::queueOfScenes.addBlankSceneToKth(1);
-    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-        Animate::queueOfScenes.pushTransformToKthScene(1, curr, Tx, Ty);
-    }
-    return true;
-}
-
-bool GraphicSinglyLinkedList::transformAllNodesFrom(int Tx, int Ty, GraphicSinglyNode* pStart) {
-    Animate::queueOfScenes.addBlankSceneToKth(1);
-    for (GraphicSinglyNode* curr = pStart; curr != nullptr; curr = curr->pNext) {
-        Animate::queueOfScenes.pushTransformToKthScene(1, curr, Tx, Ty);
-    }
-    return true;
-}
-
-// 
 
 GraphicSinglyNode* GraphicSinglyLinkedList::KthNode(int k) const {
     GraphicSinglyNode* curr = pHead;
@@ -57,7 +13,208 @@ GraphicSinglyNode* GraphicSinglyLinkedList::KthNode(int k) const {
     return curr;
 }
 
-ExitStatus GraphicSinglyLinkedList::initialize(int initSize) { // Randomly initialize
+void GraphicSinglyLinkedList::transformAllNodesFrom(int k, int Tx, int Ty) {
+    for (GraphicSinglyNode* curr = KthNode(k); curr != nullptr; curr = curr->pNext) {
+        curr->lx = (curr->x += Tx);
+        curr->ly = (curr->y += Ty);
+    }
+}
+
+void GraphicSinglyLinkedList::unfocusAllNodes(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+    // std::cerr << " start unfocusAllNodes : " << ALOG->groups.size() << '\n';
+    ALOG->addNewGroup();
+    ALOG->backGroup()->pushStaObj(this);
+        animateUnfocusAllNodes(true, ALOG->backGroup());
+        for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+            curr->unfocus();
+            curr->unfocusBorder();
+            curr->aNext.unfocus();
+        }
+    ALOG->backGroup()->pushFinObj(this);
+    // std::cerr << " done unfocusAllNodes : " << ALOG->groups.size() << '\n';
+}
+
+void GraphicSinglyLinkedList::vanishAllNodes(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+    ALOG->addNewGroup();
+    ALOG->backGroup()->pushStaObj(this);
+        animateVanishAllNodes(true, ALOG->backGroup());
+        for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+            curr->vanish();
+        }
+    ALOG->backGroup()->pushFinObj(this);
+}
+
+void GraphicSinglyLinkedList::appearAllNodes(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+    ALOG->addNewGroup();
+    ALOG->backGroup()->pushStaObj(this);
+        animateAppearAllNodes(true, ALOG->backGroup());
+        for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+            curr->appear();
+            curr->aNext.appear();
+        }
+    ALOG->backGroup()->pushFinObj(this);
+}
+
+void GraphicSinglyLinkedList::animateFadeInAtKthNode(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::fadeInKthNode<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::fadeInKthNode<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateFadeOutAtKthNode(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::fadeOutKthNode<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::fadeOutKthNode<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateFadeInAtKthArrow(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::fadeInKthArrow<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::fadeInKthArrow<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateFadeOutAtKthArrow(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::fadeOutKthArrow<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::fadeOutKthArrow<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateFocusAtKthNode(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    // assert
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::focusKthNode<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::focusKthNode<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateUnfocusAtKthNode(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    // assert
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::unfocusKthNode<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::unfocusKthNode<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateFocusAtKthNodeBorder(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    // assert
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::focusKthNodeBorder<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::focusKthNodeBorder<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateUnfocusAtKthNodeBorder(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    // assert
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::unfocusKthNodeBorder<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::unfocusKthNodeBorder<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateFocusAtKthArrow(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    // assert
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::focusKthArrow<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::focusKthArrow<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateUnfocusAtKthArrow(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::unfocusKthArrow<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::unfocusKthArrow<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateTransformAtKthNode(int k, int Tx, int Ty, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::transformKthNode<GraphicSinglyLinkedList>, this, k, Tx, Ty, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::transformKthNode<GraphicSinglyLinkedList>, this, k, Tx, Ty, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateDisplaceAtKthNode(int k, int Dx, int Dy, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::displaceKthNode<GraphicSinglyLinkedList>, this, k, Dx, Dy, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::displaceKthNode<GraphicSinglyLinkedList>, this, k, Dx, Dy, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateSlideInAtKthArrow(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::slideInKthArrow<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::slideInKthArrow<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateSlideOutAtKthArrow(int k, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::slideOutKthArrow<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::slideOutKthArrow<GraphicSinglyLinkedList>, this, k, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateDelay(bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::delay, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::delay, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateUnfocusAllNodes(bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::unfocusAllNodes<GraphicSinglyLinkedList, GraphicSinglyNode>, this, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::unfocusAllNodes<GraphicSinglyLinkedList, GraphicSinglyNode>, this, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateAppearAllNodes(bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::fadeInAllNodes<GraphicSinglyLinkedList, GraphicSinglyNode>, this, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::fadeInAllNodes<GraphicSinglyLinkedList, GraphicSinglyNode>, this, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+void GraphicSinglyLinkedList::animateVanishAllNodes(bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::fadeOutAllNodes<GraphicSinglyLinkedList, GraphicSinglyNode>, this, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::fadeOutAllNodes<GraphicSinglyLinkedList, GraphicSinglyNode>, this, group->getCurrTime(), group->getIsReversed()));
+    }
+}
+
+
+void GraphicSinglyLinkedList::animateTransformAllNodesFrom(int k, int Tx, int Ty, bool isNewScene, OperationsGroups<GraphicSinglyLinkedList>* group) {
+    if (isNewScene) {
+        group->pushNew(std::bind(&Animate::transformAllNodesFrom<GraphicSinglyLinkedList, GraphicSinglyNode>, this, k, Tx, Ty, group->getCurrTime(), group->getIsReversed()));
+    } else {
+        group->pushBack(std::bind(&Animate::transformAllNodesFrom<GraphicSinglyLinkedList, GraphicSinglyNode>, this, k, Tx, Ty, group->getCurrTime(), group->getIsReversed()));
+    }
+} 
+
+
+ExitStatus GraphicSinglyLinkedList::initialize(int initSize, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG, Codeblock* codeblock) { // Randomly initialize
     if (initSize < 0 || initSize > Core::MAX_NUM_NODE_SLL) {
         return ExitStatus(false, "Size is out of bound");
     }
@@ -65,32 +222,19 @@ ExitStatus GraphicSinglyLinkedList::initialize(int initSize) { // Randomly initi
     for (int i = 0; i < initSize; ++i) {
         vals.push_back(GetRandomValue(Core::NODE_MIN_VALUE, Core::NODE_MAX_VALUE));
     }
-    return initialize(vals);
+    return initialize(vals, ALOG, codeblock);
 }
 
-ExitStatus GraphicSinglyLinkedList::initialize(std::vector<int> vals) { // Initialize with given values
-    core.initialize(vals);
+ExitStatus GraphicSinglyLinkedList::initialize(std::vector<int> vals, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG, Codeblock* codeblock) { // Initialize with given values
     // Animate::queueOfScenes.pushToNewScene(std::bind(&unfocusAllNodes, this));
-    Animate::queueOfScenes.pushToNewScene(std::bind(&animateInitialize, this, vals));
-    return ExitStatus(true, "");
-}
 
-bool GraphicSinglyLinkedList::animateInitialize(std::vector<int> vals) {
-    int Kth = 0;
-    Animate::queueOfScenes.addBlankSceneToKth(++Kth);
-    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-        registerNode(curr);
-        Animate::queueOfScenes.pushSlideOutToKthScene(Kth, &curr->aNext);
-    }
-    Animate::queueOfScenes.addBlankSceneToKth(++Kth);
-    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-        Animate::queueOfScenes.pushFadeOutToKthScene(Kth, curr);
-    }
-    Animate::queueOfScenes.addBlankSceneToKth(++Kth);
-    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-        Animate::queueOfScenes.pushToKthScene(Kth, std::bind(&unRegisterAndDeleteNode, this, curr));
-    }
-    pHead = nullptr;
+    std::cerr << " start Initialize\n";
+    unfocusAllNodes(ALOG);
+
+    destroy();
+
+    std::cerr << " >> Initialize\n";
+    // Initialize
     GraphicSinglyNode* curr = pHead;
     for (int i = 0; i < (int)vals.size(); ++i) {
         if (pHead == nullptr) {
@@ -102,366 +246,142 @@ bool GraphicSinglyLinkedList::animateInitialize(std::vector<int> vals) {
             curr = curr->pNext;
         }
     }
-    Animate::queueOfScenes.addBlankSceneToKth(++Kth);
-    for (curr = pHead; curr != nullptr; curr = curr->pNext) {
-        Animate::queueOfScenes.pushFadeInToKthScene(Kth, curr);
-    }
-    Animate::queueOfScenes.addBlankSceneToKth(++Kth);
-    for (curr = pHead; curr != nullptr; curr = curr->pNext) {
-        curr->aNext.appear();
-        Animate::queueOfScenes.pushSlideInToKthScene(Kth, &curr->aNext);
-    }
-    return true;
-}
+    size = (int)vals.size();
 
-void GraphicSinglyLinkedList::animateFocusAtKthNode(int k, bool isNewScene) {
-    // assert
-    if (isNewScene) {
-        Animate::queueOfScenes.pushToNewScene(std::bind(&Animate::focusKthNode<GraphicSinglyLinkedList>, this, k, &Animate::queueOfScenes.currTime, Animate::FOCUS_TIME));
-    } else {
-        Animate::queueOfScenes.pushToBackScene(std::bind(&Animate::focusKthNode<GraphicSinglyLinkedList>, this, k, &Animate::queueOfScenes.currTime, Animate::FOCUS_TIME));
-    }
-}
+    ALOG->addNewGroup();
+    ALOG->backGroup()->pushStaObj(this);
+        appearAllNodes(ALOG);
+    ALOG->backGroup()->pushFinObj(this);
+    // ---
 
-void GraphicSinglyLinkedList::animateUnfocusAtKthNode(int k, bool isNewScene) {
-    // assert
-    if (isNewScene) {
-        Animate::queueOfScenes.pushToNewScene(std::bind(&Animate::unfocusKthNode<GraphicSinglyLinkedList>, this, k, &Animate::queueOfScenes.currTime, Animate::UNFOCUS_TIME));
-    } else {
-        Animate::queueOfScenes.pushToBackScene(std::bind(&Animate::unfocusKthNode<GraphicSinglyLinkedList>, this, k, &Animate::queueOfScenes.currTime, Animate::UNFOCUS_TIME));
-    }
-}
-
-void GraphicSinglyLinkedList::animateFocusAtKthNodeBorder(int k, bool isNewScene) {
-    // assert
-    if (isNewScene) {
-        Animate::queueOfScenes.pushToNewScene(std::bind(&Animate::focusKthNodeBorder<GraphicSinglyLinkedList>, this, k, &Animate::queueOfScenes.currTime, Animate::FOCUS_TIME));
-    } else {
-        Animate::queueOfScenes.pushToBackScene(std::bind(&Animate::focusKthNodeBorder<GraphicSinglyLinkedList>, this, k, &Animate::queueOfScenes.currTime, Animate::FOCUS_TIME));
-    }
-}
-
-void GraphicSinglyLinkedList::animateUnfocusAtKthNodeBorder(int k, bool isNewScene) {
-    // assert
-    if (isNewScene) {
-        Animate::queueOfScenes.pushToNewScene(std::bind(&Animate::unfocusKthNodeBorder<GraphicSinglyLinkedList>, this, k, &Animate::queueOfScenes.currTime, Animate::UNFOCUS_TIME));
-    } else {
-        Animate::queueOfScenes.pushToBackScene(std::bind(&Animate::unfocusKthNodeBorder<GraphicSinglyLinkedList>, this, k, &Animate::queueOfScenes.currTime, Animate::UNFOCUS_TIME));
-    }
-}
-
-void GraphicSinglyLinkedList::animateFocusAtKthArrow(int k, bool isNewScene) {
-    // assert
-    if (isNewScene) {
-        Animate::queueOfScenes.pushToNewScene(std::bind(&Animate::focusKthArrow<GraphicSinglyLinkedList>, this, k, &Animate::queueOfScenes.currTime, Animate::FOCUS_TIME));
-    } else {
-        Animate::queueOfScenes.pushToBackScene(std::bind(&Animate::focusKthArrow<GraphicSinglyLinkedList>, this, k, &Animate::queueOfScenes.currTime, Animate::FOCUS_TIME));
-    }
-}
-
-void GraphicSinglyLinkedList::animateUnfocusAtKthArrow(int k, bool isNewScene) {
-    if (isNewScene) {
-        Animate::queueOfScenes.pushToNewScene(std::bind(&Animate::unfocusKthArrow<GraphicSinglyLinkedList>, this, k, &Animate::queueOfScenes.currTime, Animate::UNFOCUS_TIME));
-    } else {
-        Animate::queueOfScenes.pushToBackScene(std::bind(&Animate::unfocusKthArrow<GraphicSinglyLinkedList>, this, k, &Animate::queueOfScenes.currTime, Animate::UNFOCUS_TIME));
-    }
-}
-
-void GraphicSinglyLinkedList::unfocusAllNodes() {
-    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-        curr->unfocus();
-        curr->unfocusBorder();
-        curr->aNext.unfocus();
-    }
-}
-
-ExitStatus GraphicSinglyLinkedList::pushFront(int val) {
-    if (core.size() == Core::MAX_NUM_NODE_SLL) {
-        return ExitStatus(false, "The size reach the maximum size allowed is " + cf::num2str(Core::MAX_NUM_NODE_SLL));
-    }
-    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
-        return ExitStatus(false, "Value is out of range");
-    }
-    core.pushFront(val);
-    // Animate::queueOfScenes.pushToNewScene(std::bind(&unfocusAllNodes, this));
-    Animate::queueOfScenes.pushToNewScene(std::bind(&animatePushFront, this, val));
-    return ExitStatus(true, "");
-}
-
-bool GraphicSinglyLinkedList::animatePushFront(int val) {
-    int Kth = 0;
-    if (pHead == nullptr) {
-        pHead = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, val);
-        Animate::queueOfScenes.pushFadeInToNewKthScene(++Kth, pHead);
-        Animate::queueOfScenes.pushFocusToKthScene(Kth, pHead);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, pHead);
-    } else {
-        GraphicSinglyNode* newNode = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y + Graphic::SLL_NODE_DIST, Graphic::NODE_SIZE, false, val, pHead);
-        Animate::queueOfScenes.pushFadeInToNewKthScene(++Kth, newNode);
-        Animate::queueOfScenes.pushFocusToKthScene(Kth, newNode);
-        newNode->aNext.appear();
-        Animate::queueOfScenes.pushSlideInToNewKthScene(++Kth, &newNode->aNext);
-        Animate::queueOfScenes.pushFocusToKthScene(Kth, &newNode->aNext);
-        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, pHead);
-        Animate::queueOfScenes.addBlankSceneToKth(++Kth);
+    std::cerr << " >> SlideIn all Arrows\n";
+    // SlideIn all Arrows
+    ALOG->addNewGroup();
+    ALOG->backGroup()->pushStaObj(this);
+        ALOG->backGroup()->pushBlank();
+        for (int i = 0; i < (int)vals.size(); ++i) {
+            animateSlideInAtKthArrow(i, false, ALOG->backGroup());
+        }
         for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-            Animate::queueOfScenes.pushTransformToKthScene(Kth, curr, Graphic::SLL_NODE_DIST, 0);
+            curr->aNext.maximize();   
+            std::cerr << " >> " << curr->aNext.isAppear << ' ' << curr->aNext.percent << '\n';
         }
-        Animate::queueOfScenes.pushDisplaceToKthScene(Kth, newNode, Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, newNode);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, &newNode->aNext);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, pHead);
-        pHead = newNode;
-    }
-    return true;
-}
-
-ExitStatus GraphicSinglyLinkedList::pushBack(int val) {
-    if (core.size() == Core::MAX_NUM_NODE_SLL) {
-        return ExitStatus(false, "The size reach the maximum size allowed is " + cf::num2str(Core::MAX_NUM_NODE_SLL));
-    }
-    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
-        return ExitStatus(false, "Value is out of range");
-    }
-    core.pushBack(val);
-    // Animate::queueOfScenes.pushToNewScene(std::bind(&unfocusAllNodes, this));
-    Animate::queueOfScenes.pushToNewScene(std::bind(&animatePushBack, this, val));
-    return ExitStatus(true, "");
-}
-
-bool GraphicSinglyLinkedList::animatePushBack(int val) {
-    if (pHead == nullptr) {
-        pHead = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, val);
-        Animate::queueOfScenes.pushFadeInToNewKthScene(1, pHead);
-    } else {
-        int Kth = 0;
-        GraphicSinglyNode* curr = pHead;
-        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr);
-        for (; curr->pNext != nullptr; curr = curr->pNext) {
-            Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, &curr->aNext);
-            Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr->pNext);
-            Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr);
-            Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, &curr->aNext);
-        }
-        GraphicSinglyNode* newNode = new GraphicSinglyNode(curr->x + Graphic::SLL_NODE_DIST, curr->y, Graphic::NODE_SIZE, false, val);
-        curr->setNext(newNode);
-        curr->aNext.appear();
-        curr->aNext.focus();
-        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, newNode);
-        Animate::queueOfScenes.pushFadeInToKthScene(Kth, newNode);
-        Animate::queueOfScenes.pushSlideInToNewKthScene(++Kth, &curr->aNext);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, &curr->aNext);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, newNode);
-    }
-    return true;
-}
-
-ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val) {
-    if (core.size() == Core::MAX_NUM_NODE_SLL) {
-        return ExitStatus(false, "The size reach the maximum size allowed is " + cf::num2str(Core::MAX_NUM_NODE_SLL));
-    }
-    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
-        return ExitStatus(false, "Value is out of range");
-    }
-    if (k < 0 || k > core.size()) {
-        return ExitStatus(false, "k is out of range");
-    }
-    if (k == 0) {
-        return pushFront(val);
-    } else if (core.size() == k) {
-        return pushBack(val);
-    } else {
-        core.pushAtKth(k, val);
-        // Animate::queueOfScenes.pushToNewScene(std::bind(&unfocusAllNodes, this));
-        Animate::queueOfScenes.pushToNewScene(std::bind(&animatePushAtKth, this, k, val));
-        return ExitStatus(true, "");
-    }
-}
-
-bool GraphicSinglyLinkedList::animatePushAtKth(int k, int val) {
-    int Kth = 0;
-    GraphicSinglyNode* curr = pHead;
-    Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr);
-    for (; --k; curr = curr->pNext) {
-        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, &curr->aNext);
-        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr->pNext);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, &curr->aNext);
-    }
-    assert(curr != nullptr);
-    GraphicSinglyNode* newNode = new GraphicSinglyNode(curr->pNext->x, curr->pNext->y + Graphic::NODE_DIST, Graphic::NODE_SIZE, false, val, curr->pNext);
-    Animate::queueOfScenes.pushFadeInToNewKthScene(++Kth, newNode);
-    Animate::queueOfScenes.pushFocusToKthScene(Kth, newNode);
-    registerNode(newNode);
-    newNode->aNext.appear();
-    Animate::queueOfScenes.pushSlideInToNewKthScene(++Kth, &newNode->aNext);
-    Animate::queueOfScenes.pushFocusToKthScene(Kth, &newNode->aNext);
-    Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, newNode->pNext);
-    Animate::queueOfScenes.pushRedirectToNewKthScene(++Kth, curr, newNode);
-    Animate::queueOfScenes.pushFocusToKthScene(Kth, &curr->aNext);
-    Animate::queueOfScenes.pushToNewKthScene(++Kth, std::bind(&unRegisterNode, this, newNode));
-    Animate::queueOfScenes.addBlankSceneToKth(++Kth);
-    for (GraphicSinglyNode* curr2 = curr->pNext; curr2 != nullptr; curr2 = curr2->pNext) {
-        Animate::queueOfScenes.pushTransformToKthScene(Kth, curr2, Graphic::NODE_DIST, 0);
-    }
-    Animate::queueOfScenes.pushDisplaceToKthScene(Kth, newNode, curr->x + Graphic::NODE_DIST, curr->y);
-    Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr);
-    Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, &curr->aNext);
-    Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, newNode);
-    Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, &newNode->aNext);
-    Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, newNode->pNext);
-    return true;
-}
-
-ExitStatus GraphicSinglyLinkedList::popFront() {
-    if (core.empty()) {
-        return ExitStatus(false, "The list is empty");
-    }
-    // Animate::queueOfScenes.pushToNewScene(std::bind(&unfocusAllNodes, this));
-    Animate::queueOfScenes.pushToNewScene(std::bind(&animatePopFront, this));
-    return ExitStatus(core.popFront(), "");
-}
-
-bool GraphicSinglyLinkedList::animatePopFront() {
-    int Kth = 0;
-    assert(pHead != nullptr);
-    registerNode(pHead);
-    Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, pHead);
-    Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, &pHead->aNext);
-    if (pHead->pNext != nullptr) {
-        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, pHead->pNext);
-    }
-    Animate::queueOfScenes.pushSlideOutToNewKthScene(++Kth, &pHead->aNext);
-    Animate::queueOfScenes.pushFadeOutToNewKthScene(++Kth, pHead);
-    Animate::queueOfScenes.pushToNewKthScene(++Kth, std::bind(&unRegisterAndDeleteNode, this, pHead));
-    Animate::queueOfScenes.pushToNewKthScene(++Kth, std::bind(&transformAllNodes, this, -Graphic::SLL_NODE_DIST, 0));
-    if (pHead->pNext != nullptr) {
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, pHead->pNext);
-    }
-    pHead = pHead->pNext;
-    return true;
-}
-
-ExitStatus GraphicSinglyLinkedList::popBack() {
-    if (core.empty()) {
-        return ExitStatus(false, "The list is empty");
-    }
-    if (core.size() == 1) {
-        return popFront();
-    }
-    // Animate::queueOfScenes.pushToNewScene(std::bind(&unfocusAllNodes, this));
-    Animate::queueOfScenes.pushToNewScene(std::bind(&animatePopBack, this));
-    return ExitStatus(core.popBack(), "");
-}
-
-bool GraphicSinglyLinkedList::animatePopBack() {
-    int Kth = 0;
-    assert(pHead != nullptr);
-    assert(pHead->pNext != nullptr);
-    GraphicSinglyNode* curr = pHead;
-    Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr);
-    for (; curr->pNext->pNext != nullptr; curr = curr->pNext) {
-        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, &curr->aNext);
-        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr->pNext);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, &curr->aNext);
-    }
-    registerNode(curr->pNext);
-    Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, &curr->aNext);
-    Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr->pNext);
-    Animate::queueOfScenes.pushSlideOutToNewKthScene(++Kth, &curr->aNext);
-    curr->aNext.unfocus();
-    Animate::queueOfScenes.pushFadeOutToNewKthScene(++Kth, curr->pNext);
-    Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr);
-    Animate::queueOfScenes.pushToNewKthScene(++Kth, std::bind(&unRegisterAndDeleteNode, this, curr->pNext));
-    Animate::queueOfScenes.pushToNewKthScene(++Kth, [curr]() {
-        curr->unSetNext();
-        return true;
-    });
-    return true;
-}
-
-ExitStatus GraphicSinglyLinkedList::popAtKth(int k) {
-    if (k < 0 || k >= core.size()) {
-        return ExitStatus(false, "Out of range");
-    }
-    if (k == 0) {
-        return popFront();
-    }
-    if (k == core.size()-1) {
-        return popBack();
-    }
-    core.popAtKth(k);
-    // Animate::queueOfScenes.pushToNewScene(std::bind(&unfocusAllNodes, this));
-    Animate::queueOfScenes.pushToNewScene(std::bind(&animatePopAtKth, this, k));
-    return ExitStatus(true, "");
-}
-
-bool GraphicSinglyLinkedList::animatePopAtKth(int k) {
-    int Kth = 0;
-    assert(pHead != nullptr);
-    GraphicSinglyNode* curr = pHead;
-    Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr);
-    for (; --k; curr = curr->pNext) {
-        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, &curr->aNext);
-        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr->pNext);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr);
-        Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, &curr->aNext);
-    }
-    assert(curr != nullptr);
-    assert(curr->pNext != nullptr);
-    Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, &curr->aNext);
-    Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr->pNext);
-    Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, &curr->pNext->aNext);
-    Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr->pNext->pNext);
-    Animate::queueOfScenes.pushTransformToNewKthScene(++Kth, curr->pNext, 0, Graphic::SLL_NODE_DIST);
-    Animate::queueOfScenes.pushRedirectToKthScene(Kth, curr, curr->pNext->pNext);
-    // Animate::queueOfScenes.pushRedirectToNewKthScene(2, curr, curr->pNext->pNext);
-    registerNode(curr->pNext);
-    Animate::queueOfScenes.pushSlideOutToNewKthScene(++Kth, &curr->pNext->aNext);
-    Animate::queueOfScenes.pushFadeOutToNewKthScene(++Kth, curr->pNext);
-    Animate::queueOfScenes.pushToNewKthScene(++Kth, std::bind(&unRegisterAndDeleteNode, this, curr->pNext));
-    Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr);
-    Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, &curr->aNext);
-    Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr->pNext->pNext);
-    curr->pNext = curr->pNext->pNext;
-    Animate::queueOfScenes.pushToNewKthScene(++Kth, std::bind(&transformAllNodesFrom, this, -Graphic::SLL_NODE_DIST, 0, curr->pNext));
-    return true;
-}
-
-ExitStatus GraphicSinglyLinkedList::searchFirst(int val) {
-    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
-        return ExitStatus(false, "Value out of range, accept from " + cf::num2str(Core::NODE_MIN_VALUE) + " to " + cf::num2str(Core::NODE_MAX_VALUE));
-    }
-    // Animate::queueOfScenes.pushToNewScene(std::bind(&unfocusAllNodes, this));
-    Animate::queueOfScenes.pushToNewScene(std::bind(&animateSearchFirst, this, val));
-    return ExitStatus(core.search(val), "");
-}
-
-ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
-    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
-        return ExitStatus(false, "Value out of range, accept from " + cf::num2str(Core::NODE_MIN_VALUE) + " to " + cf::num2str(Core::NODE_MAX_VALUE));
-    }
-
-    OperationsGroups<GraphicSinglyLinkedList> group;
-
+    ALOG->backGroup()->pushFinObj(this);
     //
-    group.reset();
-    group.setObj(this);
-    group.pushBackFunc(std::bind(&animateUnfocusAllNodes, this));
-    unfocusAllNodes();
-    ALOG->pushBackGroup(group);
+
+    std::cerr << " >> OVER\n";
+
+    return ExitStatus(true, "");
+}
+
+ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG, Codeblock* codeblock) {
+    if (size == Core::MAX_NUM_NODE_SLL) {
+        return ExitStatus(false, "The size reach the maximum size allowed is " + cf::num2str(Core::MAX_NUM_NODE_SLL));
+    }
+    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
+        return ExitStatus(false, "Value is out of range");
+    }
+
+    // Unfocus All node
+    unfocusAllNodes(ALOG);
+    // ---
+
+    size++;
+
+    if (pHead == nullptr) {
+        // line number 0
+        pHead = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y + Graphic::SLL_NODE_DIST, Graphic::NODE_SIZE, false, val);
+        ALOG->addNewGroup();
+        ALOG->backGroup()->pushHighlightLines({0}, codeblock);
+        ALOG->backGroup()->pushStaObj(this);
+            std::cerr << "GSLL::pushFront -> ALOG->bg x,y " << ALOG->backGroup()->staObj.pHead->x << ' ' << ALOG->backGroup()->staObj.pHead->y << '\n'; 
+            animateFadeInAtKthNode(0, true, ALOG->backGroup());
+            pHead->appear();
+            animateFocusAtKthNode(0, false, ALOG->backGroup());
+            pHead->focus();
+            animateFocusAtKthNodeBorder(0, false, ALOG->backGroup());
+            pHead->focusBorder();
+        ALOG->backGroup()->pushFinObj(this);
+        // ---
+
+        // line number 1
+        ALOG->addNewGroup();
+        ALOG->backGroup()->pushHighlightLines({1}, codeblock);
+        ALOG->backGroup()->pushStaObj(this);
+            animateDelay(true, ALOG->backGroup());
+        ALOG->backGroup()->pushFinObj(this);
+        // ---
+
+        // line number 2
+        ALOG->addNewGroup();
+        ALOG->backGroup()->pushHighlightLines({2}, codeblock);
+        ALOG->backGroup()->pushStaObj(this);
+            animateTransformAtKthNode(0, 0, -Graphic::SLL_NODE_DIST, true, ALOG->backGroup());
+            pHead->transform(0, -Graphic::SLL_NODE_DIST);
+        ALOG->backGroup()->pushFinObj(this);
+        // ---
+    } else {
+        // line number 0
+        GraphicSinglyNode* newNode = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y + Graphic::SLL_NODE_DIST, Graphic::NODE_SIZE, false, val, pHead);
+        pHead = newNode;
+        ALOG->addNewGroup();
+        ALOG->backGroup()->pushHighlightLines({0}, codeblock);
+        ALOG->backGroup()->pushStaObj(this);
+            animateFadeInAtKthNode(0, true, ALOG->backGroup());
+            newNode->appear();
+            animateFocusAtKthNode(0, false, ALOG->backGroup());
+            newNode->focus();
+            animateFocusAtKthNodeBorder(0, false, ALOG->backGroup());
+            newNode->focusBorder();
+        ALOG->backGroup()->pushFinObj(this);
+        // ---
+
+        // line number 1
+        ALOG->addNewGroup();
+        ALOG->backGroup()->pushHighlightLines({1}, codeblock);
+        ALOG->backGroup()->pushStaObj(this);
+            animateSlideInAtKthArrow(0, true, ALOG->backGroup());
+            newNode->aNext.maximize();
+            animateFadeInAtKthArrow(0, false, ALOG->backGroup());
+            newNode->aNext.appear();
+            animateFocusAtKthArrow(0, false, ALOG->backGroup());
+            newNode->aNext.focus();
+        ALOG->backGroup()->pushFinObj(this);
+        // ---
+
+        // line number 2
+        ALOG->addNewGroup();
+        ALOG->backGroup()->pushHighlightLines({2}, codeblock);
+        ALOG->backGroup()->pushStaObj(this);
+            animateTransformAtKthNode(0, 0, -Graphic::SLL_NODE_DIST, true, ALOG->backGroup());
+            newNode->transform(0, -Graphic::SLL_NODE_DIST);
+            animateTransformAllNodesFrom(1, Graphic::SLL_NODE_DIST, 0, false, ALOG->backGroup());
+            transformAllNodesFrom(1, Graphic::SLL_NODE_DIST, 0);
+            animateUnfocusAtKthArrow(0, false, ALOG->backGroup());
+            newNode->aNext.unfocus();
+        ALOG->backGroup()->pushFinObj(this);
+        // ---
+    }
+    
+    return ExitStatus(true, "");
+}
+
+ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG, Codeblock* codeblock) {
+    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
+        return ExitStatus(false, "Value out of range, accept from " + cf::num2str(Core::NODE_MIN_VALUE) + " to " + cf::num2str(Core::NODE_MAX_VALUE));
+    }
+
+    // Unfocus all Nodes
+    unfocusAllNodes(ALOG);
     // ---
 
 
-    // std::cerr << "code line 0\n";
     if (pHead == nullptr) {
         // code line 0
-        group.reset();
-        group.setObj(this);
-        group.setHighlightLines({0});
-        ALOG->pushBackGroup(group);
+        ALOG->addNewGroup();
+        ALOG->backGroup()->pushHighlightLines({0}, codeblock);
+        ALOG->backGroup()->pushStaObj(this);
+        ALOG->backGroup()->pushFinObj(this);
         // ---
         return ExitStatus(true, "");
     }
@@ -472,14 +392,14 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
     GraphicSinglyNode* curr = pHead;
 
     // code line 1, 2
-    group.reset();
-    group.setObj(this);
-    group.setHighlightLines({1, 2});
-    group.pushBackFunc(std::bind(&animateFocusAtKthNode, this, 0, true));
-    curr->focus();
-    group.pushBackFunc(std::bind(&animateFocusAtKthNodeBorder, this, 0, false));
-    curr->focusBorder();
-    ALOG->pushBackGroup(group);
+    ALOG->addNewGroup();
+    ALOG->backGroup()->pushHighlightLines({1, 2}, codeblock);
+    ALOG->backGroup()->pushStaObj(this);
+        animateFocusAtKthNode(0, true, ALOG->backGroup());
+        curr->focus();
+        animateFocusAtKthNodeBorder(0, false, ALOG->backGroup());
+        curr->focusBorder();
+    ALOG->backGroup()->pushFinObj(this);
     // ---
 
     // std::cerr << "code line 4, 5\n";
@@ -489,37 +409,37 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
         id++; 
         if (curr != nullptr) {
             // code line 3
-            group.reset();
-            group.setObj(this);
-            group.setHighlightLines({3});
-            group.pushBackFunc(std::bind(&animateUnfocusAtKthNode, this, id-1, true));
-            pre->unfocus();
-            ALOG->pushBackGroup(group);
+            ALOG->addNewGroup();
+            ALOG->backGroup()->pushHighlightLines({3}, codeblock);
+            ALOG->backGroup()->pushStaObj(this);
+                animateUnfocusAtKthNode(id-1, true, ALOG->backGroup());
+                pre->unfocus();
+            ALOG->backGroup()->pushFinObj(this);
             // ---
 
             // code line 4, 5
-            group.reset();
-            group.setObj(this);
-            group.setHighlightLines({4, 5});
-            group.pushBackFunc(std::bind(&animateFocusAtKthArrow, this, id-1, true));
-            pre->aNext.focus();
-            group.pushBackFunc(std::bind(&animateFocusAtKthNode, this, id, true));
-            curr->focus();
-            group.pushBackFunc(std::bind(&animateFocusAtKthNodeBorder, this, id, false));
-            curr->focusBorder();
-            ALOG->pushBackGroup(group);
+            ALOG->addNewGroup();
+            ALOG->backGroup()->pushHighlightLines({4, 5}, codeblock);
+            ALOG->backGroup()->pushStaObj(this);
+                animateFocusAtKthArrow(id-1, true, ALOG->backGroup());
+                pre->aNext.focus();
+                animateFocusAtKthNode(id, false, ALOG->backGroup());
+                curr->focus();
+                animateFocusAtKthNodeBorder(id, false, ALOG->backGroup());
+                curr->focusBorder();
+            ALOG->backGroup()->pushFinObj(this);
             // ---
         }
 
         // std::cerr << "code line 5, 6\n";
         if (curr == nullptr) {
             // code line 5, 6
-            group.reset();
-            group.setObj(this);
-            group.setHighlightLines({5, 6});
-            group.pushBackFunc(std::bind(&animateUnfocusAtKthNode, this, id-1, true));
-            pre->unfocus();
-            ALOG->pushBackGroup(group);
+            ALOG->addNewGroup();
+            ALOG->backGroup()->pushHighlightLines({5, 6}, codeblock);
+            ALOG->backGroup()->pushStaObj(this);
+                animateUnfocusAtKthNode(id-1, true, ALOG->backGroup());
+                pre->unfocus();
+            ALOG->backGroup()->pushFinObj(this);
             // ---
             return ExitStatus(true, "");
         }
@@ -527,107 +447,45 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
 
     // std::cerr << "code line 8\n";
     // code line 8
-    group.reset();
-    group.setObj(this);
-    group.setHighlightLines({8});
-    ALOG->pushBackGroup(group);
+    ALOG->addNewGroup();
+    ALOG->backGroup()->pushHighlightLines({8}, codeblock);
+    ALOG->backGroup()->pushStaObj(this);
+    ALOG->backGroup()->pushFinObj(this);
     // ---
 
     return ExitStatus(true, "");
 }
 
-bool GraphicSinglyLinkedList::animateSearchFirst(int val) {
-    if (pHead != nullptr) {
-        int Kth = 0;
-        Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, pHead);
-        GraphicSinglyNode* curr = pHead;
-        for (; curr != nullptr; curr = curr->pNext) {
-            if (curr->nVal == val) {
-                Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr);
-                break;
-            } else if (curr->pNext != nullptr) {
-                Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, &curr->aNext);
-                Animate::queueOfScenes.pushFocusToNewKthScene(++Kth, curr->pNext);
-                Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr);
-                Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, &curr->aNext);
-            } else {
-                Animate::queueOfScenes.pushUnfocusToNewKthScene(++Kth, curr);
-            }
-        }
-    }
-    return true;
-}
-
 void GraphicSinglyLinkedList::draw() {
-    // std::cerr << " >> node x: ";
-    // for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-    //     std::cerr << curr->x << ' ';
-    // }
-    // std::cerr << '\n';
-    // std::cerr << " >> node y: ";
-    // for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-    //     std::cerr << curr->y << ' ';
-    // }
-    // std::cerr << '\n';
-    // std::cerr << " >> node address: ";
-    // for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-    //     std::cerr << curr << ' ';
-    // }
-    // std::cerr << '\n';
+    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+        std::cerr << curr->x << ' '; 
+    }
+    std::cerr << '\n';
     for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
         curr->draw();
     }
-    for (auto curr = separatedNodes.begin(); curr != separatedNodes.end(); ++curr) {
-        (*curr)->draw();
-    }
 }
 
-void GraphicSinglyLinkedList::makeCopy(const GraphicSinglyLinkedList &src) {
+void GraphicSinglyLinkedList::makeCopy(GraphicSinglyLinkedList* src) {
     destroy();
-    if (src.pHead != nullptr) {
-        std::map<GraphicSinglyNode*, GraphicSinglyNode*> refer;
+    if (src->pHead != nullptr) {
         pHead = new GraphicSinglyNode;
-        pHead->makeCopy(*src.pHead);
-        refer[src.pHead] = pHead;
+        pHead->makeCopy(src->pHead);
         GraphicSinglyNode* curr = pHead;
-        GraphicSinglyNode* srcCurr = src.pHead;
+        GraphicSinglyNode* srcCurr = src->pHead;
         for (; srcCurr->pNext != nullptr; curr = curr->pNext, srcCurr = srcCurr->pNext) {
             GraphicSinglyNode* tmp = new GraphicSinglyNode;
-            tmp->makeCopy(*srcCurr->pNext);
+            tmp->makeCopy(srcCurr->pNext);
             curr->setNext(tmp);
             curr->aNext.copyAttribute(srcCurr->aNext);
-            refer[srcCurr->pNext] = curr->pNext;
         }
-        for (GraphicSinglyNode* curr : src.separatedNodes) {
-            separatedNodes.push_back(refer[curr]);
-        }
-    }
-}
-
-void GraphicSinglyLinkedList::copyAttributes(const GraphicSinglyLinkedList &src) {
-    std::map<GraphicSinglyNode*, GraphicSinglyNode*> refer;
-    GraphicSinglyNode* curr = pHead;
-    GraphicSinglyNode* srcCurr = src.pHead;
-    for (; srcCurr != nullptr; curr = curr->pNext, srcCurr = srcCurr->pNext) {
-        curr->makeCopy(*srcCurr);
-        curr->aNext.copyAttribute(srcCurr->aNext);
-        refer[srcCurr->pNext] = curr->pNext;
-    }
-    separatedNodes.clear();
-    for (GraphicSinglyNode* curr : src.separatedNodes) {
-        separatedNodes.push_back(refer[curr]);
     }
 }
 
 void GraphicSinglyLinkedList::destroy() {
-    core.destroy();
     while (pHead != nullptr) {
         GraphicSinglyNode* tmp = pHead;
         pHead = pHead->pNext;
         delete tmp;
     }
-    for (auto node : separatedNodes) {
-        delete node;
-    }
-    separatedNodes.clear();
 }

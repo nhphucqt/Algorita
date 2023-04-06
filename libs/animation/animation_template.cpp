@@ -5,81 +5,86 @@
 
 // DO NOT USE DIRECTLY
 template<typename T> 
-bool Animate::fadeIn(T* obj, double* currTime, double fadeTime) {
-    if (*currTime + elapseTime >= fadeTime) {
-        obj->transparent = 1;
+bool Animate::fadeIn(T* obj, double* currTime, bool* isReversed) {
+    if (*currTime >= FADEIN_TIME) {
+        obj->appear();
         return true;
     } else {
-        obj->transparent = (*currTime + elapseTime) / fadeTime;
+        obj->transparent = *currTime / FADEIN_TIME;
         return false;
     }
 }
 
 // DO NOT USE DIRECTLY
 template<typename T>
-bool Animate::fadeOut(T* obj, double *currTime, double fadeTime) {
-    if (*currTime + elapseTime >= fadeTime) {
-        obj->transparent = 0;
+bool Animate::fadeOut(T* obj, double *currTime, bool* isReversed) {
+    if (*currTime >= FADEOUT_TIME) {
+        obj->vanish();
         return true;
     } else {
-        obj->transparent = 1.0 - (*currTime + elapseTime) / fadeTime;
+        obj->transparent = 1.0 - (*currTime) / FADEOUT_TIME;
         return false;
     }
 }
 
 // DO NOT USE DIRECTLY
 template<typename T>
-bool Animate::displace(T* obj, int Dx, int Dy, double* currTime, double transTime) {
-    double Ux = Dx - obj->lx;
-    double Uy = Dy - obj->ly;
-    double leng = sqrt(Ux*Ux + Uy*Uy);
-    double distance = bezier(leng, transTime, std::min(transTime, (*currTime) + (elapseTime)));
-    obj->x = obj->lx + Ux / leng * distance;
-    obj->y = obj->ly + Uy / leng * distance;
-    if ((*currTime) + elapseTime >= transTime) {
+bool Animate::displace(T* obj, int Dx, int Dy, double* currTime, bool* isReversed) {
+    std::cerr << "obj->x,y " << obj->lx << ' ' << obj->ly << ' ' << obj->x << ' ' << obj->y << ' ' << *currTime << ' ' << *isReversed << '\n';
+    if (*currTime >= TRANS_TIME) {
         obj->lx = obj->x = Dx;
         obj->ly = obj->y = Dy;
         return true;
     } else {
+        double Ux = Dx - obj->lx;
+        double Uy = Dy - obj->ly;
+        std::cerr << "Ux,Uy " << Ux << ' ' << Uy << '\n';
+        double leng = sqrt(Ux*Ux + Uy*Uy);
+        std::cerr << "leng " << leng << '\n';
+        double distance = bezier(leng, TRANS_TIME, std::min((double)TRANS_TIME, *currTime));
+        std::cerr << "distance " << distance << '\n';
+        obj->x = obj->lx + Ux / leng * distance;
+        obj->y = obj->ly + Uy / leng * distance;
+        std::cerr << "new obj->x,y " << obj->x << ' ' << obj->y << '\n';
         return false;
     }
 }
 
 // DO NOT USE DIRECTLY
 template<typename T>
-bool Animate::transform(T* obj, int Tx, int Ty, double* currTime, double transTime) {
-    return displace(obj, obj->lx + Tx, obj->ly + Ty, currTime, transTime);
+bool Animate::transform(T* obj, int Tx, int Ty, double* currTime, bool* isReversed) {
+    return displace(obj, obj->lx + Tx, obj->ly + Ty, currTime, isReversed);
 }
 
 // DO NOT USE DIRECTLY
 template<typename T>
-bool Animate::slideIn(T* obj, double* currTime, double slideTime) {
-    if (*currTime + elapseTime >= slideTime) {
+bool Animate::slideIn(T* obj, double* currTime, bool* isReversed) {
+    if (*currTime >= SLIDE_TIME) {
         obj->percent = 1;
         return true;
     } else {
-        obj->percent = (*currTime + elapseTime) / slideTime;
+        obj->percent = (*currTime) / SLIDE_TIME;
         return false;
     }
 }
 
 // DO NOT USE DIRECTLY
 template<typename T>
-bool Animate::slideOut(T* obj, double* currTime, double slideTime) {
-    if (*currTime + elapseTime >= slideTime) {
+bool Animate::slideOut(T* obj, double* currTime, bool* isReversed) {
+    if (*currTime >= SLIDE_TIME) {
         obj->percent = 0;
         return true;
     } else {
-        obj->percent = 1.0 - (*currTime + elapseTime) / slideTime;
+        obj->percent = 1.0 - (*currTime) / SLIDE_TIME;
         return false;
     }
 }
 
 // DO NOT USE DIRECTLY
 template<typename T>
-bool Animate::redirect(T* A, T* C, double* currTime, double travelTime) {
+bool Animate::redirect(T* A, T* C, double* currTime, bool* isReversed) {
     assert(A->pNext != nullptr);
-    if (*currTime + elapseTime >= travelTime) {
+    if (*currTime >= TRAVEL_TIME) {
         float _transparent = A->aNext.transparent;
         float _percent = A->aNext.percent;
         A->updateNext(C);
@@ -105,7 +110,7 @@ bool Animate::redirect(T* A, T* C, double* currTime, double travelTime) {
     // newB -> newC
     Vector2 BC = newC - newB;
 
-    A->aNext.transB = BC * (*currTime / travelTime);
+    A->aNext.transB = BC * ((*currTime) / TRAVEL_TIME);
 
     // newB + A->aNext.transB
     A->aNext.transA = A->outerShapeOut(newB + A->aNext.transB - cA) - A->outerShapeOut(AB);
@@ -114,278 +119,172 @@ bool Animate::redirect(T* A, T* C, double* currTime, double travelTime) {
 }
 
 template<typename T>
-bool Animate::focus(T* obj, double* currTime, double focusTime) {
-    if (*currTime + elapseTime >= focusTime) {
+bool Animate::focus(T* obj, double* currTime, bool* isReversed) {
+    if (*currTime >= FOCUS_TIME) {
         obj->focus();
         return true;
     }
-    obj->focusPercent = (*currTime + elapseTime) / focusTime;
+    obj->focusPercent = (*currTime) / FOCUS_TIME;
     return false;
 }
 
 template<typename T>
-bool Animate::unfocus(T* obj, double* currTime, double unfocusTime) {
-    if (*currTime + elapseTime >= unfocusTime) {
+bool Animate::unfocus(T* obj, double* currTime, bool* isReversed) {
+    if (*currTime >= UNFOCUS_TIME) {
         obj->unfocus();
         return true;
     }
-    obj->focusPercent = 1.0 - (*currTime + elapseTime) / unfocusTime;
+    obj->focusPercent = 1.0 - (*currTime) / UNFOCUS_TIME;
     return false;
 }
 
 template<typename T> 
-bool Animate::focusBorder(T* obj, double* currTime, double focusTime) {
-    if (*currTime + elapseTime >= focusTime) {
+bool Animate::focusBorder(T* obj, double* currTime, bool* isReversed) {
+    if (*currTime >= FOCUS_TIME) {
         obj->focusBorder();
         return true;
     }
-    obj->focusBorderPercent = (*currTime + elapseTime) / focusTime;
+    obj->focusBorderPercent = (*currTime) / FOCUS_TIME;
     return false;
 }
 
 template<typename T> 
-bool Animate::unfocusBorder(T* obj, double* currTime, double unfocusTime) {
-    if (*currTime + elapseTime >= unfocusTime) {
+bool Animate::unfocusBorder(T* obj, double* currTime, bool* isReversed) {
+    if (*currTime >= UNFOCUS_TIME) {
         obj->unfocusBorder();
         return true;
     }
-    obj->focusBorderPercent = 1.0 - (*currTime + elapseTime) / unfocusTime;
+    obj->focusBorderPercent = 1.0 - (*currTime) / UNFOCUS_TIME;
     return false;
 }
 
 template<typename T>
-bool Animate::fadeInKthNode(T* obj, int k, double *currTime, double fadeTime) {
-    return fadeIn(obj->KthNode(k), currTime, fadeTime);
+bool Animate::fadeInKthNode(T* obj, int k, double *currTime, bool* isReversed) {
+    return fadeIn(obj->KthNode(k), currTime, isReversed);
 }
 
 template<typename T>
-bool Animate::fadeOutKthNode(T* obj, int k, double *currTime, double fadeTime) {
-    return fadeOut(obj->KthNode(k), currTime, fadeTime);
+bool Animate::fadeOutKthNode(T* obj, int k, double *currTime, bool* isReversed) {
+    return fadeOut(obj->KthNode(k), currTime, isReversed);
 }
 
 template<typename T> 
-bool Animate::focusKthNode(T* obj, int k, double *currTime, double focusTime) {
-    return focus(obj->KthNode(k), currTime, focusTime);
+bool Animate::fadeInKthArrow(T* obj, int k, double *currTime, bool* isReversed) {
+    return fadeIn(&obj->KthNode(k)->aNext, currTime, isReversed);
 }
 
 template<typename T> 
-bool Animate::unfocusKthNode(T* obj, int k, double *currTime, double unfocusTime) {
-    return unfocus(obj->KthNode(k), currTime, unfocusTime);
+bool Animate::fadeOutKthArrow(T* obj, int k, double *currTime, bool* isReversed) {
+    return fadeOut(&obj->KthNode(k)->aNext, currTime, isReversed);
 }
 
 template<typename T> 
-bool Animate::focusKthNodeBorder(T* obj, int k, double *currTime, double focusTime) {
-    return focusBorder(obj->KthNode(k), currTime, focusTime);
+bool Animate::focusKthNode(T* obj, int k, double *currTime, bool* isReversed) {
+    return focus(obj->KthNode(k), currTime, isReversed);
 }
 
 template<typename T> 
-bool Animate::unfocusKthNodeBorder(T* obj, int k, double *currTime, double unfocusTime) {
-    return unfocusBorder(obj->KthNode(k), currTime, unfocusTime);
+bool Animate::unfocusKthNode(T* obj, int k, double *currTime, bool* isReversed) {
+    return unfocus(obj->KthNode(k), currTime, isReversed);
 }
 
 template<typename T> 
-bool Animate::focusKthArrow(T* obj, int k, double *currTime, double focusTime) {
-    return focus(&obj->KthNode(k)->aNext, currTime, focusTime);
+bool Animate::focusKthNodeBorder(T* obj, int k, double *currTime, bool* isReversed) {
+    return focusBorder(obj->KthNode(k), currTime, isReversed);
 }
 
 template<typename T> 
-bool Animate::unfocusKthArrow(T* obj, int k, double *currTime, double unfocusTime) {
-    return unfocus(&obj->KthNode(k)->aNext, currTime, unfocusTime);
+bool Animate::unfocusKthNodeBorder(T* obj, int k, double *currTime, bool* isReversed) {
+    return unfocusBorder(obj->KthNode(k), currTime, isReversed);
+}
+
+template<typename T> 
+bool Animate::focusKthArrow(T* obj, int k, double *currTime, bool* isReversed) {
+    return focus(&obj->KthNode(k)->aNext, currTime, isReversed);
+}
+
+template<typename T> 
+bool Animate::unfocusKthArrow(T* obj, int k, double *currTime, bool* isReversed) {
+    return unfocus(&obj->KthNode(k)->aNext, currTime, isReversed);
+}
+
+template<typename T> 
+bool Animate::displaceKthNode(T* obj, int k, int Dx, int Dy, double *currTime, bool* isReversed) {
+    return displace(obj->KthNode(k), Dx, Dy, currTime, isReversed);
+}
+
+template<typename T> 
+bool Animate::transformKthNode(T* obj, int k, int Tx, int Ty, double *currTime, bool* isReversed) {
+    return transform(obj->KthNode(k), Tx, Ty, currTime, isReversed);
+}
+
+template<typename T> 
+bool Animate::slideInKthArrow(T* obj, int k, double *currTime, bool* isReversed) {
+    return slideIn(&obj->KthNode(k)->aNext, currTime, isReversed);
+}
+
+template<typename T> 
+bool Animate::slideOutKthArrow(T* obj, int k, double *currTime, bool* isReversed) {
+    return slideOut(&obj->KthNode(k)->aNext, currTime, isReversed);
 }
 
 template<typename OT, typename MT>
-bool Animate::unfocusAllNodes(OT* obj, double* currTime, double unfocusTime) {
+bool Animate::unfocusAllNodes(OT* obj, double* currTime, bool* isReversed) {
+    std::cerr << " start unfocusAllNodes\n";
     bool done = true;
     for (MT* curr = obj->pHead; curr != nullptr; curr = curr->pNext) {
+        std::cerr << curr << ' ' << curr->isFocus << '\n';
         if (curr->isFocus) {
-            done &= unfocus(curr, currTime, unfocusTime);
+            done &= unfocus(curr, currTime, isReversed);
         }
+        std::cerr << curr << ' ' << curr->isFocusBorder << '\n';
         if (curr->isFocusBorder) {
-            done &= unfocusBorder(curr, currTime, unfocusTime);
+            done &= unfocusBorder(curr, currTime, isReversed);
         }
+        std::cerr << curr << ' ' << curr->aNext.isFocus << '\n';
         if (curr->aNext.isFocus) {
-            done &= unfocus(&curr->aNext, currTime, unfocusTime);
+            done &= unfocus(&curr->aNext, currTime, isReversed);
+        }
+    }
+    std::cerr << " done unfocusAllNodes " << done << '\n';
+    return done;
+}
+
+template<typename OT, typename MT> 
+bool Animate::fadeInAllNodes(OT* obj, double* currTime, bool* isReversed) {
+    bool done = true;
+    for (MT* curr = obj->pHead; curr != nullptr; curr = curr->pNext) {
+        if (!curr->isAppear) {
+            done &= fadeIn(curr, currTime, isReversed);
+        }
+        if (!curr->aNext.isAppear) {
+            done &= fadeIn(&curr->aNext, currTime, isReversed);
         }
     }
     return done;
 }
 
-
-// Push To Front Scene
-template<typename T>
-void Animate::QueueOfScenes::pushFadeInToFrontScene(T* obj, double fadeTime) {
-    pushToFrontScene(
-        std::bind(&fadeIn<T>, obj, &currTime, fadeTime)
-    );
+template<typename OT, typename MT> 
+bool Animate::fadeOutAllNodes(OT* obj, double* currTime, bool* isReversed) {
+    bool done = true;
+    for (MT* curr = obj->pHead; curr != nullptr; curr = curr->pNext) {
+        if (curr->isAppear) {
+            done &= fadeOut(curr, currTime, isReversed);
+        }
+        if (curr->aNext.isAppear) {
+            done &= fadeOut(&curr->aNext, currTime, isReversed);
+        }
+    }
+    return done;
 }
 
-template<typename T>
-void Animate::QueueOfScenes::pushFadeOutToFrontScene(T* obj, double fadeTime) {
-    pushToFrontScene(
-        std::bind(&fadeOut<T>, obj, &currTime, fadeTime)
-    );
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushDisplaceToFrontScene(T* obj, int Dx, int Dy, double transTime) {
-    pushToFrontScene(std::bind(&displace<T>, obj, Dx, Dy, &currTime, transTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushTransformToFrontScene(T* obj, int Tx, int Ty, double transTime) {
-    pushToFrontScene(std::bind(&transform<T>, obj, Tx, Ty, &currTime, transTime));
-}
-
-// Push To Back Scene
-template<typename T>
-void Animate::QueueOfScenes::pushFadeInToBackScene(T* obj, double fadeTime) {
-    pushToBackScene(std::bind(&fadeIn<T>, obj, &currTime, fadeTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushFadeOutToBackScene(T* obj, double fadeTime) {
-    pushToBackScene(std::bind(&fadeOut<T>, obj, &currTime, fadeTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushDisplaceToBackScene(T* obj, int Dx, int Dy, double transTime) {
-    pushToBackScene(std::bind(&displace<T>, obj, Dx, Dy, &currTime, transTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushFocusToBackScene(T* obj, double focusTime) {
-    pushToBackScene(std::bind(&focus<T>, obj, &currTime, focusTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushUnfocusToBackScene(T* obj, double unfocusTime) {
-    pushToBackScene(std::bind(&unfocus<T>, obj, &currTime, unfocusTime));
-}
-
-// Push To Kth Scene
-template<typename T>
-void Animate::QueueOfScenes::pushFadeInToKthScene(int k, T* obj, double fadeTime) {
-    pushToKthScene(k, std::bind(&fadeIn<T>, obj, &currTime, fadeTime));
-}
-
-
-template<typename T>
-void Animate::QueueOfScenes::pushFadeOutToKthScene(int k, T* obj, double fadeTime) {
-    pushToKthScene(k, std::bind(&fadeOut<T>, obj, &currTime, fadeTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushTransformToKthScene(int k, T* obj, int Tx, int Ty, double transTime) {
-    pushToKthScene(k, std::bind(&transform<T>, obj, Tx, Ty, &currTime, transTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushDisplaceToKthScene(int k, T* obj, int Tx, int Ty, double transTime) {
-    pushToKthScene(k, std::bind(&displace<T>, obj, Tx, Ty, &currTime, transTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushSlideInToKthScene(int k, T* obj, double slideTime) {
-    pushToKthScene(k, std::bind(&slideIn<T>, obj, &currTime, slideTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushSlideOutToKthScene(int k, T* obj, double slideTime) {
-    pushToKthScene(k, std::bind(&slideOut<T>, obj, &currTime, slideTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushRedirectToKthScene(int k, T* A, T* C, double travelTime) {
-    pushToKthScene(k, std::bind(&redirect<T>, A, C, &currTime, travelTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushFocusToKthScene(int k, T* obj, double unfocusTime) {
-    pushToKthScene(k, std::bind(&focus<T>, obj, &currTime, unfocusTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushUnfocusToKthScene(int k, T* obj, double unfocusTime) {
-    pushToKthScene(k, std::bind(&unfocus<T>, obj, &currTime, unfocusTime));
-}
-
-// Push To New Scene
-template<typename T>
-void Animate::QueueOfScenes::pushFadeInToNewScene(T* obj, double fadeTime) {
-    addBlankScene();
-    pushFadeInToBackScene(obj, fadeTime);
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushFadeOutToNewScene(T* obj, double fadeTime) {
-    addBlankScene();
-    pushFadeOutToBackScene(obj, fadeTime);
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushDisplaceToNewScene(T* obj, int Dx, int Dy, double transTime) {
-    addBlankScene();
-    pushDisplaceToBackScene(obj, Dx, Dy, transTime);
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushFocusToNewScene(T* obj, double focusTime) {
-    addBlankScene();
-    pushFocusToBackScene(obj, focusTime);
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushUnfocusToNewScene(T* obj, double unfocusTime) {
-    addBlankScene();
-    pushUnfocusToBackScene(obj, unfocusTime);
-}
-
-// Push To New Kth Scene
-template<typename T>
-void Animate::QueueOfScenes::pushFadeInToNewKthScene(int k, T* obj, double fadeTim) {
-    addBlankSceneToKth(k);
-    pushFadeInToKthScene(k, obj, fadeTim);
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushFadeOutToNewKthScene(int k, T* obj, double fadeTime) {
-    addBlankSceneToKth(k);
-    pushFadeOutToKthScene(k, obj, fadeTime);
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushTransformToNewKthScene(int k, T* obj, int Tx, int Ty, double transTime) {
-    pushToNewKthScene(k, std::bind(&transform<T>, obj, Tx, Ty, &currTime, transTime));
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushSlideInToNewKthScene(int k, T* obj, double slideTime) {
-    addBlankSceneToKth(k);
-    pushSlideInToKthScene(k, obj, slideTime);
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushSlideOutToNewKthScene(int k, T* obj, double slideTime) {
-    addBlankSceneToKth(k);
-    pushSlideOutToKthScene(k, obj, slideTime);
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushRedirectToNewKthScene(int k, T* A, T* C, double travelTime) {
-    addBlankSceneToKth(k);
-    pushRedirectToKthScene(k, A, C, travelTime);
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushFocusToNewKthScene(int k, T* obj, double focusTime) {
-    addBlankSceneToKth(k);
-    pushFocusToKthScene(k, obj, focusTime);
-}
-
-template<typename T>
-void Animate::QueueOfScenes::pushUnfocusToNewKthScene(int k, T* obj, double unfocusTime) {
-    addBlankSceneToKth(k);
-    pushUnfocusToKthScene(k, obj, unfocusTime);
+template<typename OT, typename MT> 
+bool Animate::transformAllNodesFrom(OT* obj, int k, int Tx, int Ty, double* currTime, bool* isReversed) {
+    bool done = true;
+    for (MT* curr = obj->KthNode(k); curr != nullptr; curr = curr->pNext) {
+        done &= transform(curr, Tx, Ty, currTime, isReversed);
+    }
+    return done;
 }
 
 #endif
