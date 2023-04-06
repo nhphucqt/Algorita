@@ -8,6 +8,7 @@ GraphicNode::GraphicNode() {
     foreColor[1] = Gcolor::NODE_FOREGROUND_FOCUS;
     bordColor[0] = Gcolor::NODE_BORDER;
     bordColor[1] = Gcolor::NODE_BORDER_FOCUS;
+    isAppear = false;
     isFocus = false;
     isFocusBorder = false;
     outerShapeIn = outerShapeOut = cf::outerNull;
@@ -32,10 +33,12 @@ Vector2 GraphicNode::getCenter() const {
 
 void GraphicNode::vanish() {
     transparent = 0.0;
+    isAppear = false;
 }
 
 void GraphicNode::appear() {
     transparent = 1.0;
+    isAppear = true;
 }
 
 void GraphicNode::focus() {
@@ -56,6 +59,16 @@ void GraphicNode::focusBorder() {
 void GraphicNode::unfocusBorder() {
     focusBorderPercent = 0.0;
     isFocusBorder = false;
+}
+
+void GraphicNode::transform(int Tx, int Ty) {
+    lx = (x += Tx);
+    ly = (y += Ty);
+}
+
+void GraphicNode::displace(int Dx, int Dy) {
+    lx = x = Dx;
+    ly = y = Dy;
 }
 
 void GraphicNode::setValue(int x) {

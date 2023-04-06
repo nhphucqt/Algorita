@@ -32,6 +32,7 @@ public:
     StyledText val;
 
     // Events
+    bool isAppear;
     bool isFocus;
     bool isFocusBorder;
 
@@ -44,13 +45,21 @@ public:
 
     // Methods
     Vector2 getCenter() const;
+
     void vanish();
     void appear();
+
     void focus();
     void unfocus();
+
     void focusBorder();
     void unfocusBorder();
+
+    void transform(int Tx, int Ty);
+    void displace(int Dx, int Dy);
+
     void setValue(int x);
+
     void draw();
 };
 
