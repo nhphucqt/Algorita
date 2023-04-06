@@ -15,7 +15,7 @@ GraphicTrackArrow::GraphicTrackArrow() {
     transparent = 0.0; // vanish at first
     percent = 0.0;
     focusPercent = 0.0;
-    isTrack = isFocus = false;
+    isTrack = isFocus = isAppear = false;
 }
 
 GraphicTrackArrow::GraphicTrackArrow(const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB) : GraphicTrackArrow() {
@@ -50,14 +50,17 @@ void GraphicTrackArrow::copyAttribute(const GraphicTrackArrow &arrow) {
     focusPercent = arrow.focusPercent;
     isTrack = arrow.isTrack;
     isFocus = arrow.isFocus;
+    isAppear = arrow.isAppear;
 }
 
 void GraphicTrackArrow::vanish() {
     transparent = 0.0;
+    isAppear = false;
 }
 
 void GraphicTrackArrow::appear() {
     transparent = 1.0;
+    isAppear = true;
 }
 
 void GraphicTrackArrow::setTransparent(float _t) {

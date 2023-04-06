@@ -24,7 +24,7 @@ public:
     float transparent;
     float percent;
     float focusPercent;
-    bool isTrack, isFocus;
+    bool isTrack, isFocus, isAppear;
 
     GraphicTrackArrow();
     GraphicTrackArrow(const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB);
