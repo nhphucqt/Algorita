@@ -75,13 +75,14 @@ namespace Gui {
 }
 
 namespace Animate {
-    const float FADEIN_TIME = 0.25;
-    const float FADEOUT_TIME = 0.25;
+    const float FADEIN_TIME = 0.5;
+    const float FADEOUT_TIME = 0.5;
     const float TRANS_TIME = 0.25;
     const float TRAVEL_TIME = 0.5;
     const float SLIDE_TIME = 0.25;
     const float FOCUS_TIME = 0.15;
     const float UNFOCUS_TIME = 0.15;
+    const float DELAY_TIME = 0.25;
 
     inline double elapseTime = 0;
 }

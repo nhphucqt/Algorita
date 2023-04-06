@@ -38,7 +38,6 @@ int main() {
 
     while (!WindowShouldClose()) {
         Animate::elapseTime = GetFrameTime(); // DO NOT DELETE
-        Animate::queueOfScenes.run();
         // std::cerr << " >> q.size() = " << Animate::queueOfScenes.q.size() << '\n';
         BeginDrawing();
             ClearBackground(WHITE);
@@ -53,7 +52,7 @@ int main() {
     // Unload
     Gfont::unloadFont();
 
-    screenSLL.destroy();
+    // screenSLL.destroy();
 
     return 0;
 }
