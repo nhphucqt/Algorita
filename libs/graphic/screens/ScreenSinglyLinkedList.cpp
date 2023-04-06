@@ -15,15 +15,16 @@ Screen::ScreenSinglyLinkedList::ScreenSinglyLinkedList() { // Ensure that obj ha
 }
 
 void Screen::ScreenSinglyLinkedList::draw() {
-    obj.draw();
     // Create type Button
     if (GuiButton(Rectangle{0, 690, 100, 35}, "Create") || currOperationType == OperationType::CREATE) {
         currOperationType = OperationType::CREATE;
         if (GuiButton(Rectangle{110, 690, 80, 35}, "Empty")) {
-            exitMessage.assign(obj.initialize(0).message);
+            ALOG.clearGroup();
+            exitMessage.assign(obj.initialize(0, &ALOG, &codeblock).message);
         }
         if (GuiButton(Rectangle{200, 690, 90, 35}, "Random")) {
-            exitMessage.assign(obj.initialize(GetRandomValue(1, Core::MAX_NUM_NODE_SLL)).message);
+            ALOG.clearGroup();
+            exitMessage.assign(obj.initialize(GetRandomValue(1, Core::MAX_NUM_NODE_SLL), &ALOG, &codeblock).message);
         }
     }
     // Search type Button
@@ -34,12 +35,10 @@ void Screen::ScreenSinglyLinkedList::draw() {
             GuiLabel(Rectangle{130, 760, 45, 35}, "v = ");
             inputSearchFirst.draw();
             if (GuiButton(Rectangle{220, 760, 40, 35}, "Go")) {
-                // exitMessage.assign(obj.searchFirst(inputSearchFirst.getNum()).message);
                 codeblock.load(CPath::SLL_SEARCH_FIRST);
                 ALOG.clearGroup();
-                exitMessage.assign(obj.searchFirst(inputSearchFirst.getNum(), &ALOG).message);
-                ALOG.run(&codeblock);
-            }   
+                exitMessage.assign(obj.searchFirst(inputSearchFirst.getNum(), &ALOG, &codeblock).message);
+            }
         }
     }
     // Insert type Button
@@ -50,7 +49,10 @@ void Screen::ScreenSinglyLinkedList::draw() {
             GuiLabel(Rectangle{146, 795, 45, 35}, "v = ");
             inputInsertFord.draw();
             if (GuiButton(Rectangle{236, 795, 40, 35}, "Go")) {
-                exitMessage.assign(obj.pushFront(inputInsertFord.getNum()).message);
+                codeblock.load(CPath::SLL_INSERT_FORD);
+                ALOG.clearGroup();
+                exitMessage.assign(obj.pushFront(inputInsertFord.getNum(), &ALOG, &codeblock).message);
+                ALOG.run(&codeblock);
             }
         }
         if (GuiButton(Rectangle{286, 760, 166, 35}, "i = N-1 (Tail)") || currOperation == Operation::INSERT_BACK) {
@@ -58,7 +60,7 @@ void Screen::ScreenSinglyLinkedList::draw() {
             GuiLabel(Rectangle{322, 795, 45, 35}, "v = ");
             inputInsertBack.draw();
             if (GuiButton(Rectangle{412, 795, 40, 35}, "Go")) {
-                exitMessage.assign(obj.pushBack(inputInsertBack.getNum()).message);
+                // exitMessage.assign(obj.pushBack(inputInsertBack.getNum()).message);
             }
         }
         if (GuiButton(Rectangle{462, 760, 220, 35}, "Specific position i") || currOperation == Operation::INSERT_MIDD) {
@@ -68,7 +70,7 @@ void Screen::ScreenSinglyLinkedList::draw() {
             GuiLabel(Rectangle{552, 795, 45, 35}, "v = ");
             inputInsertMiddVal.draw();
             if (GuiButton(Rectangle{642, 795, 40, 35}, "Go")) {
-                exitMessage.assign(obj.pushAtKth(inputInsertMiddPos.getNum(), inputInsertMiddVal.getNum()).message);
+                // exitMessage.assign(obj.pushAtKth(inputInsertMiddPos.getNum(), inputInsertMiddVal.getNum()).message);
             }
         }
     }
@@ -76,20 +78,24 @@ void Screen::ScreenSinglyLinkedList::draw() {
     if (GuiButton(Rectangle{0, 795, 100, 35}, "Remove") || currOperationType == OperationType::REMOVE) {
         currOperationType = OperationType::REMOVE;
         if (GuiButton(Rectangle{110, 795, 166, 35}, "i = 0 (Head)")) {
-            exitMessage.assign(obj.popFront().message);
+            // exitMessage.assign(obj.popFront().message);
         } 
         if (GuiButton(Rectangle{286, 795, 166, 35}, "i = N-1 (Tail)")) {
-            exitMessage.assign(obj.popBack().message);
+            // exitMessage.assign(obj.popBack().message);
         }
         if (GuiButton(Rectangle{462, 795, 220, 35}, "Specific position i") || currOperation == Operation::REMOVE_MIDD) {
             currOperation = Operation::REMOVE_MIDD;
             GuiLabel(Rectangle{552, 830, 45, 35}, "i = ");
             inputRemoveMidd.draw();
             if (GuiButton(Rectangle{642, 830, 40, 35}, "Go")) {
-                exitMessage.assign(obj.popAtKth(inputRemoveMidd.getNum()).message);
+                // exitMessage.assign(obj.popAtKth(inputRemoveMidd.getNum()).message);
             }
         }
     }
+
+    ALOG.run(&codeblock);
+
+    obj.draw();
     codeblock.draw(Window::DIMENSION - codeblock.getBlockDimension());
     exitMessage.draw(10, 865, RED);
 
@@ -104,4 +110,5 @@ void Screen::ScreenSinglyLinkedList::draw() {
 
 void Screen::ScreenSinglyLinkedList::destroy() {
     obj.destroy();
+    ALOG.destroy();
 }
