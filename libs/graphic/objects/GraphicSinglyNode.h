@@ -21,7 +21,7 @@ public:
     void updateNext(GraphicSinglyNode* pNode);
     void unSetNext();
 
-    void makeCopy(const GraphicSinglyNode &src); // no change in pNext, aNext
+    void makeCopy(GraphicSinglyNode* src); // no change in pNext, aNext
 
     void draw();
 };

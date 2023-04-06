@@ -43,32 +43,33 @@ void GraphicSinglyNode::unSetNext() {
     aNext.isTrack = false;
 }
 
-void GraphicSinglyNode::makeCopy(const GraphicSinglyNode &src) { // no change in pNext, aNext
-    x = src.x;
-    y = src.y;
-    lx = src.lx;
-    ly = src.ly;
+void GraphicSinglyNode::makeCopy(GraphicSinglyNode* src) { // no change in pNext, aNext
+    x = src->x;
+    y = src->y;
+    lx = src->lx;
+    ly = src->ly;
 
-    size = src.size;
-    bsize = src.bsize;
+    size = src->size;
+    bsize = src->bsize;
 
-    isSqr = src.isSqr;
+    isSqr = src->isSqr;
 
     for (int i = 0; i < 2; ++i) {
-        backColor[i] = src.backColor[i];
-        foreColor[i] = src.foreColor[i];
-        bordColor[i] = src.bordColor[i];
+        backColor[i] = src->backColor[i];
+        foreColor[i] = src->foreColor[i];
+        bordColor[i] = src->bordColor[i];
     }
 
-    transparent = src.transparent;
-    focusPercent = src.focusPercent;
-    focusBorderPercent = src.focusBorderPercent;
+    transparent = src->transparent;
+    focusPercent = src->focusPercent;
+    focusBorderPercent = src->focusBorderPercent;
 
-    nVal = src.nVal;
-    val = src.val;
+    nVal = src->nVal;
+    val = src->val;
 
-    isFocus = src.isFocus;
-    isFocusBorder = src.isFocusBorder;
+    isAppear = src->isAppear;
+    isFocus = src->isFocus;
+    isFocusBorder = src->isFocusBorder;
 
     if (isSqr) {
         outerShapeIn = std::bind(&cf::outerSqur, &size, std::placeholders::_1);
