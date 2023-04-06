@@ -9,28 +9,43 @@
 
 template<typename T>
 class OperationsGroups {
-// private:
 public:
-    T obj;
-    std::list<std::function<void()>> opers;
+// private:
+    T staObj, finObj;
     std::vector<int> highlightLines;
+    Animate::QueueOfScenes opers;
 
 public:
     OperationsGroups();
     
-    void setObj(T* _obj);
-    void pushBackFunc(std::function<void()> f);
-    void setHighlightLines(const std::vector<int> &highlight);
+    void resetOperCur();
 
+    void setStaObj(T* _obj);
+    bool passStaObj(T *dest);
+    void pushStaObj(T* _obj);
+    
+    void setFinObj(T* _obj);
+    bool passFinObj(T *dest);
+    void pushFinObj(T* _obj);
+
+    void pushNew(const std::function<bool()> &f);
+    void pushBack(const std::function<bool()> &f);
+    void pushBlank();
+
+    void setHighlightLines(const std::vector<int> &highlight);
     bool passHighlightLines(Codeblock* codeblock) const;
-    void pushHighlightLines(Codeblock* codeblock) const;
+    void pushHighlightLines(const std::vector<int> &highlight, Codeblock* codeblock);
 
     void reset();
     void clearFunc();
 
-    bool passObj(T *dest) const;
 
-    void run(T* mainObj, bool keep, Codeblock* codeblock = nullptr) const;
+    void setReverse(bool _r);
+
+    double* getCurrTime();
+    bool* getIsReversed();
+
+    bool run();
     void destroy();
 };
 
