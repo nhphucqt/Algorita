@@ -16,11 +16,8 @@ void Codeblock::load(const std::string &path) {
     std::ifstream fin(path);
     assert(fin.is_open());
     std::string li;
-    textDimension = Z_VECT;
-    lineDimension = Z_VECT;
+    reset();
     blockDimension = blockPadding * 2;
-    lines.clear();
-    highlights.clear();
     while (std::getline(fin, li)) {
         lines.emplace_back(li, Gfont::codeFont, spacing);
         blockDimension.x = std::max(blockDimension.x, lines.back().dim.x + (linePadding.x + blockPadding.x) * 2);
@@ -31,6 +28,14 @@ void Codeblock::load(const std::string &path) {
         lineDimension = Vector2{blockDimension.x - blockPadding.x * 2, lines[0].dim.y + linePadding.y * 2};
     }
     fin.close();
+}
+
+void Codeblock::reset() {
+    textDimension = Z_VECT;
+    lineDimension = Z_VECT;
+    blockDimension = Z_VECT;
+    lines.clear();
+    highlights.clear();
 }
 
 Vector2 Codeblock::getBlockDimension() const {
@@ -49,6 +54,10 @@ void Codeblock::setHighlight(const std::vector<int> &_highlights) {
     highlights = _highlights;
 }
 
+void Codeblock::resetHighlight() {
+    highlights.clear();
+}
+
 
 void Codeblock::draw(float x, float y) {
     Vector2 org{(float)x,(float)y};
@@ -57,7 +66,10 @@ void Codeblock::draw(float x, float y) {
         lines[i].draw(org + getLineTextPos(i), foreColor[0]);   
     }
     for (int id : highlights) {
-        assert(0 <= id && id < (int)lines.size());
+        if (id < 0 || id >= (int)lines.size()) {
+            std::cerr << " >> id,lines.size() " << id << ' ' << lines.size() << '\n';
+            assert(0 <= id && id < (int)lines.size());
+        }
         DrawRectangleRec(toRectangle(org + getLineBoxPos(id), lineDimension), backColor[1]);
         lines[id].draw(org + getLineTextPos(id), foreColor[1]);
     }

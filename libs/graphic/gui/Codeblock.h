@@ -12,7 +12,8 @@
 #include "StyledText.h"
 
 class Codeblock {
-private:
+// private:
+public:
     Color backColor[2];
     Color foreColor[2];
 
@@ -30,6 +31,7 @@ public:
     Codeblock();
 
     void load(const std::string &path);
+    void reset();
 
     Vector2 getBlockDimension() const;
 
@@ -37,6 +39,8 @@ public:
     Vector2 getLineTextPos(int id) const; // from (0, 0)
 
     void setHighlight(const std::vector<int> &_highlights);
+    void resetHighlight();
+
     void draw(float x, float y);
     void draw(const Vector2 &pos);
 };
