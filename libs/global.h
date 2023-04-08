@@ -5,8 +5,13 @@
 #include <cmath>
 
 namespace CPath {
-    const char* const SLL_INSERT_FORD = "assets/visual_cpp/sll_insert_ford";
-    const char* const SLL_SEARCH_FIRST = "assets/visual_cpp/sll_search_first";
+    const char* const SLL_SEARCH_FIRST = "assets/visual_cpp/sll/sll_search_first";
+    const char* const SLL_INSERT_FORD = "assets/visual_cpp/sll/sll_insert_ford";
+    const char* const SLL_INSERT_BACK = "assets/visual_cpp/sll/sll_insert_back";
+    const char* const SLL_INSERT_KTH = "assets/visual_cpp/sll/sll_insert_kth";
+    const char* const SLL_REMOVE_FORD = "assets/visual_cpp/sll/sll_remove_ford";
+    const char* const SLL_REMOVE_BACK = "assets/visual_cpp/sll/sll_remove_back";
+    const char* const SLL_REMOVE_KTH = "assets/visual_cpp/sll/sll_remove_kth";
 }
 namespace App {
     const char* const title = "Algorita";
@@ -75,14 +80,17 @@ namespace Gui {
 }
 
 namespace Animate {
-    const float FADEIN_TIME = 0.5;
-    const float FADEOUT_TIME = 0.5;
-    const float TRANS_TIME = 0.25;
-    const float TRAVEL_TIME = 0.5;
-    const float SLIDE_TIME = 0.25;
-    const float FOCUS_TIME = 0.15;
-    const float UNFOCUS_TIME = 0.15;
-    const float DELAY_TIME = 0.25;
+    enum RunType {RUN_ALL, RUN_STEP};
+
+    const float ANIMATE_TIME = 0.5;
+    const float FADEIN_TIME = ANIMATE_TIME;
+    const float FADEOUT_TIME = ANIMATE_TIME;
+    const float TRANS_TIME = ANIMATE_TIME;
+    const float TRAVEL_TIME = ANIMATE_TIME;
+    const float SLIDE_TIME = ANIMATE_TIME;
+    const float FOCUS_TIME = ANIMATE_TIME;
+    const float UNFOCUS_TIME = ANIMATE_TIME;
+    const float DELAY_TIME = ANIMATE_TIME;
 
     inline double elapseTime = 0;
 }
