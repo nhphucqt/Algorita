@@ -21,6 +21,8 @@ public:
     void updateNext(GraphicSinglyNode* pNode);
     void unSetNext();
 
+    void setArrowTrans(GraphicSinglyNode* node);
+
     void makeCopy(GraphicSinglyNode* src); // no change in pNext, aNext
 
     void draw();

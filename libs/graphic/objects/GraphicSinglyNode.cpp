@@ -43,6 +43,30 @@ void GraphicSinglyNode::unSetNext() {
     aNext.isTrack = false;
 }
 
+void GraphicSinglyNode::setArrowTrans(GraphicSinglyNode* node) {
+    Vector2 cA = aNext.pA + toSqrVector2(*aNext.sA / 2);
+    Vector2 cB = aNext.pB + toSqrVector2(*aNext.sB / 2);
+    Vector2 cC = toVector2(node->x, node->y) + toSqrVector2(node->size / 2);
+
+    Vector2 AB = cB - cA;
+    Vector2 BA = cA - cB;
+    Vector2 CA = cA - cC;
+    Vector2 AC = cC - cA;
+
+    Vector2 newB = cB + aNext.ftB(BA);
+    Vector2 newC = cC + node->outerShapeIn(CA);
+
+    Vector2 BC = newC - newB;
+
+    aNext.transA = outerShapeOut(AC) - outerShapeOut(AB);
+    aNext.transB = BC;
+
+    std::cerr << " >> trans A B x y\n";
+    std::cerr << aNext.transA.x << ' ' << aNext.transA.y << '\n';
+    std::cerr << aNext.transB.x << ' ' << aNext.transB.y << '\n';
+}
+
+
 void GraphicSinglyNode::makeCopy(GraphicSinglyNode* src) { // no change in pNext, aNext
     x = src->x;
     y = src->y;
