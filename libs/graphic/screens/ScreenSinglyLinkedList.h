@@ -26,7 +26,6 @@ namespace Screen {
         StyledText exitMessage;
 
         ListOfOperationsGroups<GraphicSinglyLinkedList> ALOG;
-        Codeblock codeblock;
 
     public:
         ScreenSinglyLinkedList();
