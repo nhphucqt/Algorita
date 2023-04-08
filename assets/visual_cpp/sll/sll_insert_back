@@ -1,0 +1,9 @@
+if (head == NULL) 
+    head = new Node(v);
+else {
+    Node* cur = head;
+    while (cur->next != NULL)
+        cur = cur->next;
+    Node* node = new Node(v);
+    cur->next = node;
+}

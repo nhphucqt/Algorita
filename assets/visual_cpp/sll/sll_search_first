@@ -1,4 +1,4 @@
-if (head == nullptr) return NOT_FOUND;
+if (head == NULL) return NOT_FOUND;
 int id = 0;
 Node* cur = head;
 while (curr->val != v) {
