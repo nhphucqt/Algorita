@@ -17,8 +17,6 @@ public:
 
 public:
     OperationsGroups();
-    
-    void resetOperCur();
 
     void setStaObj(T* _obj);
     bool passStaObj(T *dest);
@@ -28,24 +26,18 @@ public:
     bool passFinObj(T *dest);
     void pushFinObj(T* _obj);
 
-    void pushNew(const std::function<bool()> &f);
-    void pushBack(const std::function<bool()> &f);
-    void pushBlank();
+    void push(const std::function<bool()> &f);
 
     void setHighlightLines(const std::vector<int> &highlight);
     bool passHighlightLines(Codeblock* codeblock) const;
     void pushHighlightLines(const std::vector<int> &highlight, Codeblock* codeblock);
 
     void reset();
+
+    // QueueOfScenes methods
     void clearFunc();
-
-
-    void setReverse(bool _r);
-
-    double* getCurrTime();
-    bool* getIsReversed();
-
     bool run();
+
     void destroy();
 };
 
