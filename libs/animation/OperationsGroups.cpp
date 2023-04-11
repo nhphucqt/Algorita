@@ -10,44 +10,6 @@ OperationsGroups<T>::OperationsGroups() {
     // std::cerr << "OG::() resetcur " << (opers.q.end() == opers.iter) << '\n';
 }
 
-
-template<typename T>
-void OperationsGroups<T>::setStaObj(T* _obj) {
-    staObj.makeCopy(_obj);
-}
-
-template<typename T>
-bool OperationsGroups<T>::passStaObj(T* dest) {
-    dest->makeCopy(&staObj);
-    if (dest->pHead != nullptr) {
-        // std::cerr << "OG::passStaObj -> dest x,y " << dest->pHead->x << ' ' << dest->pHead->y << '\n';
-    }
-    return true;
-}
-
-template<typename T>
-void OperationsGroups<T>::pushStaObj(T* _obj) {
-    setStaObj(_obj);
-    pushNew(std::bind(&passStaObj, this, _obj));
-}
-
-template<typename T>
-void OperationsGroups<T>::setFinObj(T* _obj) {
-    finObj.makeCopy(_obj);
-}
-
-template<typename T>
-bool OperationsGroups<T>::passFinObj(T* dest) {
-    dest->makeCopy(&finObj);
-    return true;
-}
-
-template<typename T>
-void OperationsGroups<T>::pushFinObj(T* _obj) {
-    setFinObj(_obj);
-    pushNew(std::bind(&passFinObj, this, _obj));
-}
-
 template<typename T>
 void OperationsGroups<T>::push(const std::function<bool()> &f) {
     opers.push(f);
@@ -73,8 +35,6 @@ void OperationsGroups<T>::pushHighlightLines(const std::vector<int> &highlight, 
 
 template<typename T>
 void OperationsGroups<T>::reset() {
-    staObj.destroy();
-    finObj.destroy();
     clearFunc();
 }
 
@@ -90,8 +50,6 @@ bool OperationsGroups<T>::run() {
 
 template<typename T>
 void OperationsGroups<T>::destroy() {
-    staObj.destroy();
-    finObj.destroy();
     highlightLines.clear();
     opers.clearScenes();
 }

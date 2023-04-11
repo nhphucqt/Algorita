@@ -11,20 +11,11 @@ template<typename T>
 class OperationsGroups {
 public:
 // private:
-    T staObj, finObj;
     std::vector<int> highlightLines;
     Animate::QueueOfScenes opers;
 
 public:
     OperationsGroups();
-
-    void setStaObj(T* _obj);
-    bool passStaObj(T *dest);
-    void pushStaObj(T* _obj);
-    
-    void setFinObj(T* _obj);
-    bool passFinObj(T *dest);
-    void pushFinObj(T* _obj);
 
     void push(const std::function<bool()> &f);
 
