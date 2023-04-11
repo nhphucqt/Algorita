@@ -14,6 +14,14 @@ std::string cf::num2str(int num) {
     }
 }
 
+std::string cf::double2str(double num) {
+    std::stringstream ss;
+    ss << num;
+    std::string str;
+    ss >> str;
+    return str;
+}
+
 int cf::str2num(const std::string &str) {
     int num = 0;
     for (int i = 0; i < (int)str.size(); ++i) {

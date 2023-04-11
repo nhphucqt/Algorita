@@ -4,6 +4,7 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 
 #include "../conf_raylib.h"
 #include "../global.h"
@@ -15,6 +16,7 @@ namespace cf {
         return x * x;
     }
     std::string num2str(int num);
+    std::string double2str(double num);
     int str2num(const std::string &str);
 
     int str2num(const char* str);
