@@ -16,33 +16,29 @@
 class GraphicTrackArrow {
 public:
     float lineWidth, headLength, headWidth;
-    Color lineColor[2], headColor[2];
+    Color slideColor, lineColor, headColor;
     TrVector pA, pB;
     Vector2 transA, transB;
     float *sA, *sB;
     std::function<Vector2(Vector2)> ftA, ftB;
     float transparent;
-    float percent;
-    float focusPercent;
-    bool isTrack, isFocus, isAppear;
+    float percent, slidePercent;
+    bool isTrack, isAppear;
 
     GraphicTrackArrow();
     GraphicTrackArrow(const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB);
     GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB);
     GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB);
 
-    void copyAttribute(const GraphicTrackArrow &arrow);
-
     void vanish();
     void appear();
     void setTransparent(float _t);
-    
-    void focus();
-    void unfocus();
 
     void minimize();
     void maximize();
     void setPercent(float _p);
+
+    void resetColor();
 
     void draw();
 };

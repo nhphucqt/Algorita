@@ -52,7 +52,7 @@ int main() {
     // Unload
     Gfont::unloadFont();
 
-    // screenSLL.destroy();
+    screenSLL.destroy();
 
     return 0;
 }

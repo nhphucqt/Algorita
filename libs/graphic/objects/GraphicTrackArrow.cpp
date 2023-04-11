@@ -4,18 +4,15 @@ GraphicTrackArrow::GraphicTrackArrow() {
     lineWidth = Graphic::ARROW_LINE_WIDTH;
     headLength = Graphic::ARROW_HEAD_LENGTH;
     headWidth = Graphic::ARROW_HEAD_WIDTH;
-    lineColor[0] = Gcolor::ARROW_LINE;
-    lineColor[1] = Gcolor::ARROW_LINE_FOCUS;
-    headColor[0] = Gcolor::ARROW_HEAD;
-    headColor[1] = Gcolor::ARROW_HEAD_FOCUS;
+    resetColor();
     pA = pB = TrVector(nullptr, nullptr);
     transA = transB = Z_VECT;
     sA = sB = nullptr;
     ftA = ftB = cf::outerNull;
     transparent = 0.0; // vanish at first
     percent = 0.0;
-    focusPercent = 0.0;
-    isTrack = isFocus = isAppear = false;
+    slidePercent = 0.0;
+    isTrack = isAppear = false;
 }
 
 GraphicTrackArrow::GraphicTrackArrow(const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB) : GraphicTrackArrow() {
@@ -32,27 +29,6 @@ GraphicTrackArrow::GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By,
 GraphicTrackArrow::GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB) 
 : GraphicTrackArrow(Ax, Ay, Bx, By, _sA, _sB, cf::outerNull, cf::outerNull) {}
 
-void GraphicTrackArrow::copyAttribute(const GraphicTrackArrow &arrow) {
-    lineWidth = arrow.lineWidth;
-    headLength = arrow.headLength;
-    headWidth = arrow.headWidth;
-    lineColor[0] = arrow.lineColor[0];
-    lineColor[1] = arrow.lineColor[1];
-    headColor[0] = arrow.headColor[0];
-    headColor[1] = arrow.headColor[1];
-    // do not copy pA, pB
-    transA = arrow.transA;
-    transB = arrow.transB;
-    // do not copy sA, sB
-    // do not copy ftA, ftB
-    transparent = arrow.transparent;
-    percent = arrow.percent;
-    focusPercent = arrow.focusPercent;
-    isTrack = arrow.isTrack;
-    isFocus = arrow.isFocus;
-    isAppear = arrow.isAppear;
-}
-
 void GraphicTrackArrow::vanish() {
     transparent = 0.0;
     isAppear = false;
@@ -67,16 +43,6 @@ void GraphicTrackArrow::setTransparent(float _t) {
     transparent = _t;
 }
 
-void GraphicTrackArrow::focus() {
-    focusPercent = 1.0;
-    isFocus = true;
-}
-
-void GraphicTrackArrow::unfocus() {
-    focusPercent = 0.0;
-    isFocus = false;
-}
-
 void GraphicTrackArrow::minimize() {
     percent = 0.0;
 }
@@ -87,6 +53,13 @@ void GraphicTrackArrow::maximize() {
 
 void GraphicTrackArrow::setPercent(float _p) {
     percent = _p;
+}
+
+void GraphicTrackArrow::resetColor() {
+    slideColor = Gcolor::ARROW_LINE;
+    lineColor = Gcolor::ARROW_LINE;
+    headColor = Gcolor::ARROW_HEAD;
+    slidePercent = 0.0;
 }
 
 void GraphicTrackArrow::draw() {
@@ -144,8 +117,9 @@ void GraphicTrackArrow::draw() {
         // std::cerr << "              -> newB  = " << newB.x << ' ' << newB.y << '\n';
         assert(CCW(pLeft, pRight, newB));
 
-        DrawLineEx(newA, pCentr, lineWidth, TRNSP(TRANSCOLOR(lineColor[0], lineColor[1], focusPercent), transparent));
-        DrawTriangle(pRight, pLeft, newB, TRNSP(TRANSCOLOR(headColor[0], headColor[1], focusPercent), transparent));
+        DrawLineEx(newA, pCentr, lineWidth, TRNSP(lineColor, transparent));
+        DrawLineEx(newA, newA + ((pCentr - newA) * slidePercent), lineWidth, TRNSP(slideColor, transparent));
+        DrawTriangle(pRight, pLeft, newB, TRNSP(headColor, transparent));
     }
 }
 

@@ -17,7 +17,8 @@ private:
 
 public:
     GuiTextBoxState();
-    GuiTextBoxState(const Rectangle &_bounds, const char* _text, int _textSize, bool _active);
+    void init(const Rectangle &_bounds, const char* _text, int _textSize, bool _active);
+    void init(const Rectangle &_bounds, int _textSize, bool _active);
     ~GuiTextBoxState();
 
     int getNum();

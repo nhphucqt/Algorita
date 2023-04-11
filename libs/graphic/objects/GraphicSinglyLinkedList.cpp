@@ -5,13 +5,21 @@ GraphicSinglyLinkedList::GraphicSinglyLinkedList() {
     size = 0;
 }
 
-void GraphicSinglyLinkedList::unfocusAllNodes() {
+void GraphicSinglyLinkedList::resetColorAllNodes() {
     for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-        curr->unfocus();
-        curr->unfocusBorder();
-        curr->aNext.unfocus();
+        curr->resetColor();
+        curr->aNext.resetColor();
     }
-    // std::cerr << " done unfocusAllNodes : " << ALOG->groups.size() << '\n';
+}
+
+void GraphicSinglyLinkedList::resetSubTextAllNodes() {
+    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+        if (curr == pHead) {
+            curr->setSubText("head");
+        } else {
+            curr->setSubText("");
+        }
+    }
 }
 
 void GraphicSinglyLinkedList::vanishAllNodes() {
@@ -27,6 +35,7 @@ void GraphicSinglyLinkedList::appearAllNodes() {
         curr->aNext.appear();
     }
 }
+
 
 ExitStatus GraphicSinglyLinkedList::initialize(int initSize, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) { // Randomly initialize
     if (initSize < 0 || initSize > Core::MAX_NUM_NODE_SLL) {
@@ -51,6 +60,7 @@ ExitStatus GraphicSinglyLinkedList::initialize(std::vector<int> vals, ListOfOper
     for (int i = 0; i < (int)vals.size(); ++i) {
         if (pHead == nullptr) {
             pHead = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, vals[i]);
+            pHead->setSubText("head");
             curr = pHead;
         } else {
             GraphicSinglyNode* newNode = new GraphicSinglyNode(curr->x + Graphic::SLL_NODE_DIST, curr->y, Graphic::NODE_SIZE, false, vals[i]);
@@ -61,8 +71,10 @@ ExitStatus GraphicSinglyLinkedList::initialize(std::vector<int> vals, ListOfOper
     size = (int)vals.size();
 
     ALOG->addNewGroup();
-    ALOG->animateAppearAllNodes<GraphicSinglyLinkedList, GraphicSinglyNode>(this);
-    // ---
+    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+        ALOG->animateFadeIn(curr);
+        ALOG->animateFadeIn(&curr->aNext);
+    }
 
     ALOG->addNewGroup();
     for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
@@ -87,10 +99,8 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
     size++;
 
     if (pHead == nullptr) {
-        // code line 0
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
-        // ---
         return ExitStatus(true, "");
     }
 
@@ -98,45 +108,46 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
     GraphicSinglyNode* pre = nullptr;
     GraphicSinglyNode* curr = pHead;
 
-    // code line 1, 2
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({1, 2});
-    ALOG->animateFocus(pHead);
-    ALOG->animateFocusBorder(pHead);
-    // ---
+    ALOG->animateNodeFromNormalToIter(pHead);
+    ALOG->animateTransText(&pHead->sub, "head", "0/head/cur");
 
-    // std::cerr << "code line 4, 5\n";
     while (curr->nVal != val) {
         pre = curr;
         curr = curr->pNext;
         id++; 
-        if (curr != nullptr) {
-            // code line 3
-            ALOG->addNewGroup();
-            ALOG->backGroup()->setHighlightLines({3});
-            ALOG->animateUnfocus(pre);
-            // ---
 
-            // code line 4, 5
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({3});
+        ALOG->animateNodeFromIterToNearIter(pre);
+
+        if (curr != nullptr) {
             ALOG->addNewGroup();
             ALOG->backGroup()->setHighlightLines({4, 5});
-            ALOG->animateFocus(&pre->aNext);
-            ALOG->animateFocus(curr);
-            ALOG->animateFocusBorder(curr);
-            // ---
+            pre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+            if (pre == pHead) {
+                ALOG->animateTransText(&pre->sub, "0/head/cur", "head");
+            } else {
+                ALOG->animateTransText(&pre->sub, cf::num2str(id-1) + "/cur", "");
+            }
+            ALOG->animateSlideColorIn(&pre->aNext);
+            ALOG->animateNodeFromNormalToIter(curr);
+            ALOG->animateTransText(&curr->sub, "", cf::num2str(id) + "/cur");
         }
 
         if (curr == nullptr) {
-            // code line 5, 6
             ALOG->addNewGroup();
             ALOG->backGroup()->setHighlightLines({5, 6});
-            ALOG->animateUnfocus(pre);
-            // ---
+            if (pre == pHead) {
+                ALOG->animateTransText(&pre->sub, "0/head/cur", "head");
+            } else {
+                ALOG->animateTransText(&pre->sub, cf::num2str(id-1) + "/cur", "");
+            }
             return ExitStatus(true, "");
         }
     }
 
-    // code line 8
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({8});
 
@@ -155,7 +166,6 @@ ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups<Gr
 
     ALOG->clearGroup();
     ALOG->loadCode(CPath::SLL_INSERT_FORD);
-
     reset();
 
     size++;
@@ -166,8 +176,8 @@ ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups<Gr
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateFadeIn(pHead);
-        ALOG->animateFocus(pHead);
-        ALOG->animateFocusBorder(pHead);
+        ALOG->animateNodeFromNormalToIter(pHead);
+        ALOG->animateTransText(&pHead->sub, "", "node");
         // ---
 
         // line number 1
@@ -179,6 +189,12 @@ ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups<Gr
         // line number 2
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({2});
+        ALOG->animateNodeFromIterToFocus(pHead);
+        ALOG->animateTransText(&pHead->sub, "node", "head/node");
+        // ---
+
+        // transform
+        ALOG->addNewGroup();
         ALOG->animateTransform(pHead, pHead->x, pHead->y, 0, -Graphic::SLL_NODE_DIST);
         // ---
     } else {
@@ -188,8 +204,8 @@ ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups<Gr
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateFadeIn(pHead);
-        ALOG->animateFocus(pHead);
-        ALOG->animateFocusBorder(pHead);
+        ALOG->animateNodeFromNormalToIter(pHead);
+        ALOG->animateTransText(&newNode->sub, "", "node");
         // ---
 
         // line number 1
@@ -197,18 +213,24 @@ ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups<Gr
         ALOG->backGroup()->setHighlightLines({1});
         ALOG->animateSlideIn(&pHead->aNext);
         ALOG->animateFadeIn(&pHead->aNext);
-        ALOG->animateFocus(&pHead->aNext);
+        ALOG->animateArrowFromNormalToIter(pHead);
         // ---
 
         // line number 2
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({2});
+        ALOG->animateNodeFromIterToFocus(pHead);
+        ALOG->animateArrowFromIterToNormal(pHead);
+        ALOG->animateTransText(&newNode->pNext->sub, "head", "");
+        ALOG->animateTransText(&newNode->sub, "node", "head/node");
+        // ---
+
+        // transform
+        ALOG->addNewGroup();
         ALOG->animateTransform(pHead, pHead->x, pHead->y, 0, -Graphic::SLL_NODE_DIST);
         for (GraphicSinglyNode* curr = pHead->pNext; curr != nullptr; curr = curr->pNext) {
             ALOG->animateTransform(curr, curr->x, curr->y, Graphic::SLL_NODE_DIST, 0);
         }
-        ALOG->animateUnfocus(&pHead->aNext);
-        // ---
     }
 
     ALOG->build();
@@ -224,6 +246,10 @@ ExitStatus GraphicSinglyLinkedList::pushBack(int val, ListOfOperationsGroups<Gra
         return ExitStatus(false, "Value is out of range");
     }
 
+    if (size == 0) {
+        return pushFront(val, ALOG);
+    }
+
     ALOG->clearGroup();
     ALOG->loadCode(CPath::SLL_INSERT_BACK);
     
@@ -231,48 +257,49 @@ ExitStatus GraphicSinglyLinkedList::pushBack(int val, ListOfOperationsGroups<Gra
 
     size++;
 
-    if (pHead == nullptr) {
-        pHead = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, val);
-        ALOG->addNewGroup();
-        ALOG->backGroup()->setHighlightLines({0,1});
-        ALOG->animateFadeIn(pHead);
-        ALOG->animateFocus(pHead);
-        ALOG->animateFocusBorder(pHead);
-    } else {
-        GraphicSinglyNode* pre = nullptr;
-        GraphicSinglyNode* curr = pHead;
-        ALOG->addNewGroup();
-        ALOG->backGroup()->setHighlightLines({3});
-        ALOG->animateFocus(curr);
-        ALOG->animateFocusBorder(curr);
-        while (curr->pNext != nullptr) {
-            pre = curr;
-            curr = curr->pNext;
-            ALOG->addNewGroup();
-            ALOG->backGroup()->setHighlightLines({4});
-            ALOG->animateUnfocus(pre);
+    GraphicSinglyNode* pre = nullptr;
+    GraphicSinglyNode* curr = pHead;    
 
-            ALOG->addNewGroup();
-            ALOG->backGroup()->setHighlightLines({5});
-            ALOG->animateFocus(curr);
-            ALOG->animateFocusBorder(curr);
-            ALOG->animateFocus(&pre->aNext);
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({0});
+    ALOG->animateNodeFromNormalToIter(curr);
+    ALOG->animateTransText(&curr->sub, "head", "head/cur");
+
+    while (curr->pNext != nullptr) {
+        pre = curr;
+        curr = curr->pNext;
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({1});
+        ALOG->animateNodeFromIterToNearIter(pre);
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2});
+        ALOG->animateNodeFromNormalToIter(curr);
+        pre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+        ALOG->animateSlideColorIn(&pre->aNext);
+        if (pre == pHead) {
+            ALOG->animateTransText(&pre->sub, "head/cur", "head");
+        } else {
+            ALOG->animateTransText(&pre->sub, "cur", "");
         }
-        GraphicSinglyNode* newNode = new GraphicSinglyNode(curr->x + Graphic::SLL_NODE_DIST, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, val);
-        curr->setNext(newNode);
-        ALOG->addNewGroup();
-        ALOG->backGroup()->setHighlightLines({6});
-        ALOG->animateFadeIn(newNode);
-        
-        ALOG->addNewGroup();
-        ALOG->backGroup()->setHighlightLines({7});
-        ALOG->animateSlideIn(&curr->aNext);
-        ALOG->animateFadeIn(&curr->aNext);
-        ALOG->animateFocus(&curr->aNext);
-        ALOG->animateFocus(newNode);
-        ALOG->animateFocusBorder(newNode);
-        ALOG->animateUnfocus(curr);
+        ALOG->animateTransText(&curr->sub, "", "cur");
     }
+
+    GraphicSinglyNode* newNode = new GraphicSinglyNode(curr->x + Graphic::SLL_NODE_DIST, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, val);
+    curr->setNext(newNode);
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({3});
+    ALOG->animateFadeIn(newNode);
+    ALOG->animateNodeFromNormalToFocus(newNode);
+    ALOG->animateTransText(&newNode->sub, "", "node");
+    
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({4});
+    ALOG->animateSlideIn(&curr->aNext);
+    ALOG->animateFadeIn(&curr->aNext);
+    ALOG->animateNodeFromIterToNearIter(curr);
+    ALOG->animateArrowFromNormalToFocus(curr);
 
     ALOG->build();
 
@@ -308,8 +335,8 @@ ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
     GraphicSinglyNode* pre = pHead;
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({0});
-    ALOG->animateFocus(pre);
-    ALOG->animateFocusBorder(pre);
+    ALOG->animateNodeFromNormalToIter(pre);
+    ALOG->animateTransText(&pre->sub, "head", "0/head/pre");
 
     for (int i = 0; i < k-1; ++i) {
         prepre = pre;
@@ -317,34 +344,41 @@ ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
 
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({1});
-        ALOG->animateUnfocus(prepre);
+        ALOG->animateNodeFromIterToNearIter(prepre);
+        prepre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+        ALOG->animateSlideColorIn(&prepre->aNext);
 
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({2});
-        ALOG->animateFocus(&prepre->aNext);
-        ALOG->animateFocus(pre);
-        ALOG->animateFocusBorder(pre);
+        ALOG->animateNodeFromNormalToIter(pre);
+        if (prepre == pHead) {
+            ALOG->animateTransText(&prepre->sub, "0/head/pre", "head");
+        } else {
+            ALOG->animateTransText(&prepre->sub, cf::num2str(i) + "/pre", "");
+        }
+        ALOG->animateTransText(&pre->sub, "", cf::num2str(i+1) + "/pre");
     }
 
     GraphicSinglyNode* nxt = pre->pNext;
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({3});
-    ALOG->animateFocus(&pre->aNext);
-    ALOG->animateFocus(nxt);
-    ALOG->animateFocusBorder(nxt);
+    ALOG->animateNodeFromNormalToRefer(nxt);
+    pre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+    ALOG->animateSlideColorIn(&pre->aNext);
+    ALOG->animateTransText(&nxt->sub, "", cf::num2str(k) + "/nxt");
 
     GraphicSinglyNode* cur = new GraphicSinglyNode(nxt->x, Graphic::SLL_ORG_Y + Graphic::SLL_NODE_DIST, Graphic::NODE_SIZE, false, val);
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({4});
     ALOG->animateFadeIn(cur);
-    ALOG->animateFocus(cur);
-    ALOG->animateFocusBorder(cur);
+    ALOG->animateNodeFromNormalToFocus(cur);
+    ALOG->animateTransText(&cur->sub, "", "cur");
 
     cur->setNext(nxt);
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({5});
     ALOG->animateFadeIn(&cur->aNext);
-    ALOG->animateFocus(&cur->aNext);
+    ALOG->animateArrowFromNormalToFocus(cur);
     ALOG->animateSlideIn(&cur->aNext);
 
     pre->updateNext(cur);
@@ -352,9 +386,21 @@ ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({6});
     ALOG->animateRedirect(pre, nxt);
+    ALOG->animateTransText(&cur->sub, "cur", cf::num2str(k) + "/cur");
+    ALOG->animateTransText(&nxt->sub, cf::num2str(k) + "/nxt", cf::num2str(k+1) + "/nxt");
 
     ALOG->addNewGroup();
     ALOG->animateTransform(cur, cur->x, cur->y, 0, -Graphic::SLL_NODE_DIST);
+    ALOG->animateNodeFromIterToNormal(pre);
+    ALOG->animateArrowSlideFromIterToNormal(pre);
+    ALOG->animateNodeFromReferToNormal(nxt);
+    ALOG->animateArrowFromFocusToNormal(cur);
+    ALOG->animateTransText(&pre->sub, cf::num2str(k-1) + "/pre", "");
+    ALOG->animateTransText(&nxt->sub, cf::num2str(k+1) + "/nxt", "");
+    for (GraphicSinglyNode* iter = pHead; iter != pre; iter = iter->pNext) {
+        ALOG->animateNodeFromNearIterToNormal(iter);
+        ALOG->animateSlideColorOut(&iter->aNext);
+    }
     for (; nxt != nullptr; nxt = nxt->pNext) {
         ALOG->animateTransform(nxt, nxt->x, nxt->y, Graphic::SLL_NODE_DIST, 0);
     }
@@ -367,9 +413,7 @@ ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
 ExitStatus GraphicSinglyLinkedList::popFront(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
     ALOG->clearGroup();
     ALOG->loadCode(CPath::SLL_REMOVE_FORD);
-
     reset();
-
 
     if (pHead == nullptr) {
         ALOG->addNewGroup();
@@ -380,16 +424,19 @@ ExitStatus GraphicSinglyLinkedList::popFront(ListOfOperationsGroups<GraphicSingl
         nodes.push_back(tmp);
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({1});
-        ALOG->animateFocus(tmp);
-        ALOG->animateFocusBorder(tmp);
+        ALOG->animateNodeFromNormalToIter(tmp);
+        ALOG->animateTransText(&tmp->sub, "head", "head/tmp");
 
         pHead = pHead->pNext;
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2});
         if (pHead != nullptr) {
-            ALOG->addNewGroup();
-            ALOG->backGroup()->setHighlightLines({2});
-            ALOG->animateFocus(pHead);
-            ALOG->animateFocusBorder(pHead);
+            ALOG->animateNodeFromNormalToFocus(pHead);
+            tmp->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+            ALOG->animateSlideColorIn(&tmp->aNext);
+            ALOG->animateTransText(&pHead->sub, "", "head");
         }
+        ALOG->animateTransText(&tmp->sub, "head/tmp", "tmp");
 
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({3});
@@ -408,37 +455,39 @@ ExitStatus GraphicSinglyLinkedList::popFront(ListOfOperationsGroups<GraphicSingl
 }
 
 ExitStatus GraphicSinglyLinkedList::popBack(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+    if (size == 1) {
+        return popFront(ALOG);
+    }
+
     ALOG->clearGroup();
     ALOG->loadCode(CPath::SLL_REMOVE_BACK);
-
     reset();
 
     if (pHead == nullptr) {
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
     } else {
-        if (size == 1) {
-            return popFront(ALOG);
-        }
         size--;
         GraphicSinglyNode* prepre = nullptr;
         GraphicSinglyNode* pre = pHead;
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({1});
-        ALOG->animateFocus(pre);
-        ALOG->animateFocusBorder(pre);
+        ALOG->animateNodeFromNormalToIter(pre);
+        ALOG->animateTransText(&pre->sub, "head", "head/pre");
 
         GraphicSinglyNode* tmp = pHead->pNext;
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({2});
-        ALOG->animateFocus(&pre->aNext);
-        ALOG->animateFocus(tmp);
-        ALOG->animateFocusBorder(tmp);
+        ALOG->animateNodeFromNormalToFocus(tmp);
+        pre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+        ALOG->animateSlideColorIn(&pre->aNext);
+        ALOG->animateTransText(&tmp->sub, "", "tmp");
 
         while (true) {
             ALOG->addNewGroup();
             ALOG->backGroup()->setHighlightLines({3});
-            ALOG->animateUnfocus(&pre->aNext);
+            ALOG->animateArrowSlideFromIterToNormal(pre);
+            ALOG->animateSlideColorOut(&pre->aNext);
 
             if (tmp->pNext == nullptr) {
                 break;
@@ -451,13 +500,20 @@ ExitStatus GraphicSinglyLinkedList::popBack(ListOfOperationsGroups<GraphicSingly
 
             ALOG->addNewGroup();
             ALOG->backGroup()->setHighlightLines({4,5});
-            ALOG->animateUnfocus(prepre);
-            ALOG->animateFocus(&prepre->aNext);
-            ALOG->animateFocus(pre);
-            ALOG->animateFocusBorder(pre);
-            ALOG->animateFocus(&pre->aNext);
-            ALOG->animateFocus(tmp);
-            ALOG->animateFocusBorder(tmp);
+            ALOG->animateNodeFromIterToNearIter(prepre);
+            ALOG->animateSlideColorIn(&prepre->aNext);
+            ALOG->animateArrowSlideFromNormalToIter(prepre);
+            ALOG->animateNodeFromFocusToIter(pre);
+            pre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS;
+            ALOG->animateSlideColorIn(&pre->aNext);
+            ALOG->animateNodeFromNormalToFocus(tmp);
+            if (prepre == pHead) {
+                ALOG->animateTransText(&prepre->sub, "head/pre", "head");
+            } else {
+                ALOG->animateTransText(&prepre->sub, "pre", "");
+            }
+            ALOG->animateTransText(&pre->sub, "tmp", "pre");
+            ALOG->animateTransText(&tmp->sub, "", "tmp");
         }
 
         nodes.push_back(tmp);
@@ -470,6 +526,7 @@ ExitStatus GraphicSinglyLinkedList::popBack(ListOfOperationsGroups<GraphicSingly
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({8});
         ALOG->animateFadeOut(tmp);
+        ALOG->animateNodeFromIterToNearIter(pre);
     }
 
     ALOG->build();
@@ -477,7 +534,106 @@ ExitStatus GraphicSinglyLinkedList::popBack(ListOfOperationsGroups<GraphicSingly
     return ExitStatus(true, "");
 }
 
+ExitStatus GraphicSinglyLinkedList::popAtKth(int k, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+    if (size == 0) {
+        return ExitStatus(false, "The list is empty");
+    }
+    if (k < 0 || k >= size) {
+        return ExitStatus(false, "k is out of range");
+    }
 
+    if (k == 0) {
+        return popFront(ALOG);
+    }
+    if (k == size-1) {
+        return popBack(ALOG);
+    }
+
+    ALOG->clearGroup();
+    ALOG->loadCode(CPath::SLL_REMOVE_KTH);
+    reset();
+
+    size--;
+
+    GraphicSinglyNode* prepre = nullptr;
+    GraphicSinglyNode* pre = pHead;
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({1});
+    ALOG->animateNodeFromNormalToIter(pre);
+    ALOG->animateTransText(&pre->sub, "head", "0/head/pre");
+
+    for (int i = 0; i < k-1; ++i) {
+        prepre = pre;
+        pre = pre->pNext;
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2});
+        ALOG->animateDelay();
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({3});
+        ALOG->animateNodeFromIterToNearIter(prepre);
+        prepre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+        ALOG->animateSlideColorIn(&prepre->aNext);
+        ALOG->animateNodeFromNormalToIter(pre);
+        if (prepre == pHead) {
+            ALOG->animateTransText(&prepre->sub, "0/head/pre", "head");
+        } else {
+            ALOG->animateTransText(&prepre->sub, cf::num2str(i) + "/pre", "");
+        }
+        ALOG->animateTransText(&pre->sub, "", cf::num2str(i+1) + "/pre");
+    }
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({2});
+    ALOG->animateDelay();
+
+    GraphicSinglyNode* del = pre->pNext;
+    GraphicSinglyNode* nxt = del->pNext;
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({4,5});
+    pre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+    ALOG->animateSlideColorIn(&pre->aNext);
+    ALOG->animateNodeFromNormalToRemove(del);
+    del->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+    ALOG->animateSlideColorIn(&del->aNext);
+    ALOG->animateNodeFromNormalToFocus(nxt);
+    ALOG->animateTransText(&del->sub, "", cf::num2str(k) + "/del");
+    ALOG->animateTransText(&nxt->sub, "", cf::num2str(k+1) + "/nxt");
+
+    nodes.push_back(del);
+    pre->updateNext(nxt);
+    pre->setArrowTrans(del);
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({6});
+    ALOG->animateTransform(del, del->x, del->y, 0, Graphic::SLL_NODE_DIST);
+    ALOG->animateRedirect(pre, del);
+    ALOG->animateTransText(&del->sub, cf::num2str(k) + "/del", "del");
+    ALOG->animateTransText(&nxt->sub, cf::num2str(k+1) + "/nxt", cf::num2str(k) + "/nxt");
+    
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({7});
+    ALOG->animateFadeOut(del);
+    ALOG->animateFadeOut(&del->aNext);
+    ALOG->animateSlideOut(&del->aNext);
+
+    ALOG->addNewGroup();
+    for (GraphicSinglyNode* iter = pHead; iter != pre; iter = iter->pNext) {
+        ALOG->animateNodeFromNearIterToNormal(iter);
+        ALOG->animateArrowSlideFromIterToNormal(iter);
+    }
+    ALOG->animateArrowSlideFromIterToNormal(pre);
+    ALOG->animateTransText(&pre->sub, cf::num2str(k-1) + "/pre", "");
+    ALOG->animateTransText(&nxt->sub, cf::num2str(k) + "/nxt", "");
+    for (; nxt != nullptr; nxt = nxt->pNext) {
+        ALOG->animateTransform(nxt, nxt->x, nxt->y, -Graphic::SLL_NODE_DIST, 0);
+    }
+
+    ALOG->build();
+
+    return ExitStatus(true, "");
+}
 
 void GraphicSinglyLinkedList::draw() {
     // for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
@@ -492,27 +648,11 @@ void GraphicSinglyLinkedList::draw() {
     }
 }
 
-void GraphicSinglyLinkedList::makeCopy(GraphicSinglyLinkedList* src) {
-    destroy();
-    if (src->pHead != nullptr) {
-        pHead = new GraphicSinglyNode;
-        pHead->makeCopy(src->pHead);
-        GraphicSinglyNode* curr = pHead;
-        GraphicSinglyNode* srcCurr = src->pHead;
-        for (; srcCurr->pNext != nullptr; curr = curr->pNext, srcCurr = srcCurr->pNext) {
-            GraphicSinglyNode* tmp = new GraphicSinglyNode;
-            tmp->makeCopy(srcCurr->pNext);
-            curr->setNext(tmp);
-            curr->aNext.copyAttribute(srcCurr->aNext);
-        }
-    }
-}
-
 void GraphicSinglyLinkedList::reset() {
     clearSaparated();
     clearArrows();
-    unfocusAllNodes();
-    
+    resetColorAllNodes();
+    resetSubTextAllNodes();
 }
 
 void GraphicSinglyLinkedList::clearSaparated() {

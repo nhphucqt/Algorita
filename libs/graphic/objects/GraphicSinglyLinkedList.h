@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "GraphicSinglyNode.h"
-#include "../../core/objects/CoreSinglyLinkedList.h"
 #include "../../core/ccppfunc.h"
 #include "../../core/ExitStatus.h"
 #include "../../animation/animation.h"
@@ -21,13 +20,15 @@ public:
     std::list<GraphicSinglyNode*> nodes;
     std::list<GraphicTrackArrow*> arrows;
 
-    void unfocusAllNodes();
+    void resetColorAllNodes();
+    void resetSubTextAllNodes();
 
     void appearAllNodes();
     void vanishAllNodes();
 
-public:
 
+
+public:
     GraphicSinglyLinkedList();
 
     ExitStatus initialize(int initSize, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG); // Randomly initialize
@@ -41,10 +42,9 @@ public:
     
     ExitStatus popFront(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
     ExitStatus popBack(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
+    ExitStatus popAtKth(int k, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
 
     void draw();
-
-    void makeCopy(GraphicSinglyLinkedList* src);
 
     void reset();
     void clearSaparated();

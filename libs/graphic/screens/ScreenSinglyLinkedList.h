@@ -7,6 +7,7 @@
 
 #include "../objects/GraphicSinglyLinkedList.h"
 #include "../../rcore/rguiTextBox.h"
+#include "../../rcore/rRectangle.h"
 #include "../../animation/ListOfOperationsGroups.h"
 #include "../gui/Codeblock.h"
 

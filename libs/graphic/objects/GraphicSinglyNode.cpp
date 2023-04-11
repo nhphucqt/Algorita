@@ -61,9 +61,9 @@ void GraphicSinglyNode::setArrowTrans(GraphicSinglyNode* node) {
     aNext.transA = outerShapeOut(AC) - outerShapeOut(AB);
     aNext.transB = BC;
 
-    std::cerr << " >> trans A B x y\n";
-    std::cerr << aNext.transA.x << ' ' << aNext.transA.y << '\n';
-    std::cerr << aNext.transB.x << ' ' << aNext.transB.y << '\n';
+    // std::cerr << " >> trans A B x y\n";
+    // std::cerr << aNext.transA.x << ' ' << aNext.transA.y << '\n';
+    // std::cerr << aNext.transB.x << ' ' << aNext.transB.y << '\n';
 }
 
 
@@ -78,22 +78,16 @@ void GraphicSinglyNode::makeCopy(GraphicSinglyNode* src) { // no change in pNext
 
     isSqr = src->isSqr;
 
-    for (int i = 0; i < 2; ++i) {
-        backColor[i] = src->backColor[i];
-        foreColor[i] = src->foreColor[i];
-        bordColor[i] = src->bordColor[i];
-    }
+    backColor = src->backColor;
+    foreColor = src->foreColor;
+    bordColor = src->bordColor;
 
     transparent = src->transparent;
-    focusPercent = src->focusPercent;
-    focusBorderPercent = src->focusBorderPercent;
 
     nVal = src->nVal;
     val = src->val;
 
     isAppear = src->isAppear;
-    isFocus = src->isFocus;
-    isFocusBorder = src->isFocusBorder;
 
     if (isSqr) {
         outerShapeIn = std::bind(&cf::outerSqur, &size, std::placeholders::_1);

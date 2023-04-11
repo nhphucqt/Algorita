@@ -1,11 +1,11 @@
 #include "rColor.h"
 
-Color TRNSP(Color color, float transparent) {
+Color TRNSP(Color color, double transparent) {
     color.a = round(color.a * transparent);
     return color;
 }
 
-Color TRANSCOLOR(const Color &source, const Color &destination, float percent) {
+Color TRANSCOLOR(const Color &source, const Color &destination, double percent) {
     // r g b a
     return CLITERAL(Color){
         (unsigned char)(source.r + (destination.r - source.r) * percent),
