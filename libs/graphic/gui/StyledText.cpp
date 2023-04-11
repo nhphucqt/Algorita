@@ -2,13 +2,6 @@
 
 StyledText::StyledText() {}
 
-StyledText::StyledText(const std::string &_content, Font* _font) {
-    content = _content;
-    font = _font;
-    spacing = 0;
-    dim = MeasureTextEx(*font, content.c_str(), font->baseSize, spacing);
-}
-
 StyledText::StyledText(const std::string &_content, Font* _font, float _spacing) {
     content = _content;
     font = _font;
@@ -16,19 +9,11 @@ StyledText::StyledText(const std::string &_content, Font* _font, float _spacing)
     dim = MeasureTextEx(*font, content.c_str(), font->baseSize, spacing);
 }
 
-StyledText::StyledText(int _num, Font* _font) {
-    content = cf::num2str(_num);
-    font = _font;
-    spacing = 0;
-    dim = MeasureTextEx(*font, content.c_str(), font->baseSize, spacing);
-}
+StyledText::StyledText(const std::string &_content, Font* _font) : StyledText(_content, _font, 0) {}
 
-StyledText::StyledText(int _num, Font* _font, float _spacing) {
-    content = cf::num2str(_num);
-    font = _font;
-    spacing = _spacing;
-    dim = MeasureTextEx(*font, content.c_str(), font->baseSize, spacing);
-}
+StyledText::StyledText(int _num, Font* _font) : StyledText(cf::num2str(_num), _font) {}
+
+StyledText::StyledText(int _num, Font* _font, float _spacing) : StyledText(cf::num2str(_num), _font, _spacing) {}
 
 void StyledText::assign(const std::string &text) {
     content = text;
