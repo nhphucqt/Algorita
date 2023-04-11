@@ -1,9 +1,9 @@
 if (head == NULL) return NOT_FOUND;
 int id = 0;
 Node* cur = head;
-while (curr->val != v) {
+while (cur->val != v) {
     id++; cur = cur->next;
-    if (curr == NULL)
+    if (cur == NULL)
         return NOT_FOUND;
 }
 return id;
