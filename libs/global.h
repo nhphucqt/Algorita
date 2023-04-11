@@ -48,17 +48,20 @@ namespace Window {
 
 namespace Graphic {
     // GUI
-    const int MAX_SIZE_INPUT = 100; // Including '\0' character
+    const int MAX_SIZE_INPUT = 50; // Including '\0' character
 
     // NODE GRAPHIC
-    const float NODE_SIZE = 40;
+    const float NODE_SIZE = 50;
     const float NODE_BORDER_WIDTH = 4;
-    const float NODE_DIST = NODE_SIZE + NODE_SIZE * 1.1;
+    const float NODE_DIST = NODE_SIZE + NODE_SIZE;
+
+    const float NODE_SUBTEXT_PADDING = 0;
+    const float NODE_SUBTEXT_MARGIN_TOP = 2;
 
     // ARROW GRAPHIC
     const float ARROW_LINE_WIDTH = 4;
-    const float ARROW_HEAD_LENGTH = 12;
-    const float ARROW_HEAD_WIDTH = 12;
+    const float ARROW_HEAD_LENGTH = 10;
+    const float ARROW_HEAD_WIDTH = 10;
 
     // SINGLY LINKED LIST GRAPHIC
     const int SLL_ORG_X = 200;
@@ -71,18 +74,42 @@ namespace Graphic {
     const int STACK_NODE_DIST = (int)NODE_DIST;
 }
 
+namespace Layout {
+    const int BOTTOM_HEIGHT = 50;
+}
 namespace Gui {
     const int CODEBLOCK_LINE_PADDING_X = 10;
     const int CODEBLOCK_LINE_PADDING_Y = 8;
     const int CODEBLOCK_BLOCK_PADDING_X = 0;
     const int CODEBLOCK_BLOCK_PADDING_Y = 0;
     const int CODEBLOCK_SPACING = 1;
+
+    const int LABEL_PADDING_LEFT = 5;
+
+    const int BUTTON_OPER_WIDTH = 150;
+    const int BUTTON_OPER_HEIGHT = 50;
+    const int BUTTON_OPER_DIST_X = 10;
+
+    const int INPUT_BOX_WIDTH = 110;
+    const int INPUT_BOX_HEIGHT = 40;
+
+    const int BUTTON_OPER_GO_WIDTH = 40;
+    const int BUTTON_OPER_GO_HEIGHT = 40;
+
+    const int LOG_SPEED_SIGN_WIDTH = 70;
+    const int LOG_SPEED_SIGN_HEIGHT = 50;
+    const int LOG_SLIDER_WIDTH = 200;
+    const int LOG_SLIDER_HEIGHT = 20;
+    const int LOG_SLIDER_BAR_WIDTH = 400;
+    const int LOG_SLIDER_BAR_HEIGHT = 20;
+    const int LOG_NAV_BUTTON_WIDTH = 35;
+    const int LOG_NAV_BUTTON_HEIGHT = 35;
 }
 
 namespace Animate {
     enum RunType {RUN_ALL, RUN_STEP};
 
-    const float ANIMATE_TIME = 0.5;
+    const float ANIMATE_TIME = 0.4;
     const float FADEIN_TIME = ANIMATE_TIME;
     const float FADEOUT_TIME = ANIMATE_TIME;
     const float TRANS_TIME = ANIMATE_TIME;
@@ -98,41 +125,53 @@ namespace Animate {
 #define rCol Color
 namespace Gcolor {
     // NODE COLOR
-    const rCol NODE_BACKGROUND = WHITE;
-    // const rCol NODE_BACKGROUND = BLUE;
-    const rCol NODE_BACKGROUND_FOCUS = GREEN;
-    const rCol NODE_FOREGROUND = BLACK;
-    const rCol NODE_FOREGROUND_FOCUS = WHITE;
-    const rCol NODE_BORDER = BLACK;
-    const rCol NODE_BORDER_FOCUS = GREEN;
+    inline rCol NODE_BACKGROUND = WHITE;
+    inline rCol NODE_BACKGROUND_FOCUS = GREEN;
+    inline rCol NODE_BACKGROUND_FOCUS_REFER = BLUE;
+    inline rCol NODE_BACKGROUND_FOCUS_ITER = ORANGE;
+    inline rCol NODE_BACKGROUND_FOCUS_REMOVE = BROWN;
+
+    inline rCol NODE_FOREGROUND = BLACK;
+    inline rCol NODE_FOREGROUND_FOCUS = WHITE;
+    inline rCol NODE_FOREGROUND_FOCUS_ITER = ORANGE;
+
+    inline rCol NODE_BORDER = BLACK;
+    inline rCol NODE_BORDER_FOCUS = GREEN;
+    inline rCol NODE_BORDER_FOCUS_REFER = BLUE;
+    inline rCol NODE_BORDER_FOCUS_ITER = ORANGE;
+    inline rCol NODE_BORDER_FOCUS_REMOVE = BROWN;
+
+    inline rCol NODE_SUBTEXT = RED;
 
     // ARROW COLOR
-    const rCol ARROW_LINE = BLACK;
-    const rCol ARROW_LINE_FOCUS = ORANGE;
-    // const rCol ARROW_HEAD = RED;
-    const rCol ARROW_HEAD = BLACK;
-    const rCol ARROW_HEAD_FOCUS = ORANGE;
+    inline rCol ARROW_LINE = BLACK;
+    inline rCol ARROW_LINE_FOCUS = GREEN;
+    inline rCol ARROW_LINE_FOCUS_ITER = ORANGE;
+
+    inline rCol ARROW_HEAD = BLACK;
 
     // TEXT BUTTON COLOR
-    const rCol TEXT_BUTTON_BACKGROUND = DARKGRAY;
-    const rCol TEXT_BUTTON_BACKGROUND_FOCUS = GRAY;
-    const rCol TEXT_BUTTON_FOREGROUND = WHITE;
-    const rCol TEXT_BUTTON_FOREGROUND_FOCUS = WHITE;
+    inline rCol TEXT_BUTTON_BACKGROUND = DARKGRAY;
+    inline rCol TEXT_BUTTON_BACKGROUND_FOCUS = GRAY;
+    inline rCol TEXT_BUTTON_FOREGROUND = WHITE;
+    inline rCol TEXT_BUTTON_FOREGROUND_FOCUS = WHITE;
 
     // CODEBLOCK COLOR
-    const rCol CODEBLOCK_BACKGROUND = Color{75, 101, 186, 255};
-    const rCol CODEBLOCK_BACKGROUND_FOCUS = BLACK;
-    const rCol CODEBLOCK_FOREGROUND = WHITE;
-    const rCol CODEBLOCK_FOREGROUND_FOCUS = WHITE;
+    inline rCol CODEBLOCK_BACKGROUND = Color{75, 101, 186, 255};
+    inline rCol CODEBLOCK_BACKGROUND_FOCUS = BLACK;
+    inline rCol CODEBLOCK_FOREGROUND = WHITE;
+    inline rCol CODEBLOCK_FOREGROUND_FOCUS = WHITE;
 }
 #undef rCol
 
 namespace Gfont {
-    const int FONT_DEFAULT_SIZE = 28;
+    const int FONT_DEFAULT_SIZE = 30;
+    // const int FONT_DEFAULT_SIZE = 20;
     const int FONT_CODE_SIZE = 16;
     inline Font* defaultFont;
     inline Font* codeFont;
     inline Font jb_mono_med_def;
+    inline Font ptsans_bold_def;
     inline Font consolas_code;
 
     inline void setDefaultFont(Font* font) {
@@ -146,15 +185,18 @@ namespace Gfont {
     inline void loadFont() {
         // Load fonts
         jb_mono_med_def = LoadFontEx("./assets/fonts/JetBrainsMono-Medium.ttf", FONT_DEFAULT_SIZE, 0, 250);
+        ptsans_bold_def = LoadFontEx("./assets/fonts/PTSans-Bold.ttf", FONT_DEFAULT_SIZE, 0, 250);
         consolas_code = LoadFontEx("./assets/fonts/Consolas-Bold.ttf", FONT_CODE_SIZE, 0, 250);
 
         // Set default font
-        setDefaultFont(&jb_mono_med_def);
+        // setDefaultFont(&jb_mono_med_def);
+        setDefaultFont(&ptsans_bold_def);
         setCodeFont(&consolas_code);
     }
 
     inline void unloadFont() {
         UnloadFont(jb_mono_med_def);
+        UnloadFont(ptsans_bold_def);
         UnloadFont(consolas_code);
     }
 }
