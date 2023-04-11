@@ -2,22 +2,14 @@
 
 GraphicNode::GraphicNode() {
     bsize = Graphic::NODE_BORDER_WIDTH;
-    backColor[0] = Gcolor::NODE_BACKGROUND;
-    backColor[1] = Gcolor::NODE_BACKGROUND_FOCUS;
-    foreColor[0] = Gcolor::NODE_FOREGROUND;
-    foreColor[1] = Gcolor::NODE_FOREGROUND_FOCUS;
-    bordColor[0] = Gcolor::NODE_BORDER;
-    bordColor[1] = Gcolor::NODE_BORDER_FOCUS;
+    resetColor();
     isAppear = false;
-    isFocus = false;
-    isFocusBorder = false;
     outerShapeIn = outerShapeOut = cf::outerNull;
     transparent = 0.0; // vanish at first
-    focusPercent = 0.0; // unfocus at first
-    focusBorderPercent = 0.0; // unfocus at first
+    sub = StyledText("", Gfont::defaultFont, Graphic::NODE_SUBTEXT_PADDING);
 }
 
-GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v) : GraphicNode() {
+GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v, const std::string &_subtext) : GraphicNode() {
     lx = x = _x;
     ly = y = _y;
     size = _s;
@@ -25,7 +17,10 @@ GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v) : Grap
     assert(Core::NODE_MIN_VALUE <= _v && _v <= Core::NODE_MAX_VALUE);
     nVal = _v;
     val = StyledText(_v, Gfont::defaultFont);
+    sub.assign(_subtext);
 }
+
+GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v) : GraphicNode(_x, _y, _s, _sqr, _v, "") {}
 
 Vector2 GraphicNode::getCenter() const {
     return Vector2{x+size/2, y+size/2};
@@ -39,26 +34,6 @@ void GraphicNode::vanish() {
 void GraphicNode::appear() {
     transparent = 1.0;
     isAppear = true;
-}
-
-void GraphicNode::focus() {
-    focusPercent = 1.0;
-    isFocus = true;
-}
-
-void GraphicNode::unfocus() {
-    focusPercent = 0.0;
-    isFocus = false;
-}
-
-void GraphicNode::focusBorder() {
-    focusBorderPercent = 1.0;
-    isFocusBorder = true;
-}
-
-void GraphicNode::unfocusBorder() {
-    focusBorderPercent = 0.0;
-    isFocusBorder = false;
 }
 
 void GraphicNode::transform(int Tx, int Ty) {
@@ -76,13 +51,24 @@ void GraphicNode::setValue(int x) {
     val = StyledText(x, Gfont::defaultFont);
 }
 
+void GraphicNode::setSubText(const std::string &_subtext) {
+    sub.assign(_subtext);
+}
+
+void GraphicNode::resetColor() {
+    backColor = Gcolor::NODE_BACKGROUND;
+    foreColor = Gcolor::NODE_FOREGROUND;
+    bordColor = Gcolor::NODE_BORDER;
+}
+
 void GraphicNode::draw() {
     if (transparent == 0.0) {
         return;
     }
-    Color background = TRNSP(TRANSCOLOR(backColor[0], backColor[1], focusPercent), transparent);
-    Color foreground = TRNSP(TRANSCOLOR(foreColor[0], foreColor[1], focusPercent), transparent);
-    Color border = TRNSP(TRANSCOLOR(bordColor[0], bordColor[1], focusBorderPercent), transparent);
+    Color background = TRNSP(backColor, transparent);
+    Color foreground = TRNSP(foreColor, transparent);
+    Color border = TRNSP(bordColor, transparent);
+    Color subtext = TRNSP(Gcolor::NODE_SUBTEXT, transparent);
     if (isSqr) {
         DrawRectangle(x, y, size, size, background);
         DrawRectangleLinesEx(Rectangle{x,y,size,size}, bsize, border);
@@ -92,6 +78,8 @@ void GraphicNode::draw() {
         DrawCircleV(center, radius, background);
         DrawRing(center, radius-bsize, radius, 0, 360, 36, border);
     }
+    // DrawRectangle(x+(size-val.dim.x)/2, y+(size-val.dim.y)/2, val.dim.x, val.dim.y, YELLOW);
     val.draw(toVector2(x+(size-val.dim.x)/2, y+(size-val.dim.y)/2), foreground);
+    sub.draw(toVector2(x + size / 2 - sub.dim.x / 2, y + size + Graphic::NODE_SUBTEXT_MARGIN_TOP), subtext);
 }
 

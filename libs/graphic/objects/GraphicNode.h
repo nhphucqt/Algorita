@@ -22,25 +22,23 @@ public:
 	bool isSqr; // 1 -> square | 0 -> circle
 
     // Color
-    Color backColor[2], foreColor[2], bordColor[2];
+    Color backColor, foreColor, bordColor;
     float transparent;
-    float focusPercent;
-    float focusBorderPercent;
 
     // Node value
     int nVal;
     StyledText val;
+    StyledText sub;
 
     // Events
     bool isAppear;
-    bool isFocus;
-    bool isFocusBorder;
 
     // Functors
     std::function<Vector2(Vector2)> outerShapeIn, outerShapeOut;
 
     // Constructors
     GraphicNode();
+    GraphicNode(float _x, float _y, float _s, bool _sqr, int _v, const std::string &_subtext);
     GraphicNode(float _x, float _y, float _s, bool _sqr, int _v);
 
     // Methods
@@ -49,16 +47,13 @@ public:
     void vanish();
     void appear();
 
-    void focus();
-    void unfocus();
-
-    void focusBorder();
-    void unfocusBorder();
-
     void transform(int Tx, int Ty);
     void displace(int Dx, int Dy);
 
     void setValue(int x);
+    void setSubText(const std::string &_subtext);
+
+    void resetColor();
 
     void draw();
 };
