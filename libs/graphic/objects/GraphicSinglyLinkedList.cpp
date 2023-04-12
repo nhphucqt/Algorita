@@ -101,6 +101,7 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
     if (pHead == nullptr) {
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
+        ALOG->animateDelay();
         return ExitStatus(true, "");
     }
 
@@ -150,6 +151,7 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
 
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({8});
+    ALOG->animateDelay();
 
     ALOG->build();
 
@@ -418,6 +420,7 @@ ExitStatus GraphicSinglyLinkedList::popFront(ListOfOperationsGroups<GraphicSingl
     if (pHead == nullptr) {
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
+        ALOG->animateDelay();
     } else {
         size--;
         GraphicSinglyNode* tmp = pHead;
@@ -466,6 +469,7 @@ ExitStatus GraphicSinglyLinkedList::popBack(ListOfOperationsGroups<GraphicSingly
     if (pHead == nullptr) {
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
+        ALOG->animateDelay();
     } else {
         size--;
         GraphicSinglyNode* prepre = nullptr;

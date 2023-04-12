@@ -23,6 +23,7 @@ public:
 
     // Color
     Color backColor, foreColor, bordColor;
+    Color *pBackColor, *pForeColor, *pBordColor;
     float transparent;
 
     // Node value

@@ -56,18 +56,18 @@ void GraphicNode::setSubText(const std::string &_subtext) {
 }
 
 void GraphicNode::resetColor() {
-    backColor = Gcolor::NODE_BACKGROUND;
-    foreColor = Gcolor::NODE_FOREGROUND;
-    bordColor = Gcolor::NODE_BORDER;
+    pBackColor = &Gcolor::NODE_BACKGROUND;
+    pForeColor = &Gcolor::NODE_FOREGROUND;
+    pBordColor = &Gcolor::NODE_BORDER;
 }
 
 void GraphicNode::draw() {
     if (transparent == 0.0) {
         return;
     }
-    Color background = TRNSP(backColor, transparent);
-    Color foreground = TRNSP(foreColor, transparent);
-    Color border = TRNSP(bordColor, transparent);
+    Color background = pBackColor == nullptr ? TRNSP(backColor, transparent) : TRNSP(*pBackColor, transparent);
+    Color foreground = pForeColor == nullptr ? TRNSP(foreColor, transparent) : TRNSP(*pForeColor, transparent);
+    Color border = pBordColor == nullptr ? TRNSP(bordColor, transparent) : TRNSP(*pBordColor, transparent);
     Color subtext = TRNSP(Gcolor::NODE_SUBTEXT, transparent);
     if (isSqr) {
         DrawRectangle(x, y, size, size, background);
