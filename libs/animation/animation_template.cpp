@@ -119,20 +119,6 @@ bool Animate::slideColorOut(T* obj, double* currTime, bool* isReversed) {
 }
 
 template<typename T> 
-bool Animate::transColor(T* obj, T src, T snk, double* currTime, bool* isReversed) {
-    if (*isReversed && *currTime <= 0) {
-        *obj = src;
-        return true;
-    }
-    if (!*isReversed && *currTime >= TRANS_TIME) {
-        *obj = snk;
-        return true;
-    }
-    *obj = TRANSCOLOR(src, snk, bezier(1, TRANS_TIME, *currTime));
-    return false;
-}
-
-template<typename T> 
 bool Animate::transText(T* obj, const std::string &src, const std::string &snk, double* currTime, bool* isReversed) {
     if (*isReversed) {
         obj->assign(src);

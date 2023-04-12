@@ -46,6 +46,20 @@ bool Animate::delay(double* currTime, bool* isReversed) {
     return *isReversed ? *currTime <= 0 : *currTime >= DELAY_TIME;
 }
 
+bool Animate::transColor(Color* obj, Color** robj, Color* src, Color* snk, double* currTime, bool* isReversed) {
+    if (*isReversed && *currTime <= 0) {
+        *robj = src;
+        return true;
+    }
+    if (!*isReversed && *currTime >= TRANS_TIME) {
+        *robj = snk;
+        return true;
+    }
+    *robj = nullptr;
+    *obj = TRANSCOLOR(*src, *snk, bezier(1, TRANS_TIME, *currTime));
+    return false;
+}
+
 Animate::QueueOfScenes::QueueOfScenes() {
     q = std::list<std::function<bool()>>();
 

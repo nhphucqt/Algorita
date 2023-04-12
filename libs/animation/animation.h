@@ -27,7 +27,7 @@ namespace Animate {
     template<typename T> bool slideColorIn(T* obj, double* currTime, bool* isReversed);
     template<typename T> bool slideColorOut(T* obj, double* currTime, bool* isReversed);
 
-    template<typename T> bool transColor(T* obj, T src, T snk, double* currTime, bool* isReversed);
+    bool transColor(Color* obj, Color** robj, Color* src, Color* snk, double* currTime, bool* isReversed);
 
     template<typename T> bool transText(T* obj, const std::string &src, const std::string &snk, double* currTime, bool* isReversed);
 
