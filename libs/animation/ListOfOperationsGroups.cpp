@@ -11,7 +11,6 @@ ListOfOperationsGroups<T>::ListOfOperationsGroups() {
     runType = Animate::RUN_ALL;
     currTime = 0.0;
     speed = 1.0;
-    progress = 0;
 }
 
 template<typename T>
@@ -91,6 +90,7 @@ ExitStatus ListOfOperationsGroups<T>::runPrev(Animate::RunType rt) {
             return ExitStatus(false, "");
         }
         iter++;
+        // updateProgress();
         resetCurrTime();
         updateCode();
         return ExitStatus(true, "");
@@ -131,6 +131,7 @@ ExitStatus ListOfOperationsGroups<T>::runNext(Animate::RunType rt) {
             return ExitStatus(false, "");
         }
         iter--;
+        // updateProgress();
         resetCurrTime();
         updateCode();
         return ExitStatus(true, "");
@@ -180,11 +181,6 @@ void ListOfOperationsGroups<T>::resetCurrTime() {
 }
 
 template<typename T>
-void ListOfOperationsGroups<T>::updateProgress() {
-    progress += isReversed ? -1 : +1;
-}
-
-template<typename T>
 bool ListOfOperationsGroups<T>::canRunOper() const {
     return (isReversed && iter != groups.end()) || (!isReversed && iter != groups.begin());
 }
@@ -224,7 +220,6 @@ bool ListOfOperationsGroups<T>::run() {
                     curGroup()->passHighlightLines(&codeblock);
                 }
             }
-            updateProgress();
             resetCurrTime();
         }
         return false;
@@ -241,9 +236,7 @@ bool ListOfOperationsGroups<T>::run() {
         }
         updateCurrTime();
         // std::cerr << "ALOG::run() -> curTime = " << currTime << '\n';
-        if (curGroup()->run()) {
-            updateProgress();
-        }
+        curGroup()->run();
         // std::cerr << "ALOG::run() -> isReversed getProgress() -> " << isReversed << ' ' << getProgress() << ' ' << groups.size() << '\n';
         return false;
     }
@@ -273,7 +266,6 @@ void ListOfOperationsGroups<T>::clearGroup() {
     for (typename std::list<OperationsGroups<T>>::iterator curr = groups.begin(); curr != groups.end(); ++curr) {
         curr->destroy();
     }
-    progress = 0;
     groups.clear();
     iter = groups.end();
     runType = Animate::RUN_ALL;
@@ -296,6 +288,23 @@ double ListOfOperationsGroups<T>::closestSpeed(double s) {
 
 template<typename T>
 double ListOfOperationsGroups<T>::getProgress() {
+    // for (auto it = groups.begin(); ; ++it) {
+    //     std::cerr << (it == iter) << ' ';
+    //     if (it == groups.end()) {
+    //         break;
+    //     }
+    // }
+    //
+    // std::cerr << '\n';
+    int cnt = 0;
+    for (typename std::list<OperationsGroups<T>>::iterator it = groups.end(); it != iter; --it, ++cnt);
+    // std::cerr << " >> " << cnt << '\n';
+    double progress = runType == Animate::RUN_ALL ? cnt : cnt + (!canRunScene() ? (isReversed ? -1 : +1) : 0);
+    // double progress = cnt + !canRunScene() ? (isReversed ? -1 : +1) : 0;
+    if (canRunScene()) {
+        // std::cerr << "currTime / Animate::ANIMATE_TIME - isReversed = " << currTime << ' ' << Animate::ANIMATE_TIME << ' ' << currTime / Animate::ANIMATE_TIME - isReversed << '\n';
+        progress += currTime / Animate::ANIMATE_TIME - isReversed;
+    }
     return progress;
 }
 
@@ -354,9 +363,8 @@ void ListOfOperationsGroups<T>::animateFadeOut(OT* obj) {
 }
 
 template<typename T>
-template<typename OT> 
-void ListOfOperationsGroups<T>::animateTransColor(OT* obj, OT src, OT snk) {
-    backGroup()->push(std::bind(Animate::transColor<OT>, obj, src, snk, &currTime, &isReversed));
+void ListOfOperationsGroups<T>::animateTransColor(Color* obj, Color** robj, Color* src, Color* snk) {
+    backGroup()->push(std::bind(Animate::transColor, obj, robj, src, snk, &currTime, &isReversed));
 }
 
 template<typename T>
@@ -411,113 +419,113 @@ void ListOfOperationsGroups<T>::animateRedirect(OT* A, OT* C) {
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromNormalToIter(OT* node) {
-    animateTransColor(&node->backColor, Gcolor::NODE_BACKGROUND, Gcolor::NODE_BACKGROUND_FOCUS_ITER);
-    animateTransColor(&node->bordColor, Gcolor::NODE_BORDER, Gcolor::NODE_BORDER_FOCUS_ITER);
-    animateTransColor(&node->foreColor, Gcolor::NODE_FOREGROUND, Gcolor::NODE_FOREGROUND_FOCUS);
+    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND, &Gcolor::NODE_BACKGROUND_FOCUS_ITER);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER, &Gcolor::NODE_BORDER_FOCUS_ITER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND, &Gcolor::NODE_FOREGROUND_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromNormalToFocus(OT* node) {
-    animateTransColor(&node->backColor, Gcolor::NODE_BACKGROUND, Gcolor::NODE_BACKGROUND_FOCUS);
-    animateTransColor(&node->bordColor, Gcolor::NODE_BORDER, Gcolor::NODE_BORDER_FOCUS);
-    animateTransColor(&node->foreColor, Gcolor::NODE_FOREGROUND, Gcolor::NODE_FOREGROUND_FOCUS);
+    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND, &Gcolor::NODE_BACKGROUND_FOCUS);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER, &Gcolor::NODE_BORDER_FOCUS);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND, &Gcolor::NODE_FOREGROUND_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromNormalToRefer(OT* node) {
-    animateTransColor(&node->backColor, Gcolor::NODE_BACKGROUND, Gcolor::NODE_BACKGROUND_FOCUS_REFER);
-    animateTransColor(&node->bordColor, Gcolor::NODE_BORDER, Gcolor::NODE_BORDER_FOCUS_REFER);
-    animateTransColor(&node->foreColor, Gcolor::NODE_FOREGROUND, Gcolor::NODE_FOREGROUND_FOCUS);
+    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND, &Gcolor::NODE_BACKGROUND_FOCUS_REFER);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER, &Gcolor::NODE_BORDER_FOCUS_REFER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND, &Gcolor::NODE_FOREGROUND_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromNormalToRemove(OT* node) {
-    animateTransColor(&node->backColor, Gcolor::NODE_BACKGROUND, Gcolor::NODE_BACKGROUND_FOCUS_REMOVE);
-    animateTransColor(&node->bordColor, Gcolor::NODE_BORDER, Gcolor::NODE_BORDER_FOCUS_REMOVE);
-    animateTransColor(&node->foreColor, Gcolor::NODE_FOREGROUND, Gcolor::NODE_FOREGROUND_FOCUS);
+    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND, &Gcolor::NODE_BACKGROUND_FOCUS_REMOVE);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER, &Gcolor::NODE_BORDER_FOCUS_REMOVE);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND, &Gcolor::NODE_FOREGROUND_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromIterToNormal(OT* node) {
-    animateTransColor(&node->backColor, Gcolor::NODE_BACKGROUND_FOCUS_ITER, Gcolor::NODE_BACKGROUND);
-    animateTransColor(&node->bordColor, Gcolor::NODE_BORDER_FOCUS_ITER, Gcolor::NODE_BORDER);
-    animateTransColor(&node->foreColor, Gcolor::NODE_FOREGROUND_FOCUS, Gcolor::NODE_FOREGROUND);
+    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND_FOCUS_ITER, &Gcolor::NODE_BACKGROUND);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER_FOCUS_ITER, &Gcolor::NODE_BORDER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND_FOCUS, &Gcolor::NODE_FOREGROUND);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromIterToNearIter(OT* node) {
-    animateTransColor(&node->backColor, Gcolor::NODE_BACKGROUND_FOCUS_ITER, Gcolor::NODE_BACKGROUND);
-    animateTransColor(&node->foreColor, Gcolor::NODE_FOREGROUND_FOCUS, Gcolor::NODE_FOREGROUND_FOCUS_ITER);
+    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND_FOCUS_ITER, &Gcolor::NODE_BACKGROUND);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND_FOCUS, &Gcolor::NODE_FOREGROUND_FOCUS_ITER);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromIterToFocus(OT* node) {
-    animateTransColor(&node->backColor, Gcolor::NODE_BACKGROUND_FOCUS_ITER, Gcolor::NODE_BACKGROUND_FOCUS);
-    animateTransColor(&node->bordColor, Gcolor::NODE_BORDER_FOCUS_ITER, Gcolor::NODE_BORDER_FOCUS);
+    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND_FOCUS_ITER, &Gcolor::NODE_BACKGROUND_FOCUS);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER_FOCUS_ITER, &Gcolor::NODE_BORDER_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromNearIterToNormal(OT* node) {
-    animateTransColor(&node->bordColor, Gcolor::NODE_BORDER_FOCUS_ITER, Gcolor::NODE_BORDER);
-    animateTransColor(&node->foreColor, Gcolor::NODE_FOREGROUND_FOCUS_ITER, Gcolor::NODE_FOREGROUND);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER_FOCUS_ITER, &Gcolor::NODE_BORDER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND_FOCUS_ITER, &Gcolor::NODE_FOREGROUND);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromFocusToIter(OT* node) {
-    animateTransColor(&node->backColor, Gcolor::NODE_BACKGROUND_FOCUS, Gcolor::NODE_BACKGROUND_FOCUS_ITER);
-    animateTransColor(&node->bordColor, Gcolor::NODE_BORDER_FOCUS, Gcolor::NODE_BORDER_FOCUS_ITER);
+    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND_FOCUS, &Gcolor::NODE_BACKGROUND_FOCUS_ITER);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER_FOCUS, &Gcolor::NODE_BORDER_FOCUS_ITER);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromReferToNormal(OT* node) {
-    animateTransColor(&node->backColor, Gcolor::NODE_BACKGROUND_FOCUS_REFER, Gcolor::NODE_BACKGROUND);
-    animateTransColor(&node->bordColor, Gcolor::NODE_BORDER_FOCUS_REFER, Gcolor::NODE_BORDER);
-    animateTransColor(&node->foreColor, Gcolor::NODE_FOREGROUND_FOCUS, Gcolor::NODE_FOREGROUND);
+    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND_FOCUS_REFER, &Gcolor::NODE_BACKGROUND);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER_FOCUS_REFER, &Gcolor::NODE_BORDER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND_FOCUS, &Gcolor::NODE_FOREGROUND);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowFromNormalToIter(OT* node) {
-    animateTransColor(&node->aNext.lineColor, Gcolor::ARROW_LINE, Gcolor::ARROW_LINE_FOCUS_ITER);
+    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Gcolor::ARROW_LINE, &Gcolor::ARROW_LINE_FOCUS_ITER);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowFromNormalToFocus(OT* node) {
-    animateTransColor(&node->aNext.lineColor, Gcolor::ARROW_LINE, Gcolor::ARROW_LINE_FOCUS);
+    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Gcolor::ARROW_LINE, &Gcolor::ARROW_LINE_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowFromIterToNormal(OT* node) {
-    animateTransColor(&node->aNext.lineColor, Gcolor::ARROW_LINE_FOCUS_ITER, Gcolor::ARROW_LINE);
+    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Gcolor::ARROW_LINE_FOCUS_ITER, &Gcolor::ARROW_LINE);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowFromFocusToNormal(OT* node) {
-    animateTransColor(&node->aNext.lineColor, Gcolor::ARROW_LINE_FOCUS, Gcolor::ARROW_LINE);
+    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Gcolor::ARROW_LINE_FOCUS, &Gcolor::ARROW_LINE);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowSlideFromIterToNormal(OT* node) {
-    animateTransColor(&node->aNext.slideColor, Gcolor::ARROW_LINE_FOCUS_ITER, Gcolor::ARROW_LINE);
+    animateTransColor(&node->aNext.slideColor, &node->aNext.pSlideColor, &Gcolor::ARROW_LINE_FOCUS_ITER, &Gcolor::ARROW_LINE);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowSlideFromNormalToIter(OT* node) {
-    animateTransColor(&node->aNext.slideColor, Gcolor::ARROW_LINE, Gcolor::ARROW_LINE_FOCUS_ITER);
+    animateTransColor(&node->aNext.slideColor, &node->aNext.pSlideColor, &Gcolor::ARROW_LINE, &Gcolor::ARROW_LINE_FOCUS_ITER);
 }
 
 #endif

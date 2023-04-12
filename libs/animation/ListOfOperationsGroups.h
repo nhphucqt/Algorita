@@ -21,7 +21,6 @@ private:
     bool isReversed;
     double currTime;
     double speed;
-    int progress;
 
     T* mainObj;
     std::list<OperationsGroups<T>> groups;
@@ -56,8 +55,6 @@ public:
     void updateCurrTime();
     void resetCurrTime();
 
-    void updateProgress();
-
     bool canRunOper() const;
     bool canRunScene() const;
     bool run();
@@ -79,7 +76,7 @@ public:
     template<typename OT> void animateFadeIn(OT* obj);
     template<typename OT> void animateFadeOut(OT* obj);
 
-    template<typename OT> void animateTransColor(OT* obj, OT src, OT snk);
+    void animateTransColor(Color* obj, Color** robj, Color* src, Color* snk);
 
     template<typename OT> void animateTransText(OT* obj, const std::string &src, const std::string &snk);
 
