@@ -2086,7 +2086,8 @@ bool GuiTextBox(Rectangle bounds, char *text, int textSize, bool editMode)
     else GuiDrawRectangle(bounds, 1, Fade(GetColor(GuiGetStyle(TEXTBOX, BORDER + (state*3))), guiAlpha), BLANK);
 
     // in case we edit and text does not fit in the textbox show right aligned and character clipped, slower but working
-    while (editMode && textWidth >= textBounds.width && *text)
+    // while (editMode && textWidth >= textBounds.width && *text) // NOTE
+    while (textWidth >= textBounds.width && *text)
     {
         int bytes = 0;
         GetCodepoint(text, &bytes);
