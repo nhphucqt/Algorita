@@ -96,6 +96,10 @@ namespace Gui {
     const int BUTTON_OPER_GO_WIDTH = 40;
     const int BUTTON_OPER_GO_HEIGHT = 40;
 
+    const int USER_DEF_BUTTON_WIDTH = 300;
+    const int USER_DEF_BUTTON_HEIGHT = 50;
+    const int USER_DEF_INPUT_HEIGHT = 40;
+
     const int LOG_SPEED_SIGN_WIDTH = 70;
     const int LOG_SPEED_SIGN_HEIGHT = 50;
     const int LOG_SLIDER_WIDTH = 200;
