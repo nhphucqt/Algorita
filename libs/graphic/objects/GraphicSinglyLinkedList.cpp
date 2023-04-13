@@ -49,6 +49,15 @@ ExitStatus GraphicSinglyLinkedList::initialize(int initSize, ListOfOperationsGro
 }
 
 ExitStatus GraphicSinglyLinkedList::initialize(std::vector<int> vals, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) { // Initialize with given values
+    if ((int)vals.size() > Core::MAX_NUM_NODE_SLL) {
+        return ExitStatus(false, "Size is out of bound");
+    }
+    for (int i = 0; i < (int)vals.size(); ++i) {
+        if (vals[i] < Core::NODE_MIN_VALUE || vals[i] > Core::NODE_MAX_VALUE) {
+            return ExitStatus(false, "Value is out of bound");
+        }
+    }
+
     ALOG->clearGroup();
     ALOG->resetCode();
 
