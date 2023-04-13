@@ -10,12 +10,13 @@
 #include "../../rcore/rRectangle.h"
 #include "../../animation/ListOfOperationsGroups.h"
 #include "../gui/Codeblock.h"
+#include "../../core/userfunc.h"
 
 namespace Screen {
     class ScreenSinglyLinkedList {
     private:
         enum OperationType {OTNULL, CREATE, SEARCH, INSERT, REMOVE} currOperationType;
-        enum Operation {ONULL, SEARCH_FIRST, INSERT_FORD, INSERT_BACK, INSERT_MIDD, REMOVE_MIDD} currOperation;
+        enum Operation {ONULL, CREATE_USER_DEF, SEARCH_FIRST, INSERT_FORD, INSERT_BACK, INSERT_MIDD, REMOVE_MIDD} currOperation;
 
         GraphicSinglyLinkedList obj;
 
@@ -23,6 +24,7 @@ namespace Screen {
         GuiTextBoxState inputInsertFord, inputInsertBack;
         GuiTextBoxState inputInsertMiddPos, inputInsertMiddVal;
         GuiTextBoxState inputRemoveMidd;
+        GuiTextBoxState inputUserDefined;
 
         StyledText exitMessage;
 
