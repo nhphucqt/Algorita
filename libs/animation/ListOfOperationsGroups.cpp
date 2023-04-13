@@ -326,7 +326,7 @@ void ListOfOperationsGroups<T>::draw() {
         runNext(Animate::RUN_STEP);
     }
     posX -= 2 + Gui::LOG_NAV_BUTTON_WIDTH;
-    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, "||")) {
+    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, "||") || IsKeyPressed(KEY_SPACE)) {
         toggleRun();
     }
     posX -= 2 + Gui::LOG_NAV_BUTTON_WIDTH;
