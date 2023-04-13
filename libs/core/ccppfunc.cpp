@@ -39,6 +39,17 @@ int cf::str2num(const char* str) {
     return num;
 }
 
+void cf::fixNumStr(std::string &num) {
+    if (num.front() != '0') {
+        return;
+    }
+    std::reverse(num.begin(), num.end());
+    while (num.size() > 1 && num.back() == '0') {
+        num.pop_back();
+    }
+    std::reverse(num.begin(), num.end());
+}
+
 
 int cf::getRandomNode() {
     return GetRandomValue(Core::NODE_MIN_VALUE, Core::NODE_MAX_VALUE);

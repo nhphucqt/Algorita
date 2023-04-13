@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 #include "../conf_raylib.h"
 #include "../global.h"
@@ -17,9 +18,11 @@ namespace cf {
     }
     std::string num2str(int num);
     std::string double2str(double num);
-    int str2num(const std::string &str);
 
+    int str2num(const std::string &str);
     int str2num(const char* str);
+
+    void fixNumStr(std::string &num);
 
     int getRandomNode();
     
