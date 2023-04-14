@@ -5,12 +5,11 @@
 
 #include "../../global.h"
 #include "../gui/GraphicButton.h"
+#include "../../rcore/rguiDropDownBox.h"
 
 namespace Layout {
     inline GraphicTextButton appNameButton;
-    inline GraphicTextButton SLLButton, DLLButton, CLLButton;
-    inline GraphicTextButton stackButton, queueButton;
-    inline GraphicTextButton staticArrButton, dynamicArrButton;
+    inline DropDownBoxState dropDownList;
 
     void initialize();
     void drawTopNavigation();
