@@ -48,6 +48,9 @@ public:
     ExitStatus runNext(Animate::RunType rt);
     ExitStatus runPrev(Animate::RunType rt);
 
+    bool isPaused() const;
+    bool isFinished() const;
+
     ExitStatus toggleRun();
 
     void build();
@@ -61,6 +64,7 @@ public:
 
     ExitStatus toFirstState();
     ExitStatus toLastState();
+    ExitStatus replay();
 
     void clearGroup();
     
@@ -71,6 +75,8 @@ public:
 
     void destroy();
     
+    template<typename OT> void animateAssignValue(OT* obj, int oldVal, int newVal);
+
     void animateDelay();
 
     template<typename OT> void animateFadeIn(OT* obj);
