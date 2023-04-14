@@ -24,6 +24,8 @@ public:
     int getNum();
     std::string getStr();
 
+    void setnum(int num);
+
     void draw();
 };
 

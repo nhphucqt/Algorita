@@ -41,6 +41,15 @@ std::string GuiTextBoxState::getStr() {
     return std::string(text);
 }
 
+void GuiTextBoxState::setnum(int num) {
+    std::string str = cf::num2str(num);
+    for (int i = 0; i < (int)str.size(); ++i) {
+        text[i] = str[i];
+    }
+    text[str.size()] = '\0';
+}
+
+
 void GuiTextBoxState::draw() {
     if (GuiTextBox(bounds, text, textSize, active)) {
         active ^= 1;
