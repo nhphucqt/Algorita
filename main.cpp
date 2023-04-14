@@ -15,7 +15,6 @@
 #include "libs/graphic/objects/GraphicSinglyLinkedList.h"
 #include "libs/graphic/gui/GraphicButton.h"
 #include "libs/animation/animation.h"
-#include "libs/graphic/screens/globalLayout.h"
 
 #include "libs/graphic/screens/ScreenSinglyLinkedList.h"
 
@@ -26,6 +25,8 @@ int main() {
 
     InitWindow(Window::WIDTH, Window::HEIGHT, "demo");
     SetTargetFPS(Window::FPS);
+
+    SetExitKey(0);
 
     // Load
 
@@ -41,7 +42,6 @@ int main() {
         // std::cerr << " >> q.size() = " << Animate::queueOfScenes.q.size() << '\n';
         BeginDrawing();
             ClearBackground(WHITE);
-            Layout::drawTopNavigation();
             screenSLL.draw();
         EndDrawing();
     }
