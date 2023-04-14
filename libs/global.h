@@ -6,6 +6,7 @@
 
 namespace CPath {
     const char* const SLL_SEARCH_FIRST = "assets/visual_cpp/sll/sll_search_first";
+    const char* const SLL_UPDATE = "assets/visual_cpp/sll/sll_update";
     const char* const SLL_INSERT_FORD = "assets/visual_cpp/sll/sll_insert_ford";
     const char* const SLL_INSERT_BACK = "assets/visual_cpp/sll/sll_insert_back";
     const char* const SLL_INSERT_KTH = "assets/visual_cpp/sll/sll_insert_kth";
@@ -37,7 +38,8 @@ namespace Core {
 
 namespace Window {
     // WXGA+ | 16 : 10
-    const int WIDTH = 1440;
+    // const int WIDTH = 1440;
+    const int WIDTH = 1600;
     const int HEIGHT = 900;
     const Vector2 DIMENSION = Vector2{WIDTH, HEIGHT};
     
@@ -75,7 +77,7 @@ namespace Graphic {
 }
 
 namespace Layout {
-    const int BOTTOM_HEIGHT = 50;
+    const int BOTTOM_HEIGHT = 60;
 }
 namespace Gui {
     const int CODEBLOCK_LINE_PADDING_X = 10;
@@ -86,7 +88,7 @@ namespace Gui {
 
     const int LABEL_PADDING_LEFT = 5;
 
-    const int BUTTON_OPER_WIDTH = 150;
+    const int BUTTON_OPER_WIDTH = 200;
     const int BUTTON_OPER_HEIGHT = 50;
     const int BUTTON_OPER_DIST_X = 10;
 
@@ -108,6 +110,11 @@ namespace Gui {
     const int LOG_SLIDER_BAR_HEIGHT = 20;
     const int LOG_NAV_BUTTON_WIDTH = 35;
     const int LOG_NAV_BUTTON_HEIGHT = 35;
+
+    const int FILE_DIALOG_OPEN_BUTTON_WIDTH = 50;
+    const int FILE_DIALOG_OPEN_BUTTON_HEIGHT = 50;
+    const int FILE_DIALOG_WIDTH = 1000;
+    const int FILE_DIALOG_HEIGHT = 800;
 }
 
 namespace Animate {
@@ -122,6 +129,7 @@ namespace Animate {
     const float FOCUS_TIME = ANIMATE_TIME;
     const float UNFOCUS_TIME = ANIMATE_TIME;
     const float DELAY_TIME = ANIMATE_TIME;
+    const float ASSIGN_TIME = ANIMATE_TIME;
 
     inline double elapseTime = 0;
 }
