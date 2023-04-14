@@ -15,6 +15,8 @@ namespace Animate {
     double bezier(double S, double T, double t);
     bool delay(double* currTime, bool* isReversed);
 
+    template<typename T> bool assignValue(T* obj, int oldVal, int newVal, double* currTime, bool* isReversed);
+
     template<typename T> bool fadeIn(T* obj, double* currTime, bool* isReversed);
     template<typename T> bool fadeOut(T* obj, double* currTime, bool* isReversed);
 

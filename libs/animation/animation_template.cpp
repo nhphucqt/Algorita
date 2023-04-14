@@ -3,6 +3,13 @@
 
 #include "animation.h"
 
+template<typename T>
+bool Animate::assignValue(T* obj, int oldVal, int newVal, double* currTime, bool* isReversed) {
+    obj->setValue(*isReversed ? oldVal : newVal);
+    return (*isReversed && *currTime <= 0) || (!*isReversed && *currTime >= Animate::ASSIGN_TIME);
+}
+
+
 // DO NOT USE DIRECTLY
 template<typename T> 
 bool Animate::fadeIn(T* obj, double* currTime, bool* isReversed) {
