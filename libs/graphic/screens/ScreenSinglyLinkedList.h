@@ -12,6 +12,10 @@
 #include "../gui/Codeblock.h"
 #include "../../core/userfunc.h"
 
+#include "../../external/gui_file_dialog.h"
+
+#include "globalLayout.h"
+
 namespace Screen {
     class ScreenSinglyLinkedList {
     private:
@@ -29,6 +33,8 @@ namespace Screen {
         StyledText exitMessage;
 
         ListOfOperationsGroups<GraphicSinglyLinkedList> ALOG;
+
+        GuiFileDialogState fileDialogState;
 
     public:
         ScreenSinglyLinkedList();
