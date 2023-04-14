@@ -7,6 +7,8 @@
 
 #include "raylib.h"
 // #define RAYGUI_IMPLEMENTATION
+#define RAYGUI_CUSTOM_ICONS
+#include "libs/external/ricons.h"
 #include "libs/external/raygui.h"
 
 #undef PI

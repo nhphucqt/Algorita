@@ -1,4 +1,6 @@
 #define RAYGUI_IMPLEMENTATION
+#define RAYGUI_CUSTOM_ICONS
+#include "ricons.h"
 #include "raygui.h"
 #undef RAYGUI_IMPLEMENTATION
 
