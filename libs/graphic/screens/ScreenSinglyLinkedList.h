@@ -6,11 +6,13 @@
 #include "../../conf_raylib.h"
 
 #include "../objects/GraphicSinglyLinkedList.h"
-#include "../../rcore/rguiTextBox.h"
-#include "../../rcore/rRectangle.h"
 #include "../../animation/ListOfOperationsGroups.h"
 #include "../gui/Codeblock.h"
 #include "../../core/userfunc.h"
+
+#include "../../rcore/rguiTextBox.h"
+#include "../../rcore/rguiToggle.h"
+#include "../../rcore/rRectangle.h"
 
 #include "../../external/gui_file_dialog.h"
 
@@ -30,6 +32,20 @@ namespace Screen {
         GuiTextBoxState inputUpdateValuePos, inputUpdateValueVal;
         GuiTextBoxState inputRemoveMidd;
         GuiTextBoxState inputUserDefined;
+
+        GuiToggleState toggleCreateType;
+        GuiToggleState toggleSearchType;
+        GuiToggleState toggleInsertType;
+        GuiToggleState toggleUpdateType;
+        GuiToggleState toggleRemoveType;
+        
+        GuiToggleState toggleUserDefine;
+        GuiToggleState toggleSearchFirst;
+        GuiToggleState toggleInsertFord;
+        GuiToggleState toggleInsertBack;
+        GuiToggleState toggleInsertMidd;
+        GuiToggleState toggleRemoveMidd;
+
 
         StyledText exitMessage;
 
