@@ -56,9 +56,9 @@ void GraphicTrackArrow::setPercent(float _p) {
 }
 
 void GraphicTrackArrow::resetColor() {
-    slideColor = Gcolor::ARROW_LINE;
-    lineColor = Gcolor::ARROW_LINE;
-    headColor = Gcolor::ARROW_HEAD;
+    pLineColor = &Theme::currTheme.ARROW_LINE;
+    pSlideColor = &Theme::currTheme.ARROW_LINE;
+    pHeadColor = &Theme::currTheme.ARROW_HEAD;
     slidePercent = 0.0;
 }
 
@@ -117,9 +117,9 @@ void GraphicTrackArrow::draw() {
         // std::cerr << "              -> newB  = " << newB.x << ' ' << newB.y << '\n';
         assert(CCW(pLeft, pRight, newB));
 
-        DrawLineEx(newA, pCentr, lineWidth, TRNSP(lineColor, transparent));
-        DrawLineEx(newA, newA + ((pCentr - newA) * slidePercent), lineWidth, TRNSP(slideColor, transparent));
-        DrawTriangle(pRight, pLeft, newB, TRNSP(headColor, transparent));
+        DrawLineEx(newA, pCentr, lineWidth, TRNSP(pLineColor == nullptr ? lineColor : *pLineColor, transparent));
+        DrawLineEx(newA, newA + ((pCentr - newA) * slidePercent), lineWidth, TRNSP(pSlideColor == nullptr ? slideColor : *pSlideColor, transparent));
+        DrawTriangle(pRight, pLeft, newB, TRNSP(pHeadColor == nullptr ? headColor : *pHeadColor, transparent));
     }
 }
 
