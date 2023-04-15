@@ -22,7 +22,7 @@ bool Animate::fadeIn(T* obj, double* currTime, bool* isReversed) {
     }
     // *currTime = std::max(0.0, std::min((double)FADEIN_TIME, *currTime));
     // std::cerr << "Animate::fadein() -> currTime = " << *currTime << '\n';
-    obj->transparent = *currTime / FADEIN_TIME;
+    obj->transparent = bezier(*currTime / FADEIN_TIME);
     return false;
 }
 
@@ -36,7 +36,7 @@ bool Animate::fadeOut(T* obj, double *currTime, bool* isReversed) {
         return obj->vanish(), true;
     }
     // *currTime = std::max(0.0, std::min((double)FADEOUT_TIME, *currTime));
-    obj->transparent = 1.0 - (*currTime) / FADEOUT_TIME;
+    obj->transparent = bezier(1.0 - (*currTime) / FADEOUT_TIME);
     return false;
 }
 
@@ -59,7 +59,7 @@ bool Animate::displace(T* obj, int Sx, int Sy, int Dx, int Dy, double* currTime,
     // std::cerr << "Ux,Uy " << Ux << ' ' << Uy << '\n';
     double leng = sqrt(Ux*Ux + Uy*Uy);
     // std::cerr << "leng " << leng << '\n';
-    double distance = bezier(leng, TRANS_TIME, std::min((double)TRANS_TIME, *currTime));
+    double distance = leng * bezier(std::min((double)TRANS_TIME, *currTime) / TRANS_TIME);
     // std::cerr << "distance " << distance << '\n';
     obj->x = Sx + Ux / leng * distance;
     obj->y = Sy + Uy / leng * distance;
@@ -82,7 +82,7 @@ bool Animate::slideIn(T* obj, double* currTime, bool* isReversed) {
     if (!*isReversed && (*currTime >= SLIDE_TIME)) {
         return obj->percent = 1.0, true;
     }
-    obj->percent = (*currTime) / SLIDE_TIME;
+    obj->percent = bezier((*currTime) / SLIDE_TIME);
     return false;
 }
 
@@ -95,7 +95,7 @@ bool Animate::slideOut(T* obj, double* currTime, bool* isReversed) {
     if (!*isReversed && (*currTime >= SLIDE_TIME)) {
         return obj->percent = 0.0, true;
     }
-    obj->percent = 1.0 - (*currTime) / SLIDE_TIME;
+    obj->percent = bezier(1.0 - (*currTime) / SLIDE_TIME);
     return false;
 }
 
@@ -108,7 +108,7 @@ bool Animate::slideColorIn(T* obj, double* currTime, bool* isReversed) {
     if (!*isReversed && (*currTime >= SLIDE_TIME)) {
         return obj->slidePercent = 1.0, true;
     }
-    obj->slidePercent = (*currTime) / SLIDE_TIME;
+    obj->slidePercent = bezier((*currTime) / SLIDE_TIME);
     return false;
 }
 
@@ -121,7 +121,7 @@ bool Animate::slideColorOut(T* obj, double* currTime, bool* isReversed) {
     if (!*isReversed && (*currTime >= SLIDE_TIME)) {
         return obj->slidePercent = 0.0, true;
     }
-    obj->slidePercent = 1.0 - (*currTime) / SLIDE_TIME;
+    obj->slidePercent = bezier(1.0 - (*currTime) / SLIDE_TIME);
     return false;
 }
 
@@ -166,7 +166,7 @@ bool Animate::redirect(T* A, T* C, double* currTime, bool* isReversed) {
         A->aNext.transB = Z_VECT;
         return true;
     }
-    A->aNext.transB = BC * (1.0 - ((*currTime) / TRAVEL_TIME));
+    A->aNext.transB = BC * bezier(1.0 - ((*currTime) / TRAVEL_TIME));
     A->aNext.transA = A->outerShapeOut(newB + A->aNext.transB - cA) - A->outerShapeOut(AB);
 
     return false;
