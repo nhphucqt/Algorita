@@ -34,7 +34,7 @@ int main() {
     }
 
     GraphicSinglyLinkedList li2;
-    li2.makeCopy(li);
+    // li2.makeCopy(li);
     // li.destroy();
 
     // for (int i = 0; i < 10; ++i) {
