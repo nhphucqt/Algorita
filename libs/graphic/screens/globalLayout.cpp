@@ -8,4 +8,7 @@ void Layout::initialize() {
 void Layout::drawTopNavigation() {
     appNameButton.draw();
     dropDownList.draw();
+    if (GuiButton(Rectangle{Window::WIDTH - 40 - 5, 5, 40, 40}, Theme::currTheme.iconText.c_str())) {
+        Theme::toggleTheme();
+    }
 }
