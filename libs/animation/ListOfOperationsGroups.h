@@ -13,14 +13,14 @@ template<typename T>
 class ListOfOperationsGroups {
 // public:
 private:
-    static const int NUM_SPEED = 6;
-    const double SPEED_SIGNATURE[NUM_SPEED] = {0.25, 0.5, 1.0, 2.0, 3.0, 4.0};
+    static const int NUM_SPEED = 9;
+    const double SPEED_SIGNATURE[NUM_SPEED] = {0.1, 0.25, 0.5, 0.75, 1.0, 2.0, 3.0, 4.0, 8.0};
 
     Animate::RunType runType;
 
     bool isReversed;
     double currTime;
-    double speed;
+    int speedID;
 
     T* mainObj;
     std::list<OperationsGroups<T>> groups;
@@ -68,7 +68,11 @@ public:
 
     void clearGroup();
     
-    double closestSpeed(double s);
+    int closestSpeedID(double s);
+    void decSpeed();
+    void incSpeed();
+    void resetSpeed();
+
     double getProgress();
 
     void draw(bool keyActive);

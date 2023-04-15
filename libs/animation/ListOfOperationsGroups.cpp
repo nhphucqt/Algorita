@@ -5,12 +5,13 @@
 
 template<typename T>
 ListOfOperationsGroups<T>::ListOfOperationsGroups() {
-    mainObj = nullptr;    
+    mainObj = nullptr;
     iter = groups.end();
     isReversed = false;
     runType = Animate::RUN_ALL;
-    currTime = 0.0;
-    speed = 1.0;
+    resetCode();
+    resetCurrTime();
+    resetSpeed();
 }
 
 template<typename T>
@@ -37,7 +38,6 @@ void ListOfOperationsGroups<T>::setMainObj(T* _mainObj) {
 template<typename T>
 void ListOfOperationsGroups<T>::loadCode(const std::string &path) {
     codeblock.load(path);
-    // std::cerr << "LOG::loadCode lines.size() = " << codeblock.lines.size() << '\n';
 }
 
 template<typename T>
@@ -61,8 +61,6 @@ void ListOfOperationsGroups<T>::resetCode() {
 template<typename T>
 void ListOfOperationsGroups<T>::addNewGroup() {
     groups.push_front(OperationsGroups<T>());
-    // std::cerr << "LOG::addNewGroup -> iter end " << (iter == groups.end()) << '\n';
-    // std::cerr << "LOG::addNewGroup -> iter end " << (groups.front().opers.iter == groups.front().opers.q.end()) << '\n';
 }
 
 template<typename T>
@@ -76,33 +74,24 @@ ExitStatus ListOfOperationsGroups<T>::runPrev(Animate::RunType rt) {
         return ExitStatus(false, "");
     }
     runType = rt;
-    // std::cerr << "LOG::runPrev() -> isReversed = " << isReversed << '\n';
-    // std::cerr << "LOG::runPrev() -> iter == groups.begin() = " << (iter == groups.begin()) << '\n';
-    // std::cerr << "LOG::runPrev() -> iter == groups.end() = " << (iter == groups.end()) << '\n';
-    // std::cerr << "LOG::runPrev() -> progress = " << getProgress() << '\n';
     if (isReversed) {
         if (iter == groups.end()) {
-            // std::cerr << "LOG::runPrev -> iter == groups.end()\n";
             return ExitStatus(false, "");
         } 
         if (canRunScene()) {
-            // std::cerr << "LOG::runPrev -> canRunScene\n";
             return ExitStatus(false, "");
         }
         iter++;
-        // updateProgress();
         resetCurrTime();
         updateCode();
         return ExitStatus(true, "");
     }
     isReversed = true;
     if (iter == groups.begin()) {
-        // std::cerr << "LOG::runPrev -> iter == groups.begin()\n";
         resetCurrTime();
         updateCode();
         return ExitStatus(true, "");
     }
-    // std::cerr << "LOG::runPrev -> iter != groups.begin()\n";
     iter--;
     if (currTime >= Animate::ANIMATE_TIME) {
         resetCurrTime();
@@ -117,34 +106,25 @@ ExitStatus ListOfOperationsGroups<T>::runNext(Animate::RunType rt) {
         return ExitStatus(false, "");
     }
     runType = rt;
-    // std::cerr << "LOG::runNext() -> isReversed = " << isReversed << '\n';
-    // std::cerr << "LOG::runNext() -> iter == groups.begin() = " << (iter == groups.begin()) << '\n';
-    // std::cerr << "LOG::runNext() -> iter == groups.end() = " << (iter == groups.end()) << '\n';
-    // std::cerr << "LOG::runNext() -> progress = " << getProgress() << '\n';
     if (!isReversed) {
         if (iter == groups.begin()) {
-            // std::cerr << "LOG::runNext -> iter == groups.begin()\n";
             return ExitStatus(false, "");
         }
         if (canRunScene()) {
-            // std::cerr << "LOG::runNext -> canRunScene()\n";
             return ExitStatus(false, "");
         }
         iter--;
-        // updateProgress();
         resetCurrTime();
         updateCode();
         return ExitStatus(true, "");
     }
     isReversed = false;
     if (iter == groups.end()) {
-        // std::cerr << "LOG::runNext -> iter == group.end()\n";
         assert(iter != groups.begin());
         resetCurrTime();
         updateCode();
         return ExitStatus(true, "");
     }
-    // std::cerr << "LOG::runNext -> iter != group.end()\n";
     iter++;
     updateCode();
     if (currTime < 0) {
@@ -163,7 +143,6 @@ bool ListOfOperationsGroups<T>::isFinished() const {
     if (groups.empty()) {
         return true;
     }
-    // std::cerr << "LOG::isFinished -> " << isReversed << ' ' << canRunOper() << ' ' << isPaused() << ' ' << canRunScene() << '\n';
     return !isReversed && (!canRunOper() || (iter == next(groups.begin()) && isPaused() && !canRunScene()));
 }
 
@@ -173,7 +152,6 @@ ExitStatus ListOfOperationsGroups<T>::toggleRun() {
         runType = Animate::RUN_STEP;
     } else if (runType == Animate::RUN_STEP) {
         runNext(Animate::RUN_ALL);
-        // runType = Animate::RUN_ALL;
     }
     return ExitStatus(true, "");
 }
@@ -186,7 +164,7 @@ void ListOfOperationsGroups<T>::build() {
 
 template<typename T>
 void ListOfOperationsGroups<T>::updateCurrTime() {
-    currTime += (isReversed ? -Animate::elapseTime : +Animate::elapseTime) * speed;
+    currTime += (isReversed ? -Animate::elapseTime : +Animate::elapseTime) * SPEED_SIGNATURE[speedID];
 }
 
 template<typename T>
@@ -206,18 +184,11 @@ bool ListOfOperationsGroups<T>::canRunScene() const {
 
 template<typename T>
 bool ListOfOperationsGroups<T>::run() {
-    // std::cerr << "LOG::run() -> " << isReversed << ' ' << isPaused << ' ' << runType << '\n';
-    // std::cerr << "ALOG run ------------- \n";
-    // std::cerr << "ALOG size " << groups.size() << '\n';
-
     if (runType == Animate::RUN_ALL) {
         if (!canRunOper()) {
             return true;
         }
-        // std::cerr << "LOG::run() -> prev currTime = " << currTime << '\n';
         updateCurrTime();
-        // std::cerr << "LOG::run() -> curr currTime = " << currTime << '\n';
-        // std::cerr << " >> Running curOper\n";
         if (curGroup()->run()) {
             if (isReversed) {
                 iter++;
@@ -239,9 +210,6 @@ bool ListOfOperationsGroups<T>::run() {
         return false;
     }
     if (runType == Animate::RUN_STEP) {
-        // std::cerr << "LOG::run -> iter == begin() " << (iter == groups.begin()) << '\n';
-        // std::cerr << "LOG::run -> isReversed " << isReversed << '\n';
-        // std::cerr << "LOG::run -> curG->canRun " << (curGroup()->canRun(isReversed)) << '\n';
         if (!canRunOper()) {
             return true;
         }
@@ -249,12 +217,9 @@ bool ListOfOperationsGroups<T>::run() {
             return true;
         }
         updateCurrTime();
-        // std::cerr << "ALOG::run() -> curTime = " << currTime << '\n';
         curGroup()->run();
-        // std::cerr << "ALOG::run() -> isReversed getProgress() -> " << isReversed << ' ' << getProgress() << ' ' << groups.size() << '\n';
         return false;
     }
-    // std::cerr << "runType = " << runType << '\n';
     assert(false);
     return false;
 }
@@ -296,35 +261,35 @@ void ListOfOperationsGroups<T>::clearGroup() {
 }
 
 template<typename T>
-double ListOfOperationsGroups<T>::closestSpeed(double s) {
-    double res = SPEED_SIGNATURE[0];
-    double mins = fabs(SPEED_SIGNATURE[0] - s);
-    for (int i = 1; i < NUM_SPEED; ++i) {
-        if (mins > fabs(SPEED_SIGNATURE[i] - s)) {
-            mins = fabs(SPEED_SIGNATURE[i] - s);
-            res = SPEED_SIGNATURE[i];
-        }
+int ListOfOperationsGroups<T>::closestSpeedID(double s) {
+    return round(s);
+}
+
+template<typename T>
+void ListOfOperationsGroups<T>::decSpeed() {
+    if (speedID > 0) {
+        speedID--;
     }
-    return res;
+}
+
+template<typename T>
+void ListOfOperationsGroups<T>::incSpeed() {
+    if (speedID < NUM_SPEED-1) {
+        speedID++;
+    }
+}
+
+template<typename T>
+void ListOfOperationsGroups<T>::resetSpeed() {
+    speedID = std::lower_bound(SPEED_SIGNATURE, SPEED_SIGNATURE + NUM_SPEED, 1.0) - SPEED_SIGNATURE;
 }
 
 template<typename T>
 double ListOfOperationsGroups<T>::getProgress() {
-    // for (auto it = groups.begin(); ; ++it) {
-    //     std::cerr << (it == iter) << ' ';
-    //     if (it == groups.end()) {
-    //         break;
-    //     }
-    // }
-    //
-    // std::cerr << '\n';
     int cnt = 0;
     for (typename std::list<OperationsGroups<T>>::iterator it = groups.end(); it != iter; --it, ++cnt);
-    // std::cerr << " >> " << cnt << '\n';
     double progress = runType == Animate::RUN_ALL ? cnt : cnt + (!canRunScene() ? (isReversed ? -1 : +1) : 0);
-    // double progress = cnt + !canRunScene() ? (isReversed ? -1 : +1) : 0;
     if (canRunScene()) {
-        // std::cerr << "currTime / Animate::ANIMATE_TIME - isReversed = " << currTime << ' ' << Animate::ANIMATE_TIME << ' ' << currTime / Animate::ANIMATE_TIME - isReversed << '\n';
         progress += currTime / Animate::ANIMATE_TIME - isReversed;
     }
     return progress;
@@ -334,13 +299,23 @@ template<typename T>
 void ListOfOperationsGroups<T>::draw(bool keyActive) {
     codeblock.draw(Window::DIMENSION - toVector2(0, Layout::BOTTOM_HEIGHT) - codeblock.getBlockDimension());
     float posX = Window::WIDTH - Gui::LOG_SPEED_SIGN_WIDTH;
-    GuiLabel(Rectangle{posX, Window::HEIGHT - Gui::LOG_SPEED_SIGN_HEIGHT, Gui::LOG_SPEED_SIGN_WIDTH, Gui::LOG_SPEED_SIGN_HEIGHT}, (" " + cf::double2str(speed) + "x").c_str());
+    GuiLabel(Rectangle{posX, Window::HEIGHT - Gui::LOG_SPEED_SIGN_HEIGHT, Gui::LOG_SPEED_SIGN_WIDTH, Gui::LOG_SPEED_SIGN_HEIGHT}, (" " + cf::double2str(SPEED_SIGNATURE[speedID]) + "x").c_str());
     posX -= Gui::LOG_SLIDER_WIDTH;
-    speed = closestSpeed(GuiSlider(Rectangle{posX, Window::HEIGHT - Gui::LOG_SLIDER_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_SLIDER_HEIGHT) / 2.0, Gui::LOG_SLIDER_WIDTH, Gui::LOG_SLIDER_HEIGHT}, "", "", speed, SPEED_SIGNATURE[0], SPEED_SIGNATURE[NUM_SPEED-1]));
+    if (keyActive && IsKeyDown(KEY_DOWN) && IsKeyDown(KEY_UP)) {
+        resetSpeed();
+    } else {
+        if (keyActive && IsKeyPressed(KEY_DOWN)) {
+            decSpeed();
+        }
+        if (keyActive && IsKeyPressed(KEY_UP)) {
+            incSpeed();
+        }
+    }
+    speedID = closestSpeedID(GuiSlider(Rectangle{posX, Window::HEIGHT - Gui::LOG_SLIDER_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_SLIDER_HEIGHT) / 2.0, Gui::LOG_SLIDER_WIDTH, Gui::LOG_SLIDER_HEIGHT}, nullptr, nullptr, speedID, 0, NUM_SPEED-1));
     posX -= 10 + Gui::LOG_SLIDER_BAR_WIDTH;
-    GuiSliderBar(Rectangle{posX, Window::HEIGHT - Gui::LOG_SLIDER_BAR_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_SLIDER_BAR_HEIGHT) / 2.0, Gui::LOG_SLIDER_BAR_WIDTH, Gui::LOG_SLIDER_BAR_HEIGHT}, "", "", getProgress(), 0, (int)groups.size());
+    GuiSliderBar(Rectangle{posX, Window::HEIGHT - Gui::LOG_SLIDER_BAR_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_SLIDER_BAR_HEIGHT) / 2.0, Gui::LOG_SLIDER_BAR_WIDTH, Gui::LOG_SLIDER_BAR_HEIGHT}, nullptr, nullptr, getProgress(), 0, (int)groups.size());
     posX -= 10 + Gui::LOG_NAV_BUTTON_WIDTH;
-    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, Gicon::BUTTON_LAST)) {
+    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, Gicon::BUTTON_LAST) || (keyActive && (IsKeyDown(KEY_LEFT_SHIFT)||IsKeyDown(KEY_RIGHT_SHIFT)) && IsKeyPressed(KEY_RIGHT))) {
         toLastState();
     }
     posX -= 2 + Gui::LOG_NAV_BUTTON_WIDTH;
@@ -360,7 +335,7 @@ void ListOfOperationsGroups<T>::draw(bool keyActive) {
         runPrev(Animate::RUN_STEP);
     }
     posX -= 2 + Gui::LOG_NAV_BUTTON_WIDTH;
-    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, Gicon::BUTTON_FIRST)) {
+    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, Gicon::BUTTON_FIRST) || (keyActive && (IsKeyDown(KEY_LEFT_SHIFT)||IsKeyDown(KEY_RIGHT_SHIFT)) && IsKeyPressed(KEY_LEFT))) {
         toFirstState();
     }
 }   
