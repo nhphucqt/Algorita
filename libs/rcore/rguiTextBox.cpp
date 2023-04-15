@@ -49,9 +49,13 @@ void GuiTextBoxState::setnum(int num) {
     text[str.size()] = '\0';
 }
 
+bool GuiTextBoxState::isActive() const {
+    return active;
+}
 
-void GuiTextBoxState::draw() {
+bool GuiTextBoxState::draw() {
     if (GuiTextBox(bounds, text, textSize, active)) {
         active ^= 1;
     }
+    return active;
 }

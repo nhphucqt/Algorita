@@ -26,7 +26,9 @@ public:
 
     void setnum(int num);
 
-    void draw();
+    bool isActive() const;
+
+    bool draw();
 };
 
 #endif
