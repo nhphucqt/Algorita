@@ -14,8 +14,8 @@
 class Codeblock {
 // private:
 public:
-    Color backColor[2];
-    Color foreColor[2];
+    Color* pBackColor[2];
+    Color* pForeColor[2];
 
     Vector2 linePadding, blockPadding;
     float spacing;

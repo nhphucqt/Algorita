@@ -1,10 +1,10 @@
 #include "Codeblock.h"
 
 Codeblock::Codeblock() {
-    backColor[0] = Gcolor::CODEBLOCK_BACKGROUND;
-    backColor[1] = Gcolor::CODEBLOCK_BACKGROUND_FOCUS;
-    foreColor[0] = Gcolor::CODEBLOCK_FOREGROUND;
-    foreColor[1] = Gcolor::CODEBLOCK_FOREGROUND_FOCUS;
+    pBackColor[0] = &Theme::currTheme.CODEBLOCK_BACKGROUND;
+    pBackColor[1] = &Theme::currTheme.CODEBLOCK_BACKGROUND_FOCUS;
+    pForeColor[0] = &Theme::currTheme.CODEBLOCK_FOREGROUND;
+    pForeColor[1] = &Theme::currTheme.CODEBLOCK_FOREGROUND_FOCUS;
     linePadding = toVector2(Gui::CODEBLOCK_LINE_PADDING_X, Gui::CODEBLOCK_LINE_PADDING_Y);
     blockPadding = toVector2(Gui::CODEBLOCK_BLOCK_PADDING_X, Gui::CODEBLOCK_BLOCK_PADDING_Y);
     spacing = Gui::CODEBLOCK_SPACING;
@@ -61,17 +61,17 @@ void Codeblock::resetHighlight() {
 
 void Codeblock::draw(float x, float y) {
     Vector2 org{(float)x,(float)y};
-    DrawRectangleRec(toRectangle(org, blockDimension), backColor[0]);
+    DrawRectangleRec(toRectangle(org, blockDimension), *pBackColor[0]);
     for (int i = 0; i < (int)lines.size(); ++i) {
-        lines[i].draw(org + getLineTextPos(i), foreColor[0]);   
+        lines[i].draw(org + getLineTextPos(i), *pForeColor[0]);   
     }
     for (int id : highlights) {
         if (id < 0 || id >= (int)lines.size()) {
             // std::cerr << " >> id,lines.size() " << id << ' ' << lines.size() << '\n';
             assert(0 <= id && id < (int)lines.size());
         }
-        DrawRectangleRec(toRectangle(org + getLineBoxPos(id), lineDimension), backColor[1]);
-        lines[id].draw(org + getLineTextPos(id), foreColor[1]);
+        DrawRectangleRec(toRectangle(org + getLineBoxPos(id), lineDimension), *pBackColor[1]);
+        lines[id].draw(org + getLineTextPos(id), *pForeColor[1]);
     }
 }
 
