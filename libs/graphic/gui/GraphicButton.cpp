@@ -1,10 +1,10 @@
 #include "GraphicButton.h"
 
 GraphicTextButton::GraphicTextButton() {
-    backColor[0] = Gcolor::TEXT_BUTTON_BACKGROUND;
-    backColor[1] = Gcolor::TEXT_BUTTON_BACKGROUND_FOCUS;
-    foreColor[0] = Gcolor::TEXT_BUTTON_FOREGROUND;
-    foreColor[1] = Gcolor::TEXT_BUTTON_FOREGROUND_FOCUS;
+    backColor[0] = Theme::currTheme.TEXT_BUTTON_BACKGROUND;
+    backColor[1] = Theme::currTheme.TEXT_BUTTON_BACKGROUND_FOCUS;
+    foreColor[0] = Theme::currTheme.TEXT_BUTTON_FOREGROUND;
+    foreColor[1] = Theme::currTheme.TEXT_BUTTON_FOREGROUND_FOCUS;
 }
 
 GraphicTextButton::GraphicTextButton(const Rectangle &_box, const std::string &text) : GraphicTextButton() {
