@@ -527,38 +527,38 @@ void ListOfOperationsGroups<T>::animateNodeFromReferToNormal(OT* node) {
 
 template<typename T>
 template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowFromNormalToIter(OT* node) {
-    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS_ITER);
+void ListOfOperationsGroups<T>::animateArrowFromNormalToIter(OT* arrow) {
+    animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS_ITER);
 }
 
 template<typename T>
 template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowFromNormalToFocus(OT* node) {
-    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS);
+void ListOfOperationsGroups<T>::animateArrowFromNormalToFocus(OT* arrow) {
+    animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowFromIterToNormal(OT* node) {
-    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Theme::currTheme.ARROW_LINE_FOCUS_ITER, &Theme::currTheme.ARROW_LINE);
+void ListOfOperationsGroups<T>::animateArrowFromIterToNormal(OT* arrow) {
+    animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE_FOCUS_ITER, &Theme::currTheme.ARROW_LINE);
 }
 
 template<typename T>
 template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowFromFocusToNormal(OT* node) {
-    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Theme::currTheme.ARROW_LINE_FOCUS, &Theme::currTheme.ARROW_LINE);
+void ListOfOperationsGroups<T>::animateArrowFromFocusToNormal(OT* arrow) {
+    animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE_FOCUS, &Theme::currTheme.ARROW_LINE);
 }
 
 template<typename T>
 template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowSlideFromIterToNormal(OT* node) {
-    animateTransColor(&node->aNext.slideColor, &node->aNext.pSlideColor, &Theme::currTheme.ARROW_LINE_FOCUS_ITER, &Theme::currTheme.ARROW_LINE);
+void ListOfOperationsGroups<T>::animateArrowSlideFromIterToNormal(OT* arrow) {
+    animateTransColor(&arrow->slideColor, &arrow->pSlideColor, &Theme::currTheme.ARROW_LINE_FOCUS_ITER, &Theme::currTheme.ARROW_LINE);
 }
 
 template<typename T>
 template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowSlideFromNormalToIter(OT* node) {
-    animateTransColor(&node->aNext.slideColor, &node->aNext.pSlideColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS_ITER);
+void ListOfOperationsGroups<T>::animateArrowSlideFromNormalToIter(OT* arrow) {
+    animateTransColor(&arrow->slideColor, &arrow->pSlideColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS_ITER);
 }
 
 #endif
