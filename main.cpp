@@ -11,7 +11,6 @@
 #include "libs/graphic/objects/GraphicNode.h"
 #include "libs/graphic/objects/GraphicSinglyNode.h"
 #include "libs/graphic/objects/GraphicDoublyNode.h"
-#include "libs/graphic/objects/GraphicStack.h"
 #include "libs/graphic/objects/GraphicSinglyLinkedList.h"
 #include "libs/graphic/gui/GraphicButton.h"
 #include "libs/animation/animation.h"
