@@ -167,7 +167,6 @@ namespace Animate {
 
 namespace Gfont {
     const int FONT_DEFAULT_SIZE = 30;
-    // const int FONT_DEFAULT_SIZE = 20;
     const int FONT_CODE_SIZE = 20;
     inline Font* defaultFont;
     inline Font* codeFont;
