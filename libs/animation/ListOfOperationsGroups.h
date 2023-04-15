@@ -71,7 +71,7 @@ public:
     double closestSpeed(double s);
     double getProgress();
 
-    void draw();
+    void draw(bool keyActive);
 
     void destroy();
     

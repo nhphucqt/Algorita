@@ -331,7 +331,7 @@ double ListOfOperationsGroups<T>::getProgress() {
 }
 
 template<typename T>
-void ListOfOperationsGroups<T>::draw() {
+void ListOfOperationsGroups<T>::draw(bool keyActive) {
     codeblock.draw(Window::DIMENSION - toVector2(0, Layout::BOTTOM_HEIGHT) - codeblock.getBlockDimension());
     float posX = Window::WIDTH - Gui::LOG_SPEED_SIGN_WIDTH;
     GuiLabel(Rectangle{posX, Window::HEIGHT - Gui::LOG_SPEED_SIGN_HEIGHT, Gui::LOG_SPEED_SIGN_WIDTH, Gui::LOG_SPEED_SIGN_HEIGHT}, (" " + cf::double2str(speed) + "x").c_str());
@@ -344,11 +344,11 @@ void ListOfOperationsGroups<T>::draw() {
         toLastState();
     }
     posX -= 2 + Gui::LOG_NAV_BUTTON_WIDTH;
-    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, Gicon::BUTTON_NEXT) || IsKeyDown(KEY_RIGHT)) {
+    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, Gicon::BUTTON_NEXT) || (keyActive && IsKeyDown(KEY_RIGHT))) {
         runNext(Animate::RUN_STEP);
     }
     posX -= 2 + Gui::LOG_NAV_BUTTON_WIDTH;
-    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, isFinished() ? Gicon::BUTTON_REPLAY : isPaused() ? Gicon::BUTTON_PLAY : Gicon::BUTTON_PAUSE) || IsKeyPressed(KEY_SPACE)) {
+    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, isFinished() ? Gicon::BUTTON_REPLAY : isPaused() ? Gicon::BUTTON_PLAY : Gicon::BUTTON_PAUSE) || (keyActive && IsKeyPressed(KEY_SPACE))) {
         if (isFinished()) {
             replay();
         } else {
@@ -356,7 +356,7 @@ void ListOfOperationsGroups<T>::draw() {
         }
     }
     posX -= 2 + Gui::LOG_NAV_BUTTON_WIDTH;
-    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, Gicon::BUTTON_PREV) || IsKeyDown(KEY_LEFT)) {
+    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, Gicon::BUTTON_PREV) || (keyActive && IsKeyDown(KEY_LEFT))) {
         runPrev(Animate::RUN_STEP);
     }
     posX -= 2 + Gui::LOG_NAV_BUTTON_WIDTH;
