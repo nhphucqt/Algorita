@@ -30,7 +30,9 @@ int main() {
 
     // Load
 
-    GuiLoadStyle("assets/styles/custom_style.rgs");
+    Gicon::loadIcons();
+    Theme::loadTheme();
+    Theme::setLightTheme();
 
     Gfont::loadFont();
     Layout::initialize();
@@ -41,7 +43,7 @@ int main() {
         Animate::elapseTime = GetFrameTime(); // DO NOT DELETE
         // std::cerr << " >> q.size() = " << Animate::queueOfScenes.q.size() << '\n';
         BeginDrawing();
-            ClearBackground(WHITE);
+            ClearBackground(Theme::currTheme.BACKGROUND);
             screenSLL.draw();
         EndDrawing();
     }
