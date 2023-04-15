@@ -1,8 +1,12 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include "conf_raylib.h"
 #include <cmath>
+#include <cstring>
+#include <iostream>
+
+#include "conf_raylib.h"
+#include "graphic/gui/Theme.h"
 
 namespace CPath {
     const char* const SLL_SEARCH_FIRST = "assets/visual_cpp/sll/sll_search_first";
@@ -117,6 +121,33 @@ namespace Gui {
     const int FILE_DIALOG_HEIGHT = 800;
 }
 
+namespace Gicon {
+    const int MAX_ID_LEN = 6; // include '\0'
+    inline char BUTTON_PLAY[MAX_ID_LEN];
+    inline char BUTTON_PAUSE[MAX_ID_LEN];
+    inline char BUTTON_PREV[MAX_ID_LEN];
+    inline char BUTTON_NEXT[MAX_ID_LEN];
+    inline char BUTTON_FIRST[MAX_ID_LEN];
+    inline char BUTTON_LAST[MAX_ID_LEN];
+    inline char BUTTON_REPLAY[MAX_ID_LEN];
+    inline char BUTTON_RANDOM[MAX_ID_LEN];
+    inline char LIGHT_THEME[MAX_ID_LEN];
+    inline char DARK_THEME[MAX_ID_LEN];
+
+    inline void loadIcons() {
+        strcpy(BUTTON_PLAY, GuiIconText(ICON_BIG_PLAYER_PLAY, nullptr));
+        strcpy(BUTTON_PAUSE, GuiIconText(ICON_BIG_PLAYER_PAUSE, nullptr));
+        strcpy(BUTTON_PREV, GuiIconText(ICON_BIG_PLAYER_PREV, nullptr));
+        strcpy(BUTTON_NEXT, GuiIconText(ICON_BIG_PLAYER_NEXT, nullptr));
+        strcpy(BUTTON_FIRST, GuiIconText(ICON_BIG_PLAYER_FIRST, nullptr));
+        strcpy(BUTTON_LAST, GuiIconText(ICON_BIG_PLAYER_LAST, nullptr));
+        strcpy(BUTTON_REPLAY, GuiIconText(ICON_BIG_PLAYER_REPLAY, nullptr));
+        strcpy(BUTTON_RANDOM, GuiIconText(ICON_BIG_RANDOM, nullptr));
+        strcpy(LIGHT_THEME, GuiIconText(ICON_LIGHT_THEME, nullptr));
+        strcpy(DARK_THEME, GuiIconText(ICON_DARK_THEME, nullptr));
+    }
+}
+
 namespace Animate {
     enum RunType {RUN_ALL, RUN_STEP};
 
@@ -134,55 +165,12 @@ namespace Animate {
     inline double elapseTime = 0;
 }
 
-#define rCol Color
-namespace Gcolor {
-    // NODE COLOR
-    inline rCol NODE_BACKGROUND = WHITE;
-    inline rCol NODE_BACKGROUND_FOCUS = GREEN;
-    inline rCol NODE_BACKGROUND_FOCUS_REFER = BLUE;
-    inline rCol NODE_BACKGROUND_FOCUS_ITER = ORANGE;
-    inline rCol NODE_BACKGROUND_FOCUS_REMOVE = BROWN;
-
-    inline rCol NODE_FOREGROUND = BLACK;
-    inline rCol NODE_FOREGROUND_FOCUS = WHITE;
-    inline rCol NODE_FOREGROUND_FOCUS_ITER = ORANGE;
-
-    inline rCol NODE_BORDER = BLACK;
-    inline rCol NODE_BORDER_FOCUS = GREEN;
-    inline rCol NODE_BORDER_FOCUS_REFER = BLUE;
-    inline rCol NODE_BORDER_FOCUS_ITER = ORANGE;
-    inline rCol NODE_BORDER_FOCUS_REMOVE = BROWN;
-
-    inline rCol NODE_SUBTEXT = RED;
-
-    // ARROW COLOR
-    inline rCol ARROW_LINE = BLACK;
-    inline rCol ARROW_LINE_FOCUS = GREEN;
-    inline rCol ARROW_LINE_FOCUS_ITER = ORANGE;
-
-    inline rCol ARROW_HEAD = BLACK;
-
-    // TEXT BUTTON COLOR
-    inline rCol TEXT_BUTTON_BACKGROUND = DARKGRAY;
-    inline rCol TEXT_BUTTON_BACKGROUND_FOCUS = GRAY;
-    inline rCol TEXT_BUTTON_FOREGROUND = WHITE;
-    inline rCol TEXT_BUTTON_FOREGROUND_FOCUS = WHITE;
-
-    // CODEBLOCK COLOR
-    inline rCol CODEBLOCK_BACKGROUND = Color{75, 101, 186, 255};
-    inline rCol CODEBLOCK_BACKGROUND_FOCUS = BLACK;
-    inline rCol CODEBLOCK_FOREGROUND = WHITE;
-    inline rCol CODEBLOCK_FOREGROUND_FOCUS = WHITE;
-}
-#undef rCol
-
 namespace Gfont {
     const int FONT_DEFAULT_SIZE = 30;
     // const int FONT_DEFAULT_SIZE = 20;
-    const int FONT_CODE_SIZE = 16;
+    const int FONT_CODE_SIZE = 20;
     inline Font* defaultFont;
     inline Font* codeFont;
-    inline Font jb_mono_med_def;
     inline Font ptsans_bold_def;
     inline Font consolas_code;
 
@@ -196,7 +184,6 @@ namespace Gfont {
 
     inline void loadFont() {
         // Load fonts
-        jb_mono_med_def = LoadFontEx("./assets/fonts/JetBrainsMono-Medium.ttf", FONT_DEFAULT_SIZE, 0, 250);
         ptsans_bold_def = LoadFontEx("./assets/fonts/PTSans-Bold.ttf", FONT_DEFAULT_SIZE, 0, 250);
         consolas_code = LoadFontEx("./assets/fonts/Consolas-Bold.ttf", FONT_CODE_SIZE, 0, 250);
 
@@ -207,7 +194,6 @@ namespace Gfont {
     }
 
     inline void unloadFont() {
-        UnloadFont(jb_mono_med_def);
         UnloadFont(ptsans_bold_def);
         UnloadFont(consolas_code);
     }
