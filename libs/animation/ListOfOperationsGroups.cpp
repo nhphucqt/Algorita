@@ -340,15 +340,15 @@ void ListOfOperationsGroups<T>::draw() {
     posX -= 10 + Gui::LOG_SLIDER_BAR_WIDTH;
     GuiSliderBar(Rectangle{posX, Window::HEIGHT - Gui::LOG_SLIDER_BAR_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_SLIDER_BAR_HEIGHT) / 2.0, Gui::LOG_SLIDER_BAR_WIDTH, Gui::LOG_SLIDER_BAR_HEIGHT}, "", "", getProgress(), 0, (int)groups.size());
     posX -= 10 + Gui::LOG_NAV_BUTTON_WIDTH;
-    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, GuiIconText(ICON_BIG_PLAYER_LAST, nullptr))) {
+    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, Gicon::BUTTON_LAST)) {
         toLastState();
     }
     posX -= 2 + Gui::LOG_NAV_BUTTON_WIDTH;
-    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, GuiIconText(ICON_BIG_PLAYER_NEXT, nullptr)) || IsKeyDown(KEY_RIGHT)) {
+    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, Gicon::BUTTON_NEXT) || IsKeyDown(KEY_RIGHT)) {
         runNext(Animate::RUN_STEP);
     }
     posX -= 2 + Gui::LOG_NAV_BUTTON_WIDTH;
-    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, GuiIconText(isFinished() ? ICON_BIG_PLAYER_REPLAY : isPaused() ? ICON_BIG_PLAYER_PLAY : ICON_BIG_PLAYER_PAUSE, nullptr)) || IsKeyPressed(KEY_SPACE)) {
+    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, isFinished() ? Gicon::BUTTON_REPLAY : isPaused() ? Gicon::BUTTON_PLAY : Gicon::BUTTON_PAUSE) || IsKeyPressed(KEY_SPACE)) {
         if (isFinished()) {
             replay();
         } else {
@@ -356,11 +356,11 @@ void ListOfOperationsGroups<T>::draw() {
         }
     }
     posX -= 2 + Gui::LOG_NAV_BUTTON_WIDTH;
-    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, GuiIconText(ICON_BIG_PLAYER_PREV, nullptr)) || IsKeyDown(KEY_LEFT)) {
+    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, Gicon::BUTTON_PREV) || IsKeyDown(KEY_LEFT)) {
         runPrev(Animate::RUN_STEP);
     }
     posX -= 2 + Gui::LOG_NAV_BUTTON_WIDTH;
-    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, GuiIconText(ICON_BIG_PLAYER_FIRST, nullptr))) {
+    if (GuiButton(Rectangle{posX, Window::HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT - (Layout::BOTTOM_HEIGHT - Gui::LOG_NAV_BUTTON_HEIGHT) / 2.0, Gui::LOG_NAV_BUTTON_WIDTH, Gui::LOG_NAV_BUTTON_HEIGHT}, Gicon::BUTTON_FIRST)) {
         toFirstState();
     }
 }   
@@ -451,113 +451,114 @@ void ListOfOperationsGroups<T>::animateRedirect(OT* A, OT* C) {
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromNormalToIter(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND, &Gcolor::NODE_BACKGROUND_FOCUS_ITER);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER, &Gcolor::NODE_BORDER_FOCUS_ITER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND, &Gcolor::NODE_FOREGROUND_FOCUS);
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromNormalToFocus(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND, &Gcolor::NODE_BACKGROUND_FOCUS);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER, &Gcolor::NODE_BORDER_FOCUS);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND, &Gcolor::NODE_FOREGROUND_FOCUS);
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_FOCUS);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_FOCUS);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromNormalToRefer(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND, &Gcolor::NODE_BACKGROUND_FOCUS_REFER);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER, &Gcolor::NODE_BORDER_FOCUS_REFER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND, &Gcolor::NODE_FOREGROUND_FOCUS);
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REFER);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_FOCUS_REFER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromNormalToRemove(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND, &Gcolor::NODE_BACKGROUND_FOCUS_REMOVE);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER, &Gcolor::NODE_BORDER_FOCUS_REMOVE);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND, &Gcolor::NODE_FOREGROUND_FOCUS);
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REMOVE);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_FOCUS_REMOVE);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromIterToNormal(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND_FOCUS_ITER, &Gcolor::NODE_BACKGROUND);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER_FOCUS_ITER, &Gcolor::NODE_BORDER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND_FOCUS, &Gcolor::NODE_FOREGROUND);
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER, &Theme::currTheme.NODE_BACKGROUND);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromIterToNearIter(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND_FOCUS_ITER, &Gcolor::NODE_BACKGROUND);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND_FOCUS, &Gcolor::NODE_FOREGROUND_FOCUS_ITER);
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromIterToFocus(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND_FOCUS_ITER, &Gcolor::NODE_BACKGROUND_FOCUS);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER_FOCUS_ITER, &Gcolor::NODE_BORDER_FOCUS);
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER, &Theme::currTheme.NODE_BACKGROUND_FOCUS);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromNearIterToNormal(OT* node) {
-    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER_FOCUS_ITER, &Gcolor::NODE_BORDER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND_FOCUS_ITER, &Gcolor::NODE_FOREGROUND);
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER, &Theme::currTheme.NODE_BACKGROUND);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER, &Theme::currTheme.NODE_FOREGROUND);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromFocusToIter(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND_FOCUS, &Gcolor::NODE_BACKGROUND_FOCUS_ITER);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER_FOCUS, &Gcolor::NODE_BORDER_FOCUS_ITER);
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromReferToNormal(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Gcolor::NODE_BACKGROUND_FOCUS_REFER, &Gcolor::NODE_BACKGROUND);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Gcolor::NODE_BORDER_FOCUS_REFER, &Gcolor::NODE_BORDER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Gcolor::NODE_FOREGROUND_FOCUS, &Gcolor::NODE_FOREGROUND);
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REFER, &Theme::currTheme.NODE_BACKGROUND);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_REFER, &Theme::currTheme.NODE_BORDER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowFromNormalToIter(OT* node) {
-    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Gcolor::ARROW_LINE, &Gcolor::ARROW_LINE_FOCUS_ITER);
+    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS_ITER);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowFromNormalToFocus(OT* node) {
-    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Gcolor::ARROW_LINE, &Gcolor::ARROW_LINE_FOCUS);
+    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowFromIterToNormal(OT* node) {
-    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Gcolor::ARROW_LINE_FOCUS_ITER, &Gcolor::ARROW_LINE);
+    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Theme::currTheme.ARROW_LINE_FOCUS_ITER, &Theme::currTheme.ARROW_LINE);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowFromFocusToNormal(OT* node) {
-    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Gcolor::ARROW_LINE_FOCUS, &Gcolor::ARROW_LINE);
+    animateTransColor(&node->aNext.lineColor, &node->aNext.pLineColor, &Theme::currTheme.ARROW_LINE_FOCUS, &Theme::currTheme.ARROW_LINE);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowSlideFromIterToNormal(OT* node) {
-    animateTransColor(&node->aNext.slideColor, &node->aNext.pSlideColor, &Gcolor::ARROW_LINE_FOCUS_ITER, &Gcolor::ARROW_LINE);
+    animateTransColor(&node->aNext.slideColor, &node->aNext.pSlideColor, &Theme::currTheme.ARROW_LINE_FOCUS_ITER, &Theme::currTheme.ARROW_LINE);
 }
 
 template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowSlideFromNormalToIter(OT* node) {
-    animateTransColor(&node->aNext.slideColor, &node->aNext.pSlideColor, &Gcolor::ARROW_LINE, &Gcolor::ARROW_LINE_FOCUS_ITER);
+    animateTransColor(&node->aNext.slideColor, &node->aNext.pSlideColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS_ITER);
 }
 
 #endif
