@@ -513,6 +513,7 @@ ExitStatus GraphicSinglyLinkedList::popFront(ListOfOperationsGroups<GraphicSingl
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({3});
         ALOG->animateFadeOut(tmp);
+        ALOG->animateFadeOut(&tmp->aNext);
         ALOG->animateSlideOut(&tmp->aNext);
 
         ALOG->addNewGroup();
