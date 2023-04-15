@@ -14,6 +14,7 @@ GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v, const 
     ly = y = _y;
     size = _s;
     isSqr = _sqr;
+    // isSqr = true;
     assert(Core::NODE_MIN_VALUE <= _v && _v <= Core::NODE_MAX_VALUE);
     nVal = _v;
     val = StyledText(_v, Gfont::defaultFont);
@@ -56,19 +57,19 @@ void GraphicNode::setSubText(const std::string &_subtext) {
 }
 
 void GraphicNode::resetColor() {
-    pBackColor = &Gcolor::NODE_BACKGROUND;
-    pForeColor = &Gcolor::NODE_FOREGROUND;
-    pBordColor = &Gcolor::NODE_BORDER;
+    pBackColor = &Theme::currTheme.NODE_BACKGROUND;
+    pForeColor = &Theme::currTheme.NODE_FOREGROUND;
+    pBordColor = &Theme::currTheme.NODE_BORDER;
 }
 
 void GraphicNode::draw() {
     if (transparent == 0.0) {
         return;
     }
-    Color background = pBackColor == nullptr ? TRNSP(backColor, transparent) : TRNSP(*pBackColor, transparent);
-    Color foreground = pForeColor == nullptr ? TRNSP(foreColor, transparent) : TRNSP(*pForeColor, transparent);
+    Color background = TRNSP(pBackColor == nullptr ? backColor : *pBackColor, transparent);
+    Color foreground = TRNSP(pForeColor == nullptr ? foreColor : *pForeColor, transparent);
     Color border = pBordColor == nullptr ? TRNSP(bordColor, transparent) : TRNSP(*pBordColor, transparent);
-    Color subtext = TRNSP(Gcolor::NODE_SUBTEXT, transparent);
+    Color subtext = TRNSP(Theme::currTheme.NODE_SUBTEXT, transparent);
     if (isSqr) {
         DrawRectangle(x, y, size, size, background);
         DrawRectangleLinesEx(Rectangle{x,y,size,size}, bsize, border);
