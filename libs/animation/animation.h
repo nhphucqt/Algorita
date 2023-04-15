@@ -12,7 +12,7 @@
 // NOTE: Templated function cannot be seperated into multiple files
 
 namespace Animate {
-    double bezier(double S, double T, double t);
+    double bezier(double t);
     bool delay(double* currTime, bool* isReversed);
 
     template<typename T> bool assignValue(T* obj, int oldVal, int newVal, double* currTime, bool* isReversed);
