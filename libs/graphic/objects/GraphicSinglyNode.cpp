@@ -66,38 +66,6 @@ void GraphicSinglyNode::setArrowTrans(GraphicSinglyNode* node) {
     // std::cerr << aNext.transB.x << ' ' << aNext.transB.y << '\n';
 }
 
-
-void GraphicSinglyNode::makeCopy(GraphicSinglyNode* src) { // no change in pNext, aNext
-    x = src->x;
-    y = src->y;
-    lx = src->lx;
-    ly = src->ly;
-
-    size = src->size;
-    bsize = src->bsize;
-
-    isSqr = src->isSqr;
-
-    backColor = src->backColor;
-    foreColor = src->foreColor;
-    bordColor = src->bordColor;
-
-    transparent = src->transparent;
-
-    nVal = src->nVal;
-    val = src->val;
-
-    isAppear = src->isAppear;
-
-    if (isSqr) {
-        outerShapeIn = std::bind(&cf::outerSqur, &size, std::placeholders::_1);
-        outerShapeOut = std::bind(&cf::outerSqur, &size, std::placeholders::_1);
-    } else { // circle
-        outerShapeIn = std::bind(&cf::outerCirc, &size, std::placeholders::_1);
-        outerShapeOut = std::bind(&cf::outerCirc, &size, std::placeholders::_1);
-    }
-}
-
 void GraphicSinglyNode::draw() {
     aNext.draw();
     GraphicNode::draw();

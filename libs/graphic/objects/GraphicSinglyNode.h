@@ -23,8 +23,6 @@ public:
 
     void setArrowTrans(GraphicSinglyNode* node);
 
-    void makeCopy(GraphicSinglyNode* src); // no change in pNext, aNext
-
     void draw();
 };
 
