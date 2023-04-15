@@ -121,8 +121,6 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
 
     reset();
 
-    _size++;
-
     if (pHead == nullptr) {
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
@@ -151,7 +149,7 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
         if (curr != nullptr) {
             ALOG->addNewGroup();
             ALOG->backGroup()->setHighlightLines({4, 5});
-            pre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+            pre->aNext.slideColor = Theme::currTheme.ARROW_LINE_FOCUS_ITER;
             if (pre == pHead) {
                 ALOG->animateTransText(&pre->sub, "0/head/cur", "head");
             } else {
@@ -220,6 +218,7 @@ ExitStatus GraphicSinglyLinkedList::updateValue(int k, int val, ListOfOperations
 
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({4});
+    ALOG->animateNodeFromIterToFocus(curr);
     ALOG->animateAssignValue(curr, curr->nVal, val);
 
     ALOG->build();
@@ -347,7 +346,7 @@ ExitStatus GraphicSinglyLinkedList::pushBack(int val, ListOfOperationsGroups<Gra
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({2});
         ALOG->animateNodeFromNormalToIter(curr);
-        pre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+        pre->aNext.slideColor = Theme::currTheme.ARROW_LINE_FOCUS_ITER;
         ALOG->animateSlideColorIn(&pre->aNext);
         if (pre == pHead) {
             ALOG->animateTransText(&pre->sub, "head/cur", "head");
@@ -416,7 +415,7 @@ ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({1});
         ALOG->animateNodeFromIterToNearIter(prepre);
-        prepre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+        prepre->aNext.slideColor = Theme::currTheme.ARROW_LINE_FOCUS_ITER;
         ALOG->animateSlideColorIn(&prepre->aNext);
 
         ALOG->addNewGroup();
@@ -434,7 +433,7 @@ ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({3});
     ALOG->animateNodeFromNormalToRefer(nxt);
-    pre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+    pre->aNext.slideColor = Theme::currTheme.ARROW_LINE_FOCUS_ITER;
     ALOG->animateSlideColorIn(&pre->aNext);
     ALOG->animateTransText(&nxt->sub, "", cf::num2str(k) + "/nxt");
 
@@ -504,7 +503,7 @@ ExitStatus GraphicSinglyLinkedList::popFront(ListOfOperationsGroups<GraphicSingl
         ALOG->backGroup()->setHighlightLines({2});
         if (pHead != nullptr) {
             ALOG->animateNodeFromNormalToFocus(pHead);
-            tmp->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+            tmp->aNext.slideColor = Theme::currTheme.ARROW_LINE_FOCUS_ITER;
             ALOG->animateSlideColorIn(&tmp->aNext);
             ALOG->animateTransText(&pHead->sub, "", "head");
         }
@@ -552,7 +551,7 @@ ExitStatus GraphicSinglyLinkedList::popBack(ListOfOperationsGroups<GraphicSingly
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({2});
         ALOG->animateNodeFromNormalToFocus(tmp);
-        pre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+        pre->aNext.slideColor = Theme::currTheme.ARROW_LINE_FOCUS_ITER;
         ALOG->animateSlideColorIn(&pre->aNext);
         ALOG->animateTransText(&tmp->sub, "", "tmp");
 
@@ -577,7 +576,7 @@ ExitStatus GraphicSinglyLinkedList::popBack(ListOfOperationsGroups<GraphicSingly
             ALOG->animateSlideColorIn(&prepre->aNext);
             ALOG->animateArrowSlideFromNormalToIter(prepre);
             ALOG->animateNodeFromFocusToIter(pre);
-            pre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS;
+            pre->aNext.slideColor = Theme::currTheme.ARROW_LINE_FOCUS;
             ALOG->animateSlideColorIn(&pre->aNext);
             ALOG->animateNodeFromNormalToFocus(tmp);
             if (prepre == pHead) {
@@ -646,7 +645,7 @@ ExitStatus GraphicSinglyLinkedList::popAtKth(int k, ListOfOperationsGroups<Graph
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({3});
         ALOG->animateNodeFromIterToNearIter(prepre);
-        prepre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+        prepre->aNext.slideColor = Theme::currTheme.ARROW_LINE_FOCUS_ITER;
         ALOG->animateSlideColorIn(&prepre->aNext);
         ALOG->animateNodeFromNormalToIter(pre);
         if (prepre == pHead) {
@@ -666,10 +665,10 @@ ExitStatus GraphicSinglyLinkedList::popAtKth(int k, ListOfOperationsGroups<Graph
 
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({4,5});
-    pre->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+    pre->aNext.slideColor = Theme::currTheme.ARROW_LINE_FOCUS_ITER;
     ALOG->animateSlideColorIn(&pre->aNext);
     ALOG->animateNodeFromNormalToRemove(del);
-    del->aNext.slideColor = Gcolor::ARROW_LINE_FOCUS_ITER;
+    del->aNext.slideColor = Theme::currTheme.ARROW_LINE_FOCUS_ITER;
     ALOG->animateSlideColorIn(&del->aNext);
     ALOG->animateNodeFromNormalToFocus(nxt);
     ALOG->animateTransText(&del->sub, "", cf::num2str(k) + "/del");
