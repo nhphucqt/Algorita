@@ -19,7 +19,7 @@
 namespace Screen {
     class ScreenSinglyLinkedList {
     private:
-        enum OperationType {OTNULL, CREATE, SEARCH, INSERT, REMOVE} currOperationType;
+        enum OperationType {OTNULL, CREATE, SEARCH, INSERT, UPDATE, REMOVE} currOperationType;
         enum Operation {ONULL, CREATE_USER_DEF, SEARCH_FIRST, INSERT_FORD, INSERT_BACK, INSERT_MIDD, REMOVE_MIDD} currOperation;
 
         GraphicSinglyLinkedList obj;
@@ -27,6 +27,7 @@ namespace Screen {
         GuiTextBoxState inputSearchFirst;
         GuiTextBoxState inputInsertFord, inputInsertBack;
         GuiTextBoxState inputInsertMiddPos, inputInsertMiddVal;
+        GuiTextBoxState inputUpdateValuePos, inputUpdateValueVal;
         GuiTextBoxState inputRemoveMidd;
         GuiTextBoxState inputUserDefined;
 
