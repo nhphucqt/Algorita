@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstring>
 #include <iostream>
+#include <functional>
 
 #include "conf_raylib.h"
 #include "graphic/gui/Theme.h"
@@ -11,6 +12,7 @@
 namespace CPath {
     const char* const SLL_SEARCH_FIRST = "assets/visual_cpp/sll/sll_search_first";
     const char* const SLL_UPDATE = "assets/visual_cpp/sll/sll_update";
+    const char* const SLL_PEEK = "assets/visual_cpp/sll/sll_peek";
     const char* const SLL_INSERT_FORD = "assets/visual_cpp/sll/sll_insert_ford";
     const char* const SLL_INSERT_BACK = "assets/visual_cpp/sll/sll_insert_back";
     const char* const SLL_INSERT_KTH = "assets/visual_cpp/sll/sll_insert_kth";
@@ -82,6 +84,44 @@ namespace Graphic {
 
 namespace Layout {
     const int BOTTOM_HEIGHT = 60;
+}
+
+namespace Screen {
+    inline enum ScreenType {
+        SINGLY_LINKED_LIST,
+        STACK,
+        MAIN_MENU,
+        NUM_SCREEN
+    } currScreen;
+    
+    inline std::function<void()> screenInit[NUM_SCREEN];
+    inline std::function<void()> screenDraw[NUM_SCREEN];
+    inline std::function<void()> screenDest[NUM_SCREEN];
+
+    inline void init() {
+        screenInit[currScreen]();
+    }
+
+    inline void draw() {
+        screenDraw[currScreen]();
+    }
+
+    inline void destroy() {
+        screenDest[currScreen]();
+    }
+
+    inline void setScreen(ScreenType screenType) {
+        destroy();
+        currScreen = screenType;
+        init();
+    }
+
+    inline void updateScreen(ScreenType screenType) {
+        if (currScreen != screenType) {
+            setScreen(screenType);
+        }
+    }
+
 }
 namespace Gui {
     const int CODEBLOCK_LINE_PADDING_X = 10;
@@ -166,11 +206,14 @@ namespace Animate {
 }
 
 namespace Gfont {
+    const int FONT_TITLE_SIZE = 96;
     const int FONT_DEFAULT_SIZE = 30;
     const int FONT_CODE_SIZE = 20;
     inline Font* defaultFont;
+    inline Font* titleFont;
     inline Font* codeFont;
     inline Font ptsans_bold_def;
+    inline Font ptsans_bold_tit;
     inline Font consolas_code;
 
     inline void setDefaultFont(Font* font) {
@@ -181,19 +224,25 @@ namespace Gfont {
         codeFont = font;
     }
 
+    inline void setTitleFont(Font* font) {
+        titleFont = font;
+    }
+
     inline void loadFont() {
         // Load fonts
         ptsans_bold_def = LoadFontEx("./assets/fonts/PTSans-Bold.ttf", FONT_DEFAULT_SIZE, 0, 250);
+        ptsans_bold_tit = LoadFontEx("./assets/fonts/PTSans-Bold.ttf", FONT_TITLE_SIZE, 0, 250);
         consolas_code = LoadFontEx("./assets/fonts/Consolas-Bold.ttf", FONT_CODE_SIZE, 0, 250);
 
         // Set default font
-        // setDefaultFont(&jb_mono_med_def);
         setDefaultFont(&ptsans_bold_def);
+        setTitleFont(&ptsans_bold_tit);
         setCodeFont(&consolas_code);
     }
 
     inline void unloadFont() {
         UnloadFont(ptsans_bold_def);
+        UnloadFont(ptsans_bold_tit);
         UnloadFont(consolas_code);
     }
 }
