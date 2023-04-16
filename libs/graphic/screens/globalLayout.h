@@ -4,11 +4,9 @@
 #include <iostream>
 
 #include "../../global.h"
-#include "../gui/GraphicButton.h"
 #include "../../rcore/rguiDropDownBox.h"
 
 namespace Layout {
-    inline GraphicTextButton appNameButton;
     inline DropDownBoxState dropDownList;
 
     void initialize();

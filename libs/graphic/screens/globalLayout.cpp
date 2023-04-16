@@ -1,14 +1,24 @@
 #include "globalLayout.h"
 
 void Layout::initialize() {
-    appNameButton = GraphicTextButton(Rectangle{0,0,122,50}, App::title);
-    dropDownList.init(Rectangle{122,0,240,50}, "Singly Linked List ;Doubly Linked List ;Circular Linked List ;Stack;Queue ;Static Array ;Dynamic Array ");
+    dropDownList.init(Rectangle{130,0,240,50}, "Singly Linked List ;Doubly Linked List ;Circular Linked List ;Stack;Queue ;Static Array ;Dynamic Array ");
 }
 
 void Layout::drawTopNavigation() {
-    appNameButton.draw();
-    dropDownList.draw();
-    if (GuiButton(Rectangle{Window::WIDTH - 40 - 5, 5, 40, 40}, Theme::currTheme.iconText.c_str())) {
-        Theme::toggleTheme();
+    if (GuiButton(Rectangle{0,0,120,50}, App::title)) {
+        Screen::updateScreen(Screen::MAIN_MENU);
     }
+    if (dropDownList.draw()) {
+        if (!dropDownList.isEditMode()) {
+            switch (dropDownList.getActive()) {
+                case 0:
+                    Screen::updateScreen(Screen::SINGLY_LINKED_LIST);
+                break;
+                case 3:
+                    Screen::updateScreen(Screen::STACK);
+                break;
+            }
+        }
+    }
+    Theme::draw();
 }
