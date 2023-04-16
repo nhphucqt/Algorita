@@ -227,6 +227,27 @@ ExitStatus GraphicSinglyLinkedList::updateValue(int k, int val, ListOfOperations
     return ExitStatus(true, "");
 }
 
+ExitStatus GraphicSinglyLinkedList::peek(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+    ALOG->clearGroup();
+    ALOG->loadCode(CPath::SLL_PEEK);
+    reset();
+
+    if (pHead == nullptr) {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0});
+        ALOG->animateDelay();
+    } else {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({1});
+        ALOG->animateNodeFromNormalToIter(pHead);
+    }
+
+    ALOG->build();
+
+    return ExitStatus(true, "");
+}
+
+
 ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
         return ExitStatus(false, "The size reach the maximum size allowed is " + cf::num2str(Core::MAX_NUM_NODE_SLL));

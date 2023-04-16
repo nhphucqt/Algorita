@@ -41,6 +41,8 @@ public:
 
     ExitStatus updateValue(int k, int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
 
+    ExitStatus peek(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
+
     ExitStatus pushFront(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
     ExitStatus pushBack(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
     ExitStatus pushAtKth(int k, int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
