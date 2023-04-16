@@ -15,7 +15,7 @@
 #include "libs/graphic/gui/GraphicButton.h"
 #include "libs/animation/animation.h"
 
-#include "libs/graphic/screens/ScreenSinglyLinkedList.h"
+#include "libs/graphic/screens/screen.h"
 
 int main() {
     SetRandomSeed(time(nullptr));
@@ -30,30 +30,27 @@ int main() {
     // Load
 
     Gicon::loadIcons();
+    Gfont::loadFont();
+
     Theme::loadTheme();
     Theme::setLightTheme();
 
-    Gfont::loadFont();
-    Layout::initialize();
-
-    Screen::ScreenSinglyLinkedList screenSLL;
+    Screen::load();
 
     while (!WindowShouldClose()) {
         Animate::elapseTime = GetFrameTime(); // DO NOT DELETE
-        // std::cerr << " >> q.size() = " << Animate::queueOfScenes.q.size() << '\n';
         BeginDrawing();
             ClearBackground(Theme::currTheme.BACKGROUND);
-            screenSLL.draw();
+            Screen::draw();
         EndDrawing();
     }
 
     CloseWindow();
 
-
     // Unload
     Gfont::unloadFont();
 
-    screenSLL.destroy();
+    Screen::destroy();
 
     return 0;
 }
