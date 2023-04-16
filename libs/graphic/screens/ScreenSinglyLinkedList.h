@@ -46,7 +46,6 @@ namespace Screen {
         GuiToggleState toggleInsertMidd;
         GuiToggleState toggleRemoveMidd;
 
-
         StyledText exitMessage;
 
         ListOfOperationsGroups<GraphicSinglyLinkedList> ALOG;
@@ -56,11 +55,11 @@ namespace Screen {
     public:
         ScreenSinglyLinkedList();
 
+        void load();
+        void init();
         void draw();
-
         void destroy();
     };
-
 }
 
 
