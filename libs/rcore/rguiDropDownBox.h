@@ -14,7 +14,9 @@ private:
 
 public:
     void init(Rectangle _bounds, const std::string &_options);
-    void draw();
+    bool draw();
+    bool isEditMode() const;
+    int getActive() const;
 };
 
 #endif
