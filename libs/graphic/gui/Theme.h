@@ -13,6 +13,7 @@ namespace Theme {
         std::string stylePath;
 
         Color BACKGROUND;
+        Color TITLE;
 
         Color NODE_BACKGROUND;
         Color NODE_BACKGROUND_FOCUS;
@@ -67,6 +68,8 @@ namespace Theme {
     void setLightTheme();
     void setDarkTheme();
     void toggleTheme();
+
+    void draw();
 }
 
 

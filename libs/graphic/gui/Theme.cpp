@@ -9,6 +9,8 @@ void Theme::loadTheme() {
     themes[LIGHT_THEME_ID].stylePath = "assets/styles/light.rgs";
 
     themes[LIGHT_THEME_ID].BACKGROUND = Color{249,247,247,255};
+    themes[LIGHT_THEME_ID].TITLE = Color{17, 45, 78, 255};
+
     themes[LIGHT_THEME_ID].NODE_BACKGROUND = WHITE;
     themes[LIGHT_THEME_ID].NODE_BACKGROUND_FOCUS = GREEN;
     themes[LIGHT_THEME_ID].NODE_BACKGROUND_FOCUS_REFER = BLUE;
@@ -52,6 +54,7 @@ void Theme::loadTheme() {
     themes[DARK_THEME_ID].stylePath = "assets/styles/dark.rgs";
 
     themes[DARK_THEME_ID].BACKGROUND = Color{41,41,41,255};
+    themes[DARK_THEME_ID].TITLE = WHITE;
 
     themes[DARK_THEME_ID].NODE_BACKGROUND = Color{242, 231, 254, 255};
     themes[DARK_THEME_ID].NODE_BACKGROUND_FOCUS = Color{0, 196, 180, 255};
@@ -107,4 +110,10 @@ void Theme::setDarkTheme() {
 
 void Theme::toggleTheme() {
     setTheme(currThemeID ^ 1);
+}
+
+void Theme::draw() {
+    if (GuiButton(Rectangle{Window::WIDTH - 40 - 5, 5, 40, 40}, Theme::currTheme.iconText.c_str())) {
+        Theme::toggleTheme();
+    }
 }
