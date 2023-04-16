@@ -1,0 +1,2 @@
+if (head == NULL) return NOT_FOUND;
+return head->val;
