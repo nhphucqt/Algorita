@@ -5,7 +5,6 @@
 
 template<typename T>
 ListOfOperationsGroups<T>::ListOfOperationsGroups() {
-    mainObj = nullptr;
     iter = groups.end();
     isReversed = false;
     runType = Animate::RUN_ALL;
@@ -27,12 +26,6 @@ bool* ListOfOperationsGroups<T>::getIsReversed() {
 template<typename T>
 typename std::list<OperationsGroups<T>>::iterator ListOfOperationsGroups<T>::curGroup() const {
     return groups.empty() || isReversed ? iter : prev(iter);
-}
-
-
-template<typename T>
-void ListOfOperationsGroups<T>::setMainObj(T* _mainObj) {
-    mainObj = _mainObj;
 }
 
 template<typename T>
@@ -342,7 +335,6 @@ void ListOfOperationsGroups<T>::draw(bool keyActive) {
 
 template<typename T>
 void ListOfOperationsGroups<T>::destroy() {
-    mainObj->destroy();
     clearGroup();
 }
 

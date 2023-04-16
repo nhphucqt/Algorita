@@ -22,7 +22,6 @@ private:
     double currTime;
     int speedID;
 
-    T* mainObj;
     std::list<OperationsGroups<T>> groups;
     typename std::list<OperationsGroups<T>>::iterator iter;
     Codeblock codeblock;
