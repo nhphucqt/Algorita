@@ -4,6 +4,7 @@
 #include "../../conf_raylib.h"
 #include "../../global.h"
 #include "../gui/StyledText.h"
+#include "globalLayout.h"
 
 class ScreenMainMenu {
 private:
