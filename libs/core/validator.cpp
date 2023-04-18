@@ -1,10 +1,19 @@
 #include "validator.h"
 
+ExitStatus Valid::isNumber(const std::string &str) {
+    for (int i = 0; i < (int)str.size(); ++i) {
+        if (!isdigit(str[i])) {
+            return ExitStatus(false, "Not a number");
+        }
+    }
+    return ExitStatus(true, "");
+}
+
 ExitStatus Valid::isMatch(const std::string &str, std::string match) {
     std::sort(match.begin(), match.end());
     for (int i = 0; i < (int)str.size(); ++i) {
         if (!std::binary_search(match.begin(), match.end(), str[i])) {
-            return ExitStatus(false, "Invalid string");
+            return ExitStatus(false, "String contains invalid characters");
         }
     }
     return ExitStatus(true, "");
