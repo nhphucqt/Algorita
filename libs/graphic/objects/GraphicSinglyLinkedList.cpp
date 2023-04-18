@@ -46,7 +46,7 @@ int GraphicSinglyLinkedList::size() const {
 
 ExitStatus GraphicSinglyLinkedList::initialize(int initSize, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) { // Randomly initialize
     if (initSize < 0 || initSize > Core::MAX_NUM_NODE_SLL) {
-        return ExitStatus(false, "Size is out of bound");
+        return ExitMess::FAIL_LL_SIZE_OOB;
     }
     std::vector<int> vals;
     for (int i = 0; i < initSize; ++i) {
@@ -57,11 +57,11 @@ ExitStatus GraphicSinglyLinkedList::initialize(int initSize, ListOfOperationsGro
 
 ExitStatus GraphicSinglyLinkedList::initialize(std::vector<int> vals, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) { // Initialize with given values
     if ((int)vals.size() > Core::MAX_NUM_NODE_SLL) {
-        return ExitStatus(false, "Size is out of bound");
+        return ExitMess::FAIL_LL_SIZE_OOB;
     }
     for (int i = 0; i < (int)vals.size(); ++i) {
         if (vals[i] < Core::NODE_MIN_VALUE || vals[i] > Core::NODE_MAX_VALUE) {
-            return ExitStatus(false, "Value is out of bound");
+            return ExitMess::FAIL_VALUE_OOB;
         }
     }
 
@@ -99,7 +99,7 @@ ExitStatus GraphicSinglyLinkedList::initialize(std::vector<int> vals, ListOfOper
 
     ALOG->build();
 
-    return ExitStatus(true, "");
+    return ExitMess::SUCCESS;
 }
 
 ExitStatus GraphicSinglyLinkedList::initialize(std::string strVals, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
@@ -113,7 +113,7 @@ ExitStatus GraphicSinglyLinkedList::initialize(std::string strVals, ListOfOperat
 
 ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
-        return ExitStatus(false, "Value out of range, accept from " + cf::num2str(Core::NODE_MIN_VALUE) + " to " + cf::num2str(Core::NODE_MAX_VALUE));
+        return ExitMess::FAIL_VALUE_OOB;
     }
 
     ALOG->clearGroup();
@@ -125,7 +125,7 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateDelay();
-        return ExitStatus(true, "");
+        return ExitMess::SUCCESS;
     }
 
     int id = 0;
@@ -168,7 +168,7 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
             } else {
                 ALOG->animateTransText(&pre->sub, cf::num2str(id-1) + "/cur", "");
             }
-            return ExitStatus(true, "");
+            return ExitMess::SUCCESS;
         }
     }
 
@@ -178,18 +178,18 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
 
     ALOG->build();
 
-    return ExitStatus(true, "");
+    return ExitMess::SUCCESS;
 }
 
 ExitStatus GraphicSinglyLinkedList::updateValue(int k, int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
     if (_size == 0) {
-        return ExitStatus(false, "The list is empty");
+        return ExitMess::FAIL_LL_EMPTY;
     }
     if (k < 0 || k >= _size) {
-        return ExitStatus(false, "k is out of bound");
+        return ExitStatus(false, "i is out of bounds: Allow from 0 to " + cf::num2str(_size-1));
     } 
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
-        return ExitStatus(false, "Value is out of range");
+        return ExitMess::FAIL_VALUE_OOB;
     }
 
     ALOG->clearGroup();
@@ -224,7 +224,7 @@ ExitStatus GraphicSinglyLinkedList::updateValue(int k, int val, ListOfOperations
 
     ALOG->build();
 
-    return ExitStatus(true, "");
+    return ExitMess::SUCCESS;
 }
 
 ExitStatus GraphicSinglyLinkedList::peek(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
@@ -244,16 +244,16 @@ ExitStatus GraphicSinglyLinkedList::peek(ListOfOperationsGroups<GraphicSinglyLin
 
     ALOG->build();
 
-    return ExitStatus(true, "");
+    return ExitMess::SUCCESS;
 }
 
 
 ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
-        return ExitStatus(false, "The size reach the maximum size allowed is " + cf::num2str(Core::MAX_NUM_NODE_SLL));
+        return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
-        return ExitStatus(false, "Value is out of range");
+        return ExitMess::FAIL_VALUE_OOB;
     }
 
     ALOG->clearGroup();
@@ -291,30 +291,31 @@ ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups<Gr
         // ---
     } else {
         // line number 0
-        GraphicSinglyNode* newNode = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y + Graphic::SLL_NODE_DIST, Graphic::NODE_SIZE, false, val, pHead);
-        pHead = newNode;
+        GraphicSinglyNode* newNode = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y + Graphic::SLL_NODE_DIST, Graphic::NODE_SIZE, false, val);
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
-        ALOG->animateFadeIn(pHead);
-        ALOG->animateNodeFromNormalToIter(pHead);
+        ALOG->animateFadeIn(newNode);
+        ALOG->animateNodeFromNormalToIter(newNode);
         ALOG->animateTransText(&newNode->sub, "", "node");
         // ---
 
         // line number 1
+        newNode->setNext(pHead);
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({1});
-        ALOG->animateSlideIn(&pHead->aNext);
-        ALOG->animateFadeIn(&pHead->aNext);
-        ALOG->animateArrowFromNormalToIter(&pHead->aNext);
+        ALOG->animateSlideIn(&newNode->aNext);
+        ALOG->animateFadeIn(&newNode->aNext);
+        ALOG->animateArrowFromNormalToIter(&newNode->aNext);
         // ---
 
         // line number 2
+        pHead = newNode;
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({2});
         ALOG->animateNodeFromIterToFocus(pHead);
         ALOG->animateArrowFromIterToNormal(&pHead->aNext);
-        ALOG->animateTransText(&newNode->pNext->sub, "head", "");
-        ALOG->animateTransText(&newNode->sub, "node", "head/node");
+        ALOG->animateTransText(&pHead->pNext->sub, "head", "");
+        ALOG->animateTransText(&pHead->sub, "node", "head/node");
         // ---
 
         // transform
@@ -327,15 +328,15 @@ ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups<Gr
 
     ALOG->build();
     
-    return ExitStatus(true, "");
+    return ExitMess::SUCCESS;
 }
 
 ExitStatus GraphicSinglyLinkedList::pushBack(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
-        return ExitStatus(false, "The size reach the maximum size allowed is " + cf::num2str(Core::MAX_NUM_NODE_SLL));
+        return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
-        return ExitStatus(false, "Value is out of range");
+        return ExitMess::FAIL_VALUE_OOB;
     }
 
     if (_size == 0) {
@@ -344,7 +345,6 @@ ExitStatus GraphicSinglyLinkedList::pushBack(int val, ListOfOperationsGroups<Gra
 
     ALOG->clearGroup();
     ALOG->loadCode(CPath::SLL_INSERT_BACK);
-    
     reset();
 
     _size++;
@@ -379,13 +379,13 @@ ExitStatus GraphicSinglyLinkedList::pushBack(int val, ListOfOperationsGroups<Gra
     }
 
     GraphicSinglyNode* newNode = new GraphicSinglyNode(curr->x + Graphic::SLL_NODE_DIST, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, val);
-    curr->setNext(newNode);
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({3});
     ALOG->animateFadeIn(newNode);
     ALOG->animateNodeFromNormalToFocus(newNode);
     ALOG->animateTransText(&newNode->sub, "", "node");
     
+    curr->setNext(newNode);
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({4});
     ALOG->animateSlideIn(&curr->aNext);
@@ -395,18 +395,18 @@ ExitStatus GraphicSinglyLinkedList::pushBack(int val, ListOfOperationsGroups<Gra
 
     ALOG->build();
 
-    return ExitStatus(true, "");
+    return ExitMess::SUCCESS;
 }
 
 ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
-        return ExitStatus(false, "The size reach the maximum size allowed is " + cf::num2str(Core::MAX_NUM_NODE_SLL));
-    }
-    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
-        return ExitStatus(false, "Value is out of range");
+        return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
     if (k < 0 || k > _size) {
-        return ExitStatus(false, "k is out of range");
+        return ExitStatus(false, "i is out of bounds: Allow from 0 to " + cf::num2str(_size));
+    }
+    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
+        return ExitMess::FAIL_VALUE_OOB;
     }
 
     if (k == 0) {
@@ -474,10 +474,10 @@ ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
     ALOG->animateSlideIn(&cur->aNext);
 
     pre->updateNext(cur);
-    pre->setArrowTrans(nxt);
+    pre->setNextArrowTrans(nxt);
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({6});
-    ALOG->animateRedirect(pre, nxt);
+    ALOG->animateRedirectHead(pre, &pre->aNext, nxt);
     ALOG->animateTransText(&cur->sub, "cur", cf::num2str(k) + "/cur");
     ALOG->animateTransText(&nxt->sub, cf::num2str(k) + "/nxt", cf::num2str(k+1) + "/nxt");
 
@@ -499,7 +499,7 @@ ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
 
     ALOG->build();
 
-    return ExitStatus(true, "");
+    return ExitMess::SUCCESS;
 }
 
 ExitStatus GraphicSinglyLinkedList::popFront(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
@@ -537,15 +537,17 @@ ExitStatus GraphicSinglyLinkedList::popFront(ListOfOperationsGroups<GraphicSingl
         ALOG->animateFadeOut(&tmp->aNext);
         ALOG->animateSlideOut(&tmp->aNext);
 
-        ALOG->addNewGroup();
-        for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-            ALOG->animateTransform(curr, curr->x, curr->y, -Graphic::SLL_NODE_DIST, 0);
+        if (pHead != nullptr) {
+            ALOG->addNewGroup();
+            for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+                ALOG->animateTransform(curr, curr->x, curr->y, -Graphic::SLL_NODE_DIST, 0);
+            }
         }
     }
 
     ALOG->build();
 
-    return ExitStatus(true, "");
+    return ExitMess::SUCCESS;
 }
 
 ExitStatus GraphicSinglyLinkedList::popBack(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
@@ -626,15 +628,15 @@ ExitStatus GraphicSinglyLinkedList::popBack(ListOfOperationsGroups<GraphicSingly
 
     ALOG->build();
 
-    return ExitStatus(true, "");
+    return ExitMess::SUCCESS;
 }
 
 ExitStatus GraphicSinglyLinkedList::popAtKth(int k, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
     if (_size == 0) {
-        return ExitStatus(false, "The list is empty");
+        return ExitMess::FAIL_LL_EMPTY;
     }
     if (k < 0 || k >= _size) {
-        return ExitStatus(false, "k is out of range");
+        return ExitStatus(false, "i is out of bounds: Allow from 0 to " + cf::num2str(_size-1));
     }
 
     if (k == 0) {
@@ -699,11 +701,11 @@ ExitStatus GraphicSinglyLinkedList::popAtKth(int k, ListOfOperationsGroups<Graph
 
     nodes.push_back(del);
     pre->updateNext(nxt);
-    pre->setArrowTrans(del);
+    pre->setNextArrowTrans(del);
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({6});
     ALOG->animateTransform(del, del->x, del->y, 0, Graphic::SLL_NODE_DIST);
-    ALOG->animateRedirect(pre, del);
+    ALOG->animateRedirectHead(pre, &pre->aNext, del);
     ALOG->animateTransText(&del->sub, cf::num2str(k) + "/del", "del");
     ALOG->animateTransText(&nxt->sub, cf::num2str(k+1) + "/nxt", cf::num2str(k) + "/nxt");
     
@@ -727,7 +729,7 @@ ExitStatus GraphicSinglyLinkedList::popAtKth(int k, ListOfOperationsGroups<Graph
 
     ALOG->build();
 
-    return ExitStatus(true, "");
+    return ExitMess::SUCCESS;
 }
 
 void GraphicSinglyLinkedList::draw() {
@@ -738,8 +740,8 @@ void GraphicSinglyLinkedList::draw() {
     for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
         curr->draw();
     }
-    for (GraphicSinglyNode* curr : nodes) {
-        curr->draw();
+    for (GraphicSinglyNode* node : nodes) {
+        node->draw();
     }
 }
 
@@ -774,4 +776,5 @@ void GraphicSinglyLinkedList::destroy() {
         delete curr;
     }
     nodes.clear();
+    arrows.clear();
 }
