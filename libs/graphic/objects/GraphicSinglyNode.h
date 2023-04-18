@@ -19,9 +19,8 @@ public:
 
     void setNext(GraphicSinglyNode* pNode);
     void updateNext(GraphicSinglyNode* pNode);
-    void unSetNext();
 
-    void setArrowTrans(GraphicSinglyNode* node);
+    void setNextArrowTrans(GraphicSinglyNode* node);
 
     void draw();
 };

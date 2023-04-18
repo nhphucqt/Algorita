@@ -2,7 +2,6 @@
 
 GraphicSinglyNode::GraphicSinglyNode() : GraphicNode::GraphicNode() {
     pNext = nullptr;
-    aNext = GraphicTrackArrow();
 }
 
 GraphicSinglyNode::GraphicSinglyNode(float _x, float _y, float _s, bool _sqr, int _v) : GraphicNode::GraphicNode(_x, _y, _s, _sqr, _v) {
@@ -38,12 +37,7 @@ void GraphicSinglyNode::updateNext(GraphicSinglyNode* pNode) {
     aNext.transB = Z_VECT;
 }
 
-void GraphicSinglyNode::unSetNext() {
-    pNext = nullptr;
-    aNext.isTrack = false;
-}
-
-void GraphicSinglyNode::setArrowTrans(GraphicSinglyNode* node) {
+void GraphicSinglyNode::setNextArrowTrans(GraphicSinglyNode* node) {
     Vector2 cA = aNext.pA + toSqrVector2(*aNext.sA / 2);
     Vector2 cB = aNext.pB + toSqrVector2(*aNext.sB / 2);
     Vector2 cC = toVector2(node->x, node->y) + toSqrVector2(node->size / 2);
@@ -60,10 +54,6 @@ void GraphicSinglyNode::setArrowTrans(GraphicSinglyNode* node) {
 
     aNext.transA = outerShapeOut(AC) - outerShapeOut(AB);
     aNext.transB = BC;
-
-    // std::cerr << " >> trans A B x y\n";
-    // std::cerr << aNext.transA.x << ' ' << aNext.transA.y << '\n';
-    // std::cerr << aNext.transB.x << ' ' << aNext.transB.y << '\n';
 }
 
 void GraphicSinglyNode::draw() {
