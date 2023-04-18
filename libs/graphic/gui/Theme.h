@@ -53,6 +53,8 @@ namespace Theme {
         Color CODEBLOCK_FOREGROUND;
         Color CODEBLOCK_FOREGROUND_FOCUS;
 
+        Color EXIT_MESSAGE;
+
         void load();
     };
 
@@ -69,7 +71,7 @@ namespace Theme {
     void setDarkTheme();
     void toggleTheme();
 
-    void draw();
+    void draw(bool keyActive);
 }
 
 
