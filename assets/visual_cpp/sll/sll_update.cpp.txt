@@ -1,0 +1,5 @@
+Node* cur = head;
+for (int k = 0; k < i-1; ++k) {
+    cur = cur->next;
+}
+cur->val = v;

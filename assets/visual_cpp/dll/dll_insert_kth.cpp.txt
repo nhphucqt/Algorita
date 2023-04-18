@@ -1,0 +1,9 @@
+Node* pre = head;
+for (int k = 0; k < i-1; ++k)
+    pre = pre->next;
+Node* nxt = pre->next;
+Node* cur = new Node(val);
+cur->next = nxt;
+nxt->prev = cur;
+pre->next = cur;
+cur->prev = pre;

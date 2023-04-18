@@ -1,0 +1,6 @@
+if (head == NULL) return;
+Node* tmp = head;
+while (tmp->next != NULL)
+    tmp = tmp->next;
+tmp->prev->next = NULL;
+delete tmp;
