@@ -14,15 +14,18 @@ private:
     char* text;
     int textSize;
     bool active;
+    bool digitMode;
 
 public:
     GuiTextBoxState();
-    void init(const Rectangle &_bounds, const char* _text, int _textSize, bool _active);
-    void init(const Rectangle &_bounds, int _textSize, bool _active);
+    void init(const Rectangle &_bounds, const char* _text, int _textSize, bool _digitMode, bool _active);
+    void init(const Rectangle &_bounds, int _textSize, bool _digitMode, bool _active);
     ~GuiTextBoxState();
 
     int getNum();
     std::string getStr();
+
+    void fix();
 
     void setnum(int num);
 
