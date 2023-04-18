@@ -22,7 +22,7 @@ int main() {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
 
-    InitWindow(Window::WIDTH, Window::HEIGHT, "demo");
+    InitWindow(Window::WIDTH, Window::HEIGHT, App::title);
     SetTargetFPS(Window::FPS);
 
     SetExitKey(0);
