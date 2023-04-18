@@ -410,9 +410,15 @@ void ListOfOperationsGroups<T>::animateSlideColorOut(OT* obj) {
 }
 
 template<typename T>
-template<typename OT> 
-void ListOfOperationsGroups<T>::animateRedirect(OT* A, OT* C) {
-    backGroup()->push(std::bind(&Animate::redirect<OT>, A, C, &currTime, &isReversed));
+template<typename OT, typename MT> 
+void ListOfOperationsGroups<T>::animateRedirectHead(OT* A, MT* arrow, OT* C) {
+    backGroup()->push(std::bind(&Animate::redirectHead<OT, MT>, A, arrow, C, &currTime, &isReversed));
+}
+
+template<typename T>
+template<typename OT, typename MT> 
+void ListOfOperationsGroups<T>::animateRedirectTail(OT* A, MT* arrow, OT* C) {
+    backGroup()->push(std::bind(&Animate::redirectTail<OT, MT>, A, arrow, C, &currTime, &isReversed));
 }
 
 template<typename T>
@@ -470,11 +476,26 @@ void ListOfOperationsGroups<T>::animateNodeFromIterToFocus(OT* node) {
 }
 
 template<typename T>
+template<typename OT> 
+void ListOfOperationsGroups<T>::animateNodeFromIterToRemove(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REMOVE);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER_FOCUS_REMOVE);
+}
+
+
+template<typename T>
 template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromNearIterToNormal(OT* node) {
     animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER, &Theme::currTheme.NODE_BACKGROUND);
     animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER);
     animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER, &Theme::currTheme.NODE_FOREGROUND);
+}
+
+template<typename T>
+template<typename OT>
+void ListOfOperationsGroups<T>::animateNodeFromNearIterToIter(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
 }
 
 template<typename T>

@@ -98,7 +98,8 @@ public:
     template<typename OT> void animateSlideColorIn(OT* obj);
     template<typename OT> void animateSlideColorOut(OT* obj);
 
-    template<typename OT> void animateRedirect(OT* A, OT* C);
+    template<typename OT, typename MT> void animateRedirectHead(OT* A, MT* arrow, OT* C);
+    template<typename OT, typename MT> void animateRedirectTail(OT* A, MT* arrow, OT* C);
 
     template<typename OT> void animateNodeFromNormalToIter(OT* node);
     template<typename OT> void animateNodeFromNormalToFocus(OT* node);
@@ -108,8 +109,10 @@ public:
     template<typename OT> void animateNodeFromIterToNormal(OT* node);
     template<typename OT> void animateNodeFromIterToNearIter(OT* node);
     template<typename OT> void animateNodeFromIterToFocus(OT* node);
+    template<typename OT> void animateNodeFromIterToRemove(OT* node);
 
     template<typename OT> void animateNodeFromNearIterToNormal(OT* node);
+    template<typename OT> void animateNodeFromNearIterToIter(OT* node);
 
     template<typename OT> void animateNodeFromFocusToIter(OT* node);
 
