@@ -10,7 +10,8 @@ namespace Layout {
     inline DropDownBoxState dropDownList;
 
     void initialize();
-    void drawTopNavigation();
+    void setScreen(Screen::ScreenType screen);
+    void drawTopNavigation(bool keyActive);
 }
 
 #endif
