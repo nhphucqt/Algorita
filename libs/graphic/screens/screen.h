@@ -7,10 +7,12 @@
 #include "globalLayout.h"
 #include "ScreenMainMenu.h"
 #include "ScreenSinglyLinkedList.h"
+#include "ScreenDoublyLinkedList.h"
 #include "ScreenStack.h"
 
 namespace Screen {
     inline ScreenSinglyLinkedList screenSLL;
+    inline ScreenDoublyLinkedList screenDLL;
     inline ScreenStack            screenST;
     inline ScreenMainMenu         screenMM;
 
