@@ -10,15 +10,24 @@
 #include "graphic/gui/Theme.h"
 
 namespace CPath {
-    const char* const SLL_SEARCH_FIRST = "assets/visual_cpp/sll/sll_search_first";
-    const char* const SLL_UPDATE = "assets/visual_cpp/sll/sll_update";
-    const char* const SLL_PEEK = "assets/visual_cpp/sll/sll_peek";
-    const char* const SLL_INSERT_FORD = "assets/visual_cpp/sll/sll_insert_ford";
-    const char* const SLL_INSERT_BACK = "assets/visual_cpp/sll/sll_insert_back";
-    const char* const SLL_INSERT_KTH = "assets/visual_cpp/sll/sll_insert_kth";
-    const char* const SLL_REMOVE_FORD = "assets/visual_cpp/sll/sll_remove_ford";
-    const char* const SLL_REMOVE_BACK = "assets/visual_cpp/sll/sll_remove_back";
-    const char* const SLL_REMOVE_KTH = "assets/visual_cpp/sll/sll_remove_kth";
+    const char* const SLL_SEARCH_FIRST = "assets/visual_cpp/sll/sll_search_first.cpp.txt";
+    const char* const SLL_UPDATE = "assets/visual_cpp/sll/sll_update.cpp.txt";
+    const char* const SLL_PEEK = "assets/visual_cpp/sll/sll_peek.cpp.txt";
+    const char* const SLL_INSERT_FORD = "assets/visual_cpp/sll/sll_insert_ford.cpp.txt";
+    const char* const SLL_INSERT_BACK = "assets/visual_cpp/sll/sll_insert_back.cpp.txt";
+    const char* const SLL_INSERT_KTH = "assets/visual_cpp/sll/sll_insert_kth.cpp.txt";
+    const char* const SLL_REMOVE_FORD = "assets/visual_cpp/sll/sll_remove_ford.cpp.txt";
+    const char* const SLL_REMOVE_BACK = "assets/visual_cpp/sll/sll_remove_back.cpp.txt";
+    const char* const SLL_REMOVE_KTH = "assets/visual_cpp/sll/sll_remove_kth.cpp.txt";
+
+    const char* const DLL_SEARCH_FIRST = "assets/visual_cpp/dll/dll_search_first.cpp.txt";
+    const char* const DLL_UPDATE = "assets/visual_cpp/dll/dll_update.cpp.txt";
+    const char* const DLL_INSERT_FORD = "assets/visual_cpp/dll/dll_insert_ford.cpp.txt";
+    const char* const DLL_INSERT_BACK = "assets/visual_cpp/dll/dll_insert_back.cpp.txt";
+    const char* const DLL_INSERT_KTH = "assets/visual_cpp/dll/dll_insert_kth.cpp.txt";
+    const char* const DLL_REMOVE_FORD = "assets/visual_cpp/dll/dll_remove_ford.cpp.txt";
+    const char* const DLL_REMOVE_BACK = "assets/visual_cpp/dll/dll_remove_back.cpp.txt";
+    const char* const DLL_REMOVE_KTH = "assets/visual_cpp/dll/dll_remove_kth.cpp.txt";
 }
 namespace App {
     const char* const title = "Algorita";
@@ -36,6 +45,8 @@ namespace Geo {
 }
 
 namespace Core {
+    const int NUM_DATA_STRUCTURE = 7;
+
     const int NODE_MIN_VALUE = 0;
     const int NODE_MAX_VALUE = 99;
 
@@ -50,13 +61,14 @@ namespace Window {
     const Vector2 DIMENSION = Vector2{WIDTH, HEIGHT};
     
     // const int FPS = 360;
-    const int FPS = 720;
+    const int FPS = 120;
     // const int FPS = 10;
 }
 
 namespace Graphic {
     // GUI
     const int MAX_SIZE_INPUT = 50; // Including '\0' character
+    const int MAX_DIGIT_INPUT = 4; // Including '\0' character
 
     // NODE GRAPHIC
     const float NODE_SIZE = 50;
@@ -73,13 +85,10 @@ namespace Graphic {
 
     // SINGLY LINKED LIST GRAPHIC
     const int SLL_ORG_X = 200;
-    const int SLL_ORG_Y = 300;
+    const int SLL_ORG_Y = 200;
     const int SLL_NODE_DIST = (int)NODE_DIST;
 
     // STACK GRAPHIC
-    const int STACK_ORG_X = (Window::WIDTH - NODE_SIZE) / 2;
-    const int STACK_ORG_Y = 50;
-    const int STACK_NODE_DIST = (int)NODE_DIST;
 }
 
 namespace Layout {
@@ -89,7 +98,12 @@ namespace Layout {
 namespace Screen {
     inline enum ScreenType {
         SINGLY_LINKED_LIST,
+        DOUBLY_LINKED_LIST,
+        CIRCULAR_LINKED_LIST,
         STACK,
+        QUEUE,
+        STATIC_ARRAY,
+        DYNAMIC_ARRAY,
         MAIN_MENU,
         NUM_SCREEN
     } currScreen;
