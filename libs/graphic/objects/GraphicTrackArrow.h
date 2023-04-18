@@ -39,6 +39,8 @@ public:
     void maximize();
     void setPercent(float _p);
 
+    void copyAttributes(GraphicTrackArrow* arrow);
+
     void resetColor();
 
     void draw();

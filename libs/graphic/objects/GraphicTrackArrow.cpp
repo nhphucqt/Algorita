@@ -55,6 +55,23 @@ void GraphicTrackArrow::setPercent(float _p) {
     percent = _p;
 }
 
+void GraphicTrackArrow::copyAttributes(GraphicTrackArrow* arrow) {
+    lineWidth = arrow->lineWidth;
+    headLength = arrow->headLength;
+    headWidth = arrow->headWidth;
+    slideColor = arrow->slideColor;
+    lineColor = arrow->lineColor;
+    headColor = arrow->headColor;
+    pSlideColor = arrow->pSlideColor;
+    pLineColor = arrow->pLineColor;
+    pHeadColor = arrow->pHeadColor;
+    transparent = arrow->transparent;
+    percent = arrow->percent;
+    slidePercent = arrow->slidePercent;
+    isTrack = arrow->isTrack;
+    isAppear = arrow->isAppear;
+}
+
 void GraphicTrackArrow::resetColor() {
     pLineColor = &Theme::currTheme.ARROW_LINE;
     pSlideColor = &Theme::currTheme.ARROW_LINE;
