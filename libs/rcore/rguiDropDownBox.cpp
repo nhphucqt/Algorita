@@ -22,3 +22,7 @@ bool DropDownBoxState::isEditMode() const {
 int DropDownBoxState::getActive() const {
     return active;
 }
+
+void DropDownBoxState::setActive(int act) {
+    active = act;
+}

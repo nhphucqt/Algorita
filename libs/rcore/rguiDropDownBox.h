@@ -17,6 +17,7 @@ public:
     bool draw();
     bool isEditMode() const;
     int getActive() const;
+    void setActive(int act);
 };
 
 #endif
