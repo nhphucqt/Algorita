@@ -132,42 +132,74 @@ bool Animate::transText(T* obj, const std::string &src, const std::string &snk, 
     } else {
         obj->assign(snk);
     }
-    return true;
+    return (*isReversed && *currTime <= 0) || (!*isReversed && *currTime >= TRANS_TIME);
 }
 
 
 // DO NOT USE DIRECTLY
-template<typename T>
-bool Animate::redirect(T* A, T* C, double* currTime, bool* isReversed) {
-    assert(A->pNext != nullptr);
-
-    Vector2 cA = A->aNext.pA + toSqrVector2(*A->aNext.sA / 2);
-    Vector2 cB = A->aNext.pB + toSqrVector2(*A->aNext.sB / 2);
+template<typename T, typename MT>
+bool Animate::redirectHead(T* A, MT* arrow, T* C, double* currTime, bool* isReversed) {
+    Vector2 cA = arrow->pA + toSqrVector2(*arrow->sA / 2);
+    Vector2 cB = arrow->pB + toSqrVector2(*arrow->sB / 2);
     Vector2 cC = toVector2(C->x, C->y) + toSqrVector2(C->size / 2);
 
     Vector2 AB = cB - cA;
     Vector2 BA = cA - cB;
-    Vector2 CA = cA - cC;
     Vector2 AC = cC - cA;
+    Vector2 CA = cA - cC;
+    Vector2 BC = cC - cB;
 
-    Vector2 newB = cB + A->aNext.ftB(BA);
-    Vector2 newC = cC + C->outerShapeIn(CA);
-
-    Vector2 BC = newC - newB;
 
     if (*isReversed && *currTime <= 0.0) {
-        A->aNext.transA = A->outerShapeOut(AC) - A->outerShapeOut(AB);
-        A->aNext.transB = BC;
+        arrow->transA = arrow->ftA(AC) - arrow->ftA(AB);
+        arrow->transB = BC + C->outerShapeIn(CA) - arrow->ftB(BA);
         return true;
     }
 
     if (!*isReversed && *currTime >= TRAVEL_TIME) {
-        A->aNext.transA = Z_VECT;
-        A->aNext.transB = Z_VECT;
+        arrow->transA = Z_VECT;
+        arrow->transB = Z_VECT;
         return true;
     }
-    A->aNext.transB = BC * bezier(1.0 - ((*currTime) / TRAVEL_TIME));
-    A->aNext.transA = A->outerShapeOut(newB + A->aNext.transB - cA) - A->outerShapeOut(AB);
+
+    Vector2 pBC = BC * bezier(1.0 - ((*currTime) / TRAVEL_TIME));
+    Vector2 nB = cB + pBC;
+
+    arrow->transA = arrow->ftA(nB - cA) - arrow->ftA(AB);
+    arrow->transB = pBC + arrow->ftB(cA - nB) - arrow->ftB(BA);
+
+    return false;
+}
+
+template<typename T, typename MT> 
+bool Animate::redirectTail(T* A, MT* arrow, T* C, double* currTime, bool* isReversed) {
+    Vector2 cA = arrow->pA + toSqrVector2(*arrow->sA / 2);
+    Vector2 cB = arrow->pB + toSqrVector2(*arrow->sB / 2);
+    Vector2 cC = toVector2(C->x, C->y) + toSqrVector2(C->size / 2);
+
+    Vector2 AB = cB - cA;
+    Vector2 BA = cA - cB;
+    Vector2 BC = cC - cB;
+    Vector2 CB = cB - cC;
+    Vector2 AC = cC - cA;
+
+    if (*isReversed && *currTime <= 0.0) {
+        arrow->transA = AC + C->outerShapeOut(CB) - arrow->ftA(AB);
+        arrow->transB = arrow->ftB(BC) - arrow->ftB(BA);
+        return true;
+    }
+
+    if (!*isReversed && *currTime >= TRAVEL_TIME) {
+        arrow->transA = Z_VECT;
+        arrow->transB = Z_VECT;
+        return true;
+    }
+    
+    Vector2 pAC = AC * bezier(1.0 - ((*currTime) / TRAVEL_TIME));
+    Vector2 nA = cA + pAC;
+
+    arrow->transA = pAC - arrow->ftA(AB) + arrow->ftA(cB - nA);
+    arrow->transB = arrow->ftB(nA - cB) - arrow->ftB(BA);
 
     return false;
 }

@@ -33,7 +33,8 @@ namespace Animate {
 
     template<typename T> bool transText(T* obj, const std::string &src, const std::string &snk, double* currTime, bool* isReversed);
 
-    template<typename T> bool redirect(T* A, T* C, double* currTime, bool* isReversed);
+    template<typename T, typename MT> bool redirectHead(T* A, MT* arrow, T* C, double* currTime, bool* isReversed);
+    template<typename T, typename MT> bool redirectTail(T* A, MT* arrow, T* C, double* currTime, bool* isReversed);
 
     class QueueOfScenes {
     public:
