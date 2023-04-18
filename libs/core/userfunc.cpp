@@ -4,7 +4,7 @@ std::pair<ExitStatus, std::vector<int>> User::input2vector(const std::string &in
     std::vector<int> res;
     ExitStatus status = Valid::isMatch(input, match);
     if (!status.success) {
-        status.message = "Input input";
+        status.message = "Input contains invalid characters";
         return std::make_pair(status, res);
     }
     for (int i = 0, cnt = 0; i < (int)input.size(); ++i) {
@@ -21,6 +21,5 @@ std::pair<ExitStatus, std::vector<int>> User::input2vector(const std::string &in
             cnt = 0;
         }
     }
-    status = ExitStatus(true, "");
-    return std::make_pair(status, res);
+    return std::make_pair(ExitMess::SUCCESS, res);
 }
