@@ -21,16 +21,16 @@
 namespace Screen {
     class ScreenStack {
     private:
-        enum OperationType {OTNULL, CREATE, PEEK, PUSH, POP} currOperationType;
+        enum OperationType {OTNULL, CREATE, PEEK, UPDATE, PUSH, POP} currOperationType;
         enum Operation {ONULL, CREATE_USER_DEF} currOperation;
 
         GraphicStack obj;
-
+        GuiTextBoxState inputUpdate;
         GuiTextBoxState inputPush;
         GuiTextBoxState inputUserDefined;
 
         GuiToggleState toggleCreateType;
-        GuiToggleState toggleSearchType;
+        GuiToggleState toggleUpdateType;
         GuiToggleState togglePushType;
         
         GuiToggleState toggleUserDefine;
