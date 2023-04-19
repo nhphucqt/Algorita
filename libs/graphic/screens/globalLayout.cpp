@@ -28,6 +28,9 @@ void Layout::drawTopNavigation(bool keyActive) {
                 case 3:
                     Layout::setScreen(Screen::STACK);
                 break;
+                case 4:
+                    Layout::setScreen(Screen::QUEUE);
+                break;
             }
         }
     }
