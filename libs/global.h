@@ -11,6 +11,7 @@
 
 namespace CPath {
     const char* const SLL_SEARCH_FIRST = "assets/visual_cpp/sll/sll_search_first.cpp.txt";
+    const char* const SLL_UPDATE_HEAD = "assets/visual_cpp/sll/sll_update_head.cpp.txt";
     const char* const SLL_UPDATE = "assets/visual_cpp/sll/sll_update.cpp.txt";
     const char* const SLL_PEEK = "assets/visual_cpp/sll/sll_peek.cpp.txt";
     const char* const SLL_INSERT_FORD = "assets/visual_cpp/sll/sll_insert_ford.cpp.txt";
@@ -28,6 +29,11 @@ namespace CPath {
     const char* const DLL_REMOVE_FORD = "assets/visual_cpp/dll/dll_remove_ford.cpp.txt";
     const char* const DLL_REMOVE_BACK = "assets/visual_cpp/dll/dll_remove_back.cpp.txt";
     const char* const DLL_REMOVE_KTH = "assets/visual_cpp/dll/dll_remove_kth.cpp.txt";
+
+    const char* const QUEUE_PEEK = "assets/visual_cpp/queue/queue_peek.cpp.txt";
+    const char* const QUEUE_UPDATE = "assets/visual_cpp/queue/queue_update.cpp.txt";
+    const char* const QUEUE_PUSH = "assets/visual_cpp/queue/queue_push.cpp.txt";
+    const char* const QUEUE_POP = "assets/visual_cpp/queue/queue_pop.cpp.txt";
 }
 namespace App {
     const char* const title = "Algorita";
