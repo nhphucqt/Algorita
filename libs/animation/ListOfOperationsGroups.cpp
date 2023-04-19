@@ -336,6 +336,9 @@ void ListOfOperationsGroups<T>::draw(bool keyActive) {
 template<typename T>
 void ListOfOperationsGroups<T>::destroy() {
     clearGroup();
+    resetCurrTime();
+    resetCode();
+    resetSpeed();
 }
 
 template<typename T>
@@ -503,6 +506,14 @@ template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromFocusToIter(OT* node) {
     animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER);
     animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);
+}
+
+template<typename T>
+template<typename OT>
+void ListOfOperationsGroups<T>::animateNodeFromFocusToNormal(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS, &Theme::currTheme.NODE_BACKGROUND);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS, &Theme::currTheme.NODE_BORDER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND);
 }
 
 template<typename T>
