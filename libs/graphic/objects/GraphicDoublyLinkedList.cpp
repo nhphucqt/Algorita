@@ -9,6 +9,7 @@ void GraphicDoublyLinkedList::resetColorAllNodes() {
     for (GraphicDoublyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
         curr->resetColor();
         curr->aNext.resetColor();
+        curr->aPrev.resetColor();
     }
 }
 
