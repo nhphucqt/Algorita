@@ -115,6 +115,7 @@ public:
     template<typename OT> void animateNodeFromNearIterToIter(OT* node);
 
     template<typename OT> void animateNodeFromFocusToIter(OT* node);
+    template<typename OT> void animateNodeFromFocusToNormal(OT* node);
 
     template<typename OT> void animateNodeFromReferToNormal(OT* node);
 
