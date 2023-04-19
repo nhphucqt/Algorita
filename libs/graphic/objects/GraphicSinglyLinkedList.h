@@ -39,6 +39,7 @@ public:
 
     ExitStatus searchFirst(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
 
+    ExitStatus updateHeadValue(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
     ExitStatus updateValue(int k, int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
 
     ExitStatus peek(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);

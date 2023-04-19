@@ -181,6 +181,32 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
     return ExitMess::SUCCESS;
 }
 
+ExitStatus GraphicSinglyLinkedList::updateHeadValue(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
+        return ExitMess::FAIL_VALUE_OOB;
+    }
+    
+    ALOG->clearGroup();
+    ALOG->loadCode(CPath::SLL_UPDATE_HEAD);
+    reset();
+
+    if (pHead == nullptr) {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0});
+        ALOG->animateDelay();
+    } else {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({1});
+        ALOG->animateNodeFromNormalToFocus(pHead);
+        ALOG->animateAssignValue(pHead, pHead->nVal, val);
+    }
+
+    ALOG->build();
+
+    return ExitMess::SUCCESS;
+}
+
+
 ExitStatus GraphicSinglyLinkedList::updateValue(int k, int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_LL_EMPTY;
@@ -753,8 +779,8 @@ void GraphicSinglyLinkedList::reset() {
 }
 
 void GraphicSinglyLinkedList::clearSaparated() {
-    for (GraphicSinglyNode* curr : nodes) {
-        delete curr;
+    for (GraphicSinglyNode* node : nodes) {
+        delete node;
     }
     nodes.clear();
 }
@@ -772,8 +798,8 @@ void GraphicSinglyLinkedList::destroy() {
         pHead = pHead->pNext;
         delete tmp;
     }
-    for (GraphicSinglyNode* curr : nodes) {
-        delete curr;
+    for (GraphicSinglyNode* node : nodes) {
+        delete node;
     }
     nodes.clear();
     arrows.clear();
