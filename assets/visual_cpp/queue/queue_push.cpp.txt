@@ -1,0 +1,8 @@
+Node* vtx = new Node(v);
+if (head == NULL) {
+    head = vtx;
+    tail = head;
+} else {
+    tail.next = vtx;
+    tail = vtx;
+}

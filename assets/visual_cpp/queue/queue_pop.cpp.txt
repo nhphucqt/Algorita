@@ -1,0 +1,5 @@
+if (head == NULL) return;
+Node* tmp = head;
+head = head->next;
+delete tmp;
+if (head == NULL) tail = NULL;

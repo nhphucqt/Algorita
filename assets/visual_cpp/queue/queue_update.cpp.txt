@@ -1,0 +1,2 @@
+if (head == NULL) return;
+head->val = v;
