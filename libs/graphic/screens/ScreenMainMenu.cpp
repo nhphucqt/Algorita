@@ -23,7 +23,7 @@ void ScreenMainMenu::draw() {
         Layout::setScreen(Screen::STACK);
     }
     if (GuiButton(Rectangle{450, 580, 300, 200}, "Queue")) {
-
+        Layout::setScreen(Screen::QUEUE);
     }
     if (GuiButton(Rectangle{850, 580, 300, 200}, "Static Array")) {
 
