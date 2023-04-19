@@ -13,8 +13,7 @@
 #include "../../core/userfunc.h"
 
 class GraphicSinglyLinkedList {
-// private:
-public:
+private:
     GraphicSinglyNode* pHead;
     int _size;
 
