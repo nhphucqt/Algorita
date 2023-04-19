@@ -9,11 +9,13 @@
 #include "ScreenSinglyLinkedList.h"
 #include "ScreenDoublyLinkedList.h"
 #include "ScreenStack.h"
+#include "ScreenQueue.h"
 
 namespace Screen {
     inline ScreenSinglyLinkedList screenSLL;
     inline ScreenDoublyLinkedList screenDLL;
     inline ScreenStack            screenST;
+    inline ScreenQueue            screenQU;
     inline ScreenMainMenu         screenMM;
 
     void load();
