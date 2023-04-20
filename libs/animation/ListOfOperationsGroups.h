@@ -123,6 +123,7 @@ public:
     template<typename OT> void animateArrowFromNormalToFocus(OT* node);
 
     template<typename OT> void animateArrowFromIterToNormal(OT* node);
+    template<typename OT> void animateArrowFromIterToFocus(OT* node);
 
     template<typename OT> void animateArrowFromFocusToNormal(OT* node);
     

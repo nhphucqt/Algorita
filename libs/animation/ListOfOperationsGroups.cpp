@@ -544,6 +544,12 @@ void ListOfOperationsGroups<T>::animateArrowFromIterToNormal(OT* arrow) {
 
 template<typename T>
 template<typename OT>
+void ListOfOperationsGroups<T>::animateArrowFromIterToFocus(OT* arrow) {
+    animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE_FOCUS_ITER, &Theme::currTheme.ARROW_LINE_FOCUS);
+}
+
+template<typename T>
+template<typename OT>
 void ListOfOperationsGroups<T>::animateArrowFromFocusToNormal(OT* arrow) {
     animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE_FOCUS, &Theme::currTheme.ARROW_LINE);
 }
