@@ -27,8 +27,6 @@ void Screen::ScreenSinglyLinkedList::load() { // Ensure that obj has to be destr
     toggleRemoveMidd.init(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 3, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 2, Gui::BUTTON_OPER_WIDTH, Gui::BUTTON_OPER_HEIGHT}, "i-th node", false);
 
     exitMessage = StyledText(std::string(), Gfont::defaultFont);
-
-    fileDialogState = InitGuiFileDialog(Gui::FILE_DIALOG_WIDTH, Gui::FILE_DIALOG_HEIGHT, GetWorkingDirectory(), false);
 }
 
 void Screen::ScreenSinglyLinkedList::init() {
@@ -39,10 +37,6 @@ void Screen::ScreenSinglyLinkedList::init() {
 
 void Screen::ScreenSinglyLinkedList::draw() {
     bool keyActive = true;
-    if (fileDialogState.windowActive) {
-        GuiLock();
-        keyActive = false;
-    }
     if (toggleCreateType.draw()) {
         if (toggleCreateType.justToggle()) {
             currOperationType = CREATE;
@@ -63,7 +57,14 @@ void Screen::ScreenSinglyLinkedList::draw() {
             }
         }
         if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 3 + Gui::USER_DEF_BUTTON_WIDTH + Gui::BUTTON_OPER_DIST_X, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 6, Gui::FILE_DIALOG_OPEN_BUTTON_WIDTH, Gui::FILE_DIALOG_OPEN_BUTTON_HEIGHT}, "File")) {
-            fileDialogState.windowActive = true;
+            char const * filePath = TinyDial::guiOpenTextFile();
+            if (filePath != nullptr) {
+                std::ifstream fin(filePath);
+                std::stringstream ss;
+                ss << fin.rdbuf();
+                fin.close();
+                obj.initialize(ss.str(), &ALOG);
+            }
         }
     }
     // Search type Button
@@ -213,16 +214,6 @@ void Screen::ScreenSinglyLinkedList::draw() {
         }
     }
 
-    if (fileDialogState.SelectFilePressed) {
-        // std::cerr << fileDialogState.fileNameText << '\n';
-        std::ifstream fin(fileDialogState.fileNameText);
-        std::string data;
-        std::getline(fin, data);
-        fin.close();
-        obj.initialize(data, &ALOG);
-        fileDialogState.SelectFilePressed = false;
-    }
-
     // std::cerr << "SLLS:draw start ALOG.run()\n";
     // while (!ALOG.run());
     // std::cerr << "SLLS:draw end ALOG.run()\n";
@@ -231,9 +222,6 @@ void Screen::ScreenSinglyLinkedList::draw() {
     ALOG.draw(keyActive);
     exitMessage.draw(10, 865, Theme::currTheme.EXIT_MESSAGE);
     Layout::drawTopNavigation(keyActive);
-    
-    GuiUnlock();
-    GuiFileDialog(&fileDialogState);
 }
 
 void Screen::ScreenSinglyLinkedList::destroy() {

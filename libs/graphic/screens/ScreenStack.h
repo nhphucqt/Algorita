@@ -14,7 +14,7 @@
 #include "../../rcore/rguiToggle.h"
 #include "../../rcore/rRectangle.h"
 
-#include "../../external/gui_file_dialog.h"
+#include "../gui/guiTinyDialog.h"
 
 #include "globalLayout.h"
 
@@ -39,8 +39,6 @@ namespace Screen {
         StyledText exitMessage;
 
         ListOfOperationsGroups<GraphicStack> ALOG;
-
-        GuiFileDialogState fileDialogState;
 
     public:
         ScreenStack();

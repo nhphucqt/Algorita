@@ -14,8 +14,6 @@ void Screen::ScreenQueue::load() { // Ensure that obj has to be destroy before (
     toggleUserDefine.init(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 3, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 6, Gui::USER_DEF_BUTTON_WIDTH, Gui::USER_DEF_BUTTON_HEIGHT}, "Input", false);
 
     exitMessage = StyledText(std::string(), Gfont::defaultFont);
-
-    fileDialogState = InitGuiFileDialog(Gui::FILE_DIALOG_WIDTH, Gui::FILE_DIALOG_HEIGHT, GetWorkingDirectory(), false);
 }
 
 void Screen::ScreenQueue::init() {
@@ -26,10 +24,6 @@ void Screen::ScreenQueue::init() {
 
 void Screen::ScreenQueue::draw() {
     bool keyActive = true;
-    if (fileDialogState.windowActive) {
-        GuiLock();
-        keyActive = false;
-    }
     if (toggleCreateType.draw()) {
         if (toggleCreateType.justToggle()) {
             currOperationType = CREATE;
@@ -50,7 +44,14 @@ void Screen::ScreenQueue::draw() {
             }
         }
         if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 3 + Gui::USER_DEF_BUTTON_WIDTH + Gui::BUTTON_OPER_DIST_X, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 6, Gui::FILE_DIALOG_OPEN_BUTTON_WIDTH, Gui::FILE_DIALOG_OPEN_BUTTON_HEIGHT}, "File")) {
-            fileDialogState.windowActive = true;
+            char const * filePath = TinyDial::guiOpenTextFile();
+            if (filePath != nullptr) {
+                std::ifstream fin(filePath);
+                std::stringstream ss;
+                ss << fin.rdbuf();
+                fin.close();
+                obj.initialize(ss.str(), &ALOG);
+            }
         }
     }
     // Peek type Button
@@ -98,27 +99,11 @@ void Screen::ScreenQueue::draw() {
         exitMessage.assign(obj.pop(&ALOG).message);
     }
 
-    if (fileDialogState.SelectFilePressed) {
-        // std::cerr << fileDialogState.fileNameText << '\n';
-        std::ifstream fin(fileDialogState.fileNameText);
-        std::string data;
-        std::getline(fin, data);
-        fin.close();
-        obj.initialize(data, &ALOG);
-        fileDialogState.SelectFilePressed = false;
-    }
-
-    // std::cerr << "SLLS:draw start ALOG.run()\n";
-    // while (!ALOG.run());
-    // std::cerr << "SLLS:draw end ALOG.run()\n";
     ALOG.run();
     obj.draw();
     ALOG.draw(keyActive);
     exitMessage.draw(10, 865, RED);
     Layout::drawTopNavigation(keyActive);
-    
-    GuiUnlock();
-    GuiFileDialog(&fileDialogState);
 }
 
 void Screen::ScreenQueue::destroy() {
