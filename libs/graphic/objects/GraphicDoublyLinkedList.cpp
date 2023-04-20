@@ -462,25 +462,25 @@ ExitStatus GraphicDoublyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
     tmpArrow.copyAttributes(&nxt->aPrev);
 
     cur->setNext(nxt);
-    nxt->setPrev(cur);
+    nxt->updatePrev(cur);
+    nxt->setArrowHeadTrans(&nxt->aPrev, pre);
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({5,6});
     ALOG->animateFadeIn(&cur->aNext);
     ALOG->animateArrowFromNormalToFocus(&cur->aNext);
     ALOG->animateSlideIn(&cur->aNext);
-    ALOG->animateFadeIn(&nxt->aPrev);
+    ALOG->animateRedirectHead(nxt, &nxt->aPrev, pre);
     ALOG->animateArrowFromNormalToFocus(&nxt->aPrev);
-    ALOG->animateSlideIn(&nxt->aPrev);
 
     pre->updateNext(cur);
     pre->setArrowHeadTrans(&pre->aNext, nxt);
     cur->setPrev(pre);
-    cur->aPrev.copyAttributes(&tmpArrow);
-    cur->setArrowTailTrans(&cur->aPrev, nxt);
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({7,8});
     ALOG->animateRedirectHead(pre, &pre->aNext, nxt);
-    ALOG->animateRedirectTail(cur, &cur->aPrev, nxt);
+    ALOG->animateFadeIn(&cur->aPrev);
+    ALOG->animateArrowFromNormalToIter(&cur->aPrev);
+    ALOG->animateSlideIn(&cur->aPrev);
     ALOG->animateTransText(&cur->sub, "cur", cf::num2str(k) + "/cur");
     ALOG->animateTransText(&nxt->sub, cf::num2str(k) + "/nxt", cf::num2str(k+1) + "/nxt");
 
@@ -490,6 +490,7 @@ ExitStatus GraphicDoublyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
     ALOG->animateArrowSlideFromIterToNormal(&pre->aNext);
     ALOG->animateNodeFromReferToNormal(nxt);
     ALOG->animateArrowFromFocusToNormal(&cur->aNext);
+    ALOG->animateArrowFromIterToNormal(&cur->aPrev);
     ALOG->animateArrowFromFocusToNormal(&nxt->aPrev);
     ALOG->animateTransText(&pre->sub, cf::num2str(k-1) + "/pre", "");
     ALOG->animateTransText(&nxt->sub, cf::num2str(k+1) + "/nxt", "");
