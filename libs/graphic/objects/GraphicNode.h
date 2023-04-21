@@ -15,7 +15,6 @@ class GraphicNode {
 public:
     // Position
 	float x, y; // graphic position
-    float lx, ly; // last graphic position
 
     // Shape and Dimension
 	float size, bsize;
@@ -29,7 +28,7 @@ public:
     // Node value
     int nVal;
     StyledText val;
-    StyledText sub;
+    StyledText sub, super;
 
     // Events
     bool isAppear;
@@ -53,8 +52,10 @@ public:
 
     void setValue(int x);
     void setSubText(const std::string &_subtext);
+    void setSuperText(const std::string &_supertext);
 
     void resetColor();
+    void setDisabledColor();
 
     void draw();
 };
