@@ -31,6 +31,12 @@ void Layout::drawTopNavigation(bool keyActive) {
                 case 4:
                     Layout::setScreen(Screen::QUEUE);
                 break;
+                case 5:
+                    Layout::setScreen(Screen::STATIC_ARRAY);
+                break;
+                case 6:
+                    Layout::setScreen(Screen::DYNAMIC_ARRAY);
+                break;
             }
         }
     }

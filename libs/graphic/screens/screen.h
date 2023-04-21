@@ -10,15 +10,23 @@
 #include "ScreenDoublyLinkedList.h"
 #include "ScreenStack.h"
 #include "ScreenQueue.h"
+#include "ScreenStaticArray.h"
+#include "ScreenDynamicArray.h"
 
 namespace Screen {
-    inline ScreenSinglyLinkedList screenSLL;
-    inline ScreenDoublyLinkedList screenDLL;
-    inline ScreenStack            screenST;
-    inline ScreenQueue            screenQU;
-    inline ScreenMainMenu         screenMM;
+    class ScreenClass {
+    private:
+        ScreenSinglyLinkedList screenSLL;
+        ScreenDoublyLinkedList screenDLL;
+        ScreenStack            screenST;
+        ScreenQueue            screenQU;
+        ScreenStaticArray      screenSA;
+        ScreenDynamicArray     screenDA;
+        ScreenMainMenu         screenMM;
 
-    void load();
+    public:
+        void load();
+    };
 }
 
 #endif
