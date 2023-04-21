@@ -26,10 +26,10 @@ void ScreenMainMenu::draw() {
         Layout::setScreen(Screen::QUEUE);
     }
     if (GuiButton(Rectangle{850, 580, 300, 200}, "Static Array")) {
-
+        Layout::setScreen(Screen::STATIC_ARRAY);
     }
     if (GuiButton(Rectangle{1250, 580, 300, 200}, "Dynamic Array")) {
-
+        Layout::setScreen(Screen::DYNAMIC_ARRAY);
     }
     Theme::draw(true);
 }
