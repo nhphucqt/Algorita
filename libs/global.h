@@ -34,6 +34,16 @@ namespace CPath {
     const char* const QUEUE_UPDATE = "assets/visual_cpp/queue/queue_update.cpp.txt";
     const char* const QUEUE_PUSH = "assets/visual_cpp/queue/queue_push.cpp.txt";
     const char* const QUEUE_POP = "assets/visual_cpp/queue/queue_pop.cpp.txt";
+
+    const char* const STAT_ARR_SEARCH_FIRST = "assets/visual_cpp/stat_arr/stat_arr_search_first.cpp.txt";
+    const char* const STAT_ARR_UPDATE = "assets/visual_cpp/stat_arr/stat_arr_update.cpp.txt";
+    const char* const STAT_ARR_ACCESS = "assets/visual_cpp/stat_arr/stat_arr_access.cpp.txt";
+
+    const char* const DYNA_ARR_SEARCH_FIRST = "assets/visual_cpp/dyna_arr/dyna_arr_search_first.cpp.txt";
+    const char* const DYNA_ARR_UPDATE = "assets/visual_cpp/dyna_arr/dyna_arr_update.cpp.txt";
+    const char* const DYNA_ARR_ACCESS = "assets/visual_cpp/dyna_arr/dyna_arr_access.cpp.txt";
+    const char* const DYNA_ARR_PUSH_BACK = "assets/visual_cpp/dyna_arr/dyna_arr_push_back.cpp.txt";
+    const char* const DYNA_ARR_POP_BACK = "assets/visual_cpp/dyna_arr/dyna_arr_pop_back.cpp.txt";
 }
 namespace App {
     const char* const title = "Algorita";
@@ -57,6 +67,8 @@ namespace Core {
     const int NODE_MAX_VALUE = 99;
 
     const int MAX_NUM_NODE_SLL = 10;
+
+    const int MAX_NUM_ARRAY_ELM = 16;
 }
 
 namespace Window {
@@ -94,7 +106,10 @@ namespace Graphic {
     const int SLL_ORG_Y = 200;
     const int SLL_NODE_DIST = (int)NODE_DIST;
 
-    // STACK GRAPHIC
+    // ARRAY
+    const int ARR_ORG_X = 150;
+    const int ARR_ORG_Y = 200;
+    const int ARR_EML_DIST = NODE_SIZE / 2;
 }
 
 namespace Layout {
