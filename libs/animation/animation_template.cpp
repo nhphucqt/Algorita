@@ -5,7 +5,7 @@
 
 template<typename T>
 bool Animate::assignValue(T* obj, int oldVal, int newVal, double* currTime, bool* isReversed) {
-    obj->setValue(*isReversed ? oldVal : newVal);
+    obj->setValue(*currTime < Animate::ASSIGN_TIME / 2 ? oldVal : newVal);
     return (*isReversed && *currTime <= 0) || (!*isReversed && *currTime >= Animate::ASSIGN_TIME);
 }
 
