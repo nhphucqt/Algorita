@@ -168,6 +168,9 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
             } else {
                 ALOG->animateTransText(&pre->sub, cf::num2str(id-1) + "/cur", "");
             }
+
+            ALOG->build();
+
             return ExitMess::SUCCESS;
         }
     }
