@@ -115,6 +115,6 @@ void Screen::ScreenQueue::draw() {
 }
 
 void Screen::ScreenQueue::destroy() {
-    obj.destroy();
     ALOG.destroy();
+    obj.destroy();
 }

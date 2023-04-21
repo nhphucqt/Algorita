@@ -215,6 +215,6 @@ void Screen::ScreenDynamicArray::draw() {
 }
 
 void Screen::ScreenDynamicArray::destroy() {
-    obj.destroy();
     ALOG.destroy();
+    obj.destroy();
 }

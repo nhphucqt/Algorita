@@ -230,6 +230,6 @@ void Screen::ScreenDoublyLinkedList::draw() {
 }
 
 void Screen::ScreenDoublyLinkedList::destroy() {
-    obj.destroy();
     ALOG.destroy();
+    obj.destroy();
 }

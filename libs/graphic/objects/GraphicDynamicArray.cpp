@@ -4,6 +4,8 @@ GraphicDynamicArray::GraphicDynamicArray() {
     _size = 0;
     _capacity = 0;
     arr = nullptr;
+    _oldSize = 0;
+    oldArr = nullptr;
 }
 
 void GraphicDynamicArray::deleteOldArray() {
@@ -281,6 +283,7 @@ void GraphicDynamicArray::draw() {
 
 void GraphicDynamicArray::reset() {
     resetColorAllNodes();
+    deleteOldArray();
 }
 
 void GraphicDynamicArray::destroy() {

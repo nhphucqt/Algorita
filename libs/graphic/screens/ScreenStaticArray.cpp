@@ -175,6 +175,6 @@ void Screen::ScreenStaticArray::draw() {
 }
 
 void Screen::ScreenStaticArray::destroy() {
-    obj.destroy();
     ALOG.destroy();
+    obj.destroy();
 }
