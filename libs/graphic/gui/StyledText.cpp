@@ -1,6 +1,8 @@
 #include "StyledText.h"
 
-StyledText::StyledText() {}
+StyledText::StyledText() {
+    font = nullptr;
+}
 
 StyledText::StyledText(const std::string &_content, Font* _font, float _spacing) {
     content = _content;
