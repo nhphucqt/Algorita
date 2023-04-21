@@ -22,7 +22,7 @@ namespace Screen {
     class ScreenQueue {
     private:
         enum OperationType {OTNULL, CREATE, PEEK, UPDATE, PUSH, POP} currOperationType;
-        enum Operation {ONULL, CREATE_USER_DEF} currOperation;
+        enum Operation {ONULL, CREATE_EMPTY, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE} currOperation;
 
         GraphicQueue obj;
 
