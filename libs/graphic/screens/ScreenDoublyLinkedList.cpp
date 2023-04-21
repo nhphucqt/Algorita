@@ -44,12 +44,19 @@ void Screen::ScreenDoublyLinkedList::draw() {
             toggleCreateType.deactive();
         }
         if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 1, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 6, Gui::BUTTON_OPER_WIDTH, Gui::BUTTON_OPER_HEIGHT}, "Empty")) {
+            currOperation = CREATE_EMPTY;
             exitMessage.assign(obj.initialize(0, &ALOG).message);
         }
         if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 2, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 6, Gui::BUTTON_OPER_WIDTH, Gui::BUTTON_OPER_HEIGHT}, "Random")) {
+            currOperation = CREATE_RANDOM;
             exitMessage.assign(obj.initialize(GetRandomValue(1, Core::MAX_NUM_NODE_SLL), &ALOG).message);
         }
         if (toggleUserDefine.draw()) {
+            if (toggleUserDefine.justToggle()) {
+                currOperation = CREATE_USER_DEF;
+            } else if (currOperation != CREATE_USER_DEF) {
+                toggleUserDefine.deactive();
+            }
             GuiDummyRec(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 3, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 5, Gui::USER_DEF_BUTTON_WIDTH, Gui::USER_DEF_BUTTON_HEIGHT}, "");
             keyActive &= !inputUserDefined.draw();
             if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 3 + Gui::USER_DEF_BUTTON_WIDTH - Gui::BUTTON_OPER_GO_WIDTH - 5, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 5 + 5, Gui::BUTTON_OPER_GO_HEIGHT, Gui::BUTTON_OPER_GO_HEIGHT}, "Go") || (keyActive && IsKeyPressed(KEY_ENTER))) {
@@ -57,6 +64,7 @@ void Screen::ScreenDoublyLinkedList::draw() {
             }
         }
         if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 3 + Gui::USER_DEF_BUTTON_WIDTH + Gui::BUTTON_OPER_DIST_X, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 6, Gui::FILE_DIALOG_OPEN_BUTTON_WIDTH, Gui::FILE_DIALOG_OPEN_BUTTON_HEIGHT}, "File")) {
+            currOperation = CREATE_FILE;
             char const * filePath = TinyDial::guiOpenTextFile();
             if (filePath != nullptr) {
                 std::ifstream fin(filePath);
@@ -164,7 +172,7 @@ void Screen::ScreenDoublyLinkedList::draw() {
         keyActive &= !inputUpdateValuePos.draw();
         if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 1 + Gui::BUTTON_OPER_WIDTH - (Gui::BUTTON_OPER_GO_WIDTH + 5) * 2, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 3 + 5, Gui::BUTTON_OPER_GO_HEIGHT, Gui::BUTTON_OPER_GO_HEIGHT}, Gicon::BUTTON_RANDOM)) {
             if (obj.empty()) {
-                exitMessage.assign("The list is empty");
+                exitMessage.assign(ExitMess::FAIL_LL_EMPTY.message);
             } else {
                 inputUpdateValuePos.setnum(GetRandomValue(0, obj.size()-1));
             }
