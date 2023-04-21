@@ -458,6 +458,14 @@ void ListOfOperationsGroups<T>::animateNodeFromNormalToRemove(OT* node) {
 
 template<typename T>
 template<typename OT>
+void ListOfOperationsGroups<T>::animateNodeFromNormalToDisabled(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_DISABLED);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_DISABLED);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND, &Theme::currTheme.NODE_FOREGROUND_DISABLED);
+}
+
+template<typename T>
+template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromIterToNormal(OT* node) {
     animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER, &Theme::currTheme.NODE_BACKGROUND);
     animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER);
@@ -522,6 +530,14 @@ void ListOfOperationsGroups<T>::animateNodeFromReferToNormal(OT* node) {
     animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REFER, &Theme::currTheme.NODE_BACKGROUND);
     animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_REFER, &Theme::currTheme.NODE_BORDER);
     animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND);
+}
+
+template<typename T>
+template<typename OT>
+void ListOfOperationsGroups<T>::animateNodeFromDisabledToFocus(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_DISABLED, &Theme::currTheme.NODE_BACKGROUND_FOCUS);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_DISABLED, &Theme::currTheme.NODE_BORDER_FOCUS);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_DISABLED, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
 }
 
 template<typename T>

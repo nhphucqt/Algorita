@@ -105,6 +105,7 @@ public:
     template<typename OT> void animateNodeFromNormalToFocus(OT* node);
     template<typename OT> void animateNodeFromNormalToRefer(OT* node);
     template<typename OT> void animateNodeFromNormalToRemove(OT* node);
+    template<typename OT> void animateNodeFromNormalToDisabled(OT* node);
 
     template<typename OT> void animateNodeFromIterToNormal(OT* node);
     template<typename OT> void animateNodeFromIterToNearIter(OT* node);
@@ -118,6 +119,8 @@ public:
     template<typename OT> void animateNodeFromFocusToNormal(OT* node);
 
     template<typename OT> void animateNodeFromReferToNormal(OT* node);
+
+    template<typename OT> void animateNodeFromDisabledToFocus(OT* node);
 
     template<typename OT> void animateArrowFromNormalToIter(OT* node);
     template<typename OT> void animateArrowFromNormalToFocus(OT* node);
