@@ -16,6 +16,7 @@ namespace Theme {
         Color TITLE;
 
         Color NODE_BACKGROUND;
+        Color NODE_BACKGROUND_DISABLED;
         Color NODE_BACKGROUND_FOCUS;
         Color NODE_BACKGROUND_FOCUS_REFER;
         Color NODE_BACKGROUND_FOCUS_ITER;
@@ -23,15 +24,18 @@ namespace Theme {
         Color NODE_BACKGROUND_FOCUS_REMOVE;
 
         Color NODE_FOREGROUND;
+        Color NODE_FOREGROUND_DISABLED;
         Color NODE_FOREGROUND_FOCUS;
         Color NODE_FOREGROUND_FOCUS_ITER;
 
         Color NODE_BORDER;
+        Color NODE_BORDER_DISABLED;
         Color NODE_BORDER_FOCUS;
         Color NODE_BORDER_FOCUS_REFER;
         Color NODE_BORDER_FOCUS_ITER;
         Color NODE_BORDER_FOCUS_REMOVE;
 
+        Color NODE_SUPERTEXT;
         Color NODE_SUBTEXT;
 
         // ARROW COLOR
