@@ -15,7 +15,6 @@
 
 class GraphicTrackArrow {
 public:
-    float lineWidth, headLength, headWidth;
     Color slideColor, lineColor, headColor;
     Color *pSlideColor, *pLineColor, *pHeadColor;
     TrVector pA, pB;
