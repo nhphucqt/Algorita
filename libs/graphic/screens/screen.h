@@ -8,6 +8,7 @@
 #include "ScreenMainMenu.h"
 #include "ScreenSinglyLinkedList.h"
 #include "ScreenDoublyLinkedList.h"
+#include "ScreenCircularLinkedList.h"
 #include "ScreenStack.h"
 #include "ScreenQueue.h"
 #include "ScreenStaticArray.h"
@@ -16,13 +17,14 @@
 namespace Screen {
     class ScreenClass {
     private:
-        ScreenSinglyLinkedList screenSLL;
-        ScreenDoublyLinkedList screenDLL;
-        ScreenStack            screenST;
-        ScreenQueue            screenQU;
-        ScreenStaticArray      screenSA;
-        ScreenDynamicArray     screenDA;
-        ScreenMainMenu         screenMM;
+        ScreenSinglyLinkedList   screenSLL;
+        ScreenDoublyLinkedList   screenDLL;
+        ScreenCircularLinkedList screenCLL;
+        ScreenStack              screenST;
+        ScreenQueue              screenQU;
+        ScreenStaticArray        screenSA;
+        ScreenDynamicArray       screenDA;
+        ScreenMainMenu           screenMM;
 
     public:
         void load();
