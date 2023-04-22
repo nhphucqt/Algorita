@@ -1,0 +1,12 @@
+if (head == NULL) return;
+if (head->next == head) {
+    delete head;
+    head = NULL;
+} else {
+    Node* cur = head;
+    while (cur->next->next != head)
+        cur = cur->next;
+    Node* del = cur->next;
+    delete del;
+    cur->next = head;
+}

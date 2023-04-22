@@ -1,0 +1,7 @@
+Node* pre = head;
+for (int k = 0; k < i-1; ++k)
+    pre = pre->next;
+Node* nxt = pre->next;
+Node* vxt = new Node(val);
+vxt->next = nxt;
+pre->next = vxt;

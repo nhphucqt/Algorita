@@ -1,0 +1,8 @@
+if (head == NULL) return;
+Node* pre = head;
+for (int k = 0; k < i-1; ++k)
+    pre = pre->next;
+Node* del = pre->next;
+Node* nxt = del->next;
+pre->next = nxt;
+delete del;
