@@ -291,6 +291,5 @@ void GraphicDynamicArray::destroy() {
     _capacity = 0;
     delete[] arr;
     arr = nullptr;
-
     deleteOldArray();
 }
