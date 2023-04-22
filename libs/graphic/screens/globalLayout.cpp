@@ -25,6 +25,9 @@ void Layout::drawTopNavigation(bool keyActive) {
                 case 1:
                     Layout::setScreen(Screen::DOUBLY_LINKED_LIST);
                 break;
+                case 2:
+                    Layout::setScreen(Screen::CIRCULAR_LINKED_LIST);
+                break;
                 case 3:
                     Layout::setScreen(Screen::STACK);
                 break;

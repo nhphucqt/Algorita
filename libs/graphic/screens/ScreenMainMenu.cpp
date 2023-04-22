@@ -17,7 +17,7 @@ void ScreenMainMenu::draw() {
         Layout::setScreen(Screen::DOUBLY_LINKED_LIST);
     }
     if (GuiButton(Rectangle{1050, 300, 300, 200}, "Circular Linked List")) {
-
+        Layout::setScreen(Screen::CIRCULAR_LINKED_LIST);
     }
     if (GuiButton(Rectangle{50, 580, 300, 200}, "Stack")) {
         Layout::setScreen(Screen::STACK);
