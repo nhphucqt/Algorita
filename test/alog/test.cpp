@@ -21,11 +21,11 @@ int main() {
 
     OperationsGroups<GraphicSinglyLinkedList> group;
 
-    li.pHead = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, 0);
+    li.pHead = new GraphicSinglyNode(Graphic::LL_ORG_X, Graphic::LL_ORG_Y, Graphic::NODE_SIZE, false, 0);
     GraphicSinglyNode* curr = li.pHead;
     curr->appear();
     for (int i = 1; i < 10; ++i) {
-        GraphicSinglyNode* tmp = new GraphicSinglyNode(curr->x + Graphic::SLL_NODE_DIST, curr->y, Graphic::NODE_SIZE, false, i);
+        GraphicSinglyNode* tmp = new GraphicSinglyNode(curr->x + Graphic::LL_NODE_DIST, curr->y, Graphic::NODE_SIZE, false, i);
         curr->setNext(tmp);
         curr->aNext.appear();
         curr->aNext.maximize();
