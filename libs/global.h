@@ -30,6 +30,15 @@ namespace CPath {
     const char* const DLL_REMOVE_BACK = "assets/visual_cpp/dll/dll_remove_back.cpp.txt";
     const char* const DLL_REMOVE_KTH = "assets/visual_cpp/dll/dll_remove_kth.cpp.txt";
 
+    const char* const CLL_SEARCH_FIRST = "assets/visual_cpp/cll/cll_search_first.cpp.txt";
+    const char* const CLL_UPDATE = "assets/visual_cpp/cll/cll_update.cpp.txt";
+    const char* const CLL_INSERT_FORD = "assets/visual_cpp/cll/cll_insert_ford.cpp.txt";
+    const char* const CLL_INSERT_BACK = "assets/visual_cpp/cll/cll_insert_back.cpp.txt";
+    const char* const CLL_INSERT_KTH = "assets/visual_cpp/cll/cll_insert_kth.cpp.txt";
+    const char* const CLL_REMOVE_FORD = "assets/visual_cpp/cll/cll_remove_ford.cpp.txt";
+    const char* const CLL_REMOVE_BACK = "assets/visual_cpp/cll/cll_remove_back.cpp.txt";
+    const char* const CLL_REMOVE_KTH = "assets/visual_cpp/cll/cll_remove_kth.cpp.txt";
+
     const char* const QUEUE_PEEK = "assets/visual_cpp/queue/queue_peek.cpp.txt";
     const char* const QUEUE_UPDATE = "assets/visual_cpp/queue/queue_update.cpp.txt";
     const char* const QUEUE_PUSH = "assets/visual_cpp/queue/queue_push.cpp.txt";
@@ -101,10 +110,14 @@ namespace Graphic {
     const float ARROW_HEAD_LENGTH = 10;
     const float ARROW_HEAD_WIDTH = 10;
 
+    const int ARROW_NUM_JOIN = 6;
+    const float ARROW_VERT_LENGTH = 70;
+    const float ARROW_SIDE_LENGTH = 70;
+
     // SINGLY LINKED LIST GRAPHIC
-    const int SLL_ORG_X = 200;
-    const int SLL_ORG_Y = 200;
-    const int SLL_NODE_DIST = (int)NODE_DIST;
+    const int LL_ORG_X = 200;
+    const int LL_ORG_Y = 250;
+    const int LL_NODE_DIST = (int)NODE_DIST;
 
     // ARRAY
     const int ARR_ORG_X = 150;
