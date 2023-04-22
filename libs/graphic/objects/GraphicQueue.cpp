@@ -28,19 +28,6 @@ void GraphicQueue::resetSubTextAllNodes() {
     }
 }
 
-void GraphicQueue::appearAllNodes() {
-    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-        curr->appear();
-        curr->aNext.appear();
-    }
-}
-void GraphicQueue::vanishAllNodes() {
-    for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-        curr->vanish();
-        curr->aNext.vanish();
-    }
-}
-
 bool GraphicQueue::empty() const {
     return _size == 0;
 }
@@ -80,11 +67,11 @@ ExitStatus GraphicQueue::initialize(std::vector<int> vals, ListOfOperationsGroup
 
     for (int i = 0; i < (int)vals.size(); ++i) {
         if (pHead == nullptr) {
-            pHead = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, vals[i]);
+            pHead = new GraphicSinglyNode(Graphic::LL_ORG_X, Graphic::LL_ORG_Y, Graphic::NODE_SIZE, false, vals[i]);
             pHead->setSubText("head");
             pTail = pHead;
         } else {
-            GraphicSinglyNode* newNode = new GraphicSinglyNode(pTail->x + Graphic::SLL_NODE_DIST, pTail->y, Graphic::NODE_SIZE, false, vals[i]);
+            GraphicSinglyNode* newNode = new GraphicSinglyNode(pTail->x + Graphic::LL_NODE_DIST, pTail->y, Graphic::NODE_SIZE, false, vals[i]);
             pTail->setNext(newNode);
             pTail = pTail->pNext;
         }
@@ -108,6 +95,7 @@ ExitStatus GraphicQueue::initialize(std::vector<int> vals, ListOfOperationsGroup
     }
 
     ALOG->build();
+
 
     return ExitMess::SUCCESS;
 }
@@ -182,7 +170,7 @@ ExitStatus GraphicQueue::push(int val, ListOfOperationsGroups<GraphicQueue>* ALO
 
     
     if (pHead == nullptr) {
-        GraphicSinglyNode* vtx = new GraphicSinglyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, val);
+        GraphicSinglyNode* vtx = new GraphicSinglyNode(Graphic::LL_ORG_X, Graphic::LL_ORG_Y, Graphic::NODE_SIZE, false, val);
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateFadeIn(vtx);
@@ -200,7 +188,7 @@ ExitStatus GraphicQueue::push(int val, ListOfOperationsGroups<GraphicQueue>* ALO
         ALOG->backGroup()->setHighlightLines({3});
         ALOG->animateTransText(&pHead->sub, "head/vtx", "head/tail/vtx");
     } else {
-        GraphicSinglyNode* vtx = new GraphicSinglyNode(pTail->x + Graphic::SLL_NODE_DIST, pTail->y, Graphic::NODE_SIZE, false, val);
+        GraphicSinglyNode* vtx = new GraphicSinglyNode(pTail->x + Graphic::LL_NODE_DIST, pTail->y, Graphic::NODE_SIZE, false, val);
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateFadeIn(vtx);
@@ -282,7 +270,7 @@ ExitStatus GraphicQueue::pop(ListOfOperationsGroups<GraphicQueue>* ALOG) {
         if (pHead != nullptr) {
             ALOG->addNewGroup();
             for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-                ALOG->animateTransform(curr, curr->x, curr->y, -Graphic::SLL_NODE_DIST, 0);
+                ALOG->animateTransform(curr, curr->x, curr->y, -Graphic::LL_NODE_DIST, 0);
             }
         } else {
             pTail = nullptr;
@@ -329,5 +317,6 @@ void GraphicQueue::destroy() {
     for (GraphicNode* node : nodes) {
         delete node;
     }
+    _size = 0;
     nodes.clear();
 }

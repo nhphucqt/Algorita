@@ -12,6 +12,8 @@
 #include "../../animation/ListOfOperationsGroups.h"
 #include "../../core/userfunc.h"
 
+#include "GraphicHookArrow.h"
+
 class GraphicQueue {
 private:
     GraphicSinglyNode* pHead;
@@ -22,9 +24,6 @@ private:
 
     void resetColorAllNodes();
     void resetSubTextAllNodes();
-
-    void appearAllNodes();
-    void vanishAllNodes();
 
 public:
     GraphicQueue();
