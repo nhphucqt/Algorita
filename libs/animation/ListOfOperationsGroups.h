@@ -34,8 +34,6 @@ public:
 
     typename std::list<OperationsGroups<T>>::iterator curGroup() const;
 
-    void setMainObj(T* _mainObj);
-
     void loadCode(const std::string &path);
     void updateCode();
     void resetCode();
@@ -92,6 +90,9 @@ public:
     template<typename OT> void animateDisplace(OT* obj, int Sx, int Sy, int Dx, int Dy);
     template<typename OT> void animateTransform(OT* obj, int Sx, int Sy, int Tx, int Ty);
 
+    template<typename OT> void animateFadeOutDisplace(OT* obj, int Sx, int Sy, int Dx, int Dy);
+    template<typename OT> void animateFadeOutTransform(OT* obj, int Sx, int Sy, int Tx, int Ty);
+
     template<typename OT> void animateSlideIn(OT* obj);
     template<typename OT> void animateSlideOut(OT* obj);
 
@@ -114,11 +115,15 @@ public:
 
     template<typename OT> void animateNodeFromNearIterToNormal(OT* node);
     template<typename OT> void animateNodeFromNearIterToIter(OT* node);
+    template<typename OT> void animateNodeFromNearIterToFocus(OT* node);
+    template<typename OT> void animateNodeFromNearIterToRemove(OT* node);
 
     template<typename OT> void animateNodeFromFocusToIter(OT* node);
     template<typename OT> void animateNodeFromFocusToNormal(OT* node);
 
     template<typename OT> void animateNodeFromReferToNormal(OT* node);
+
+    template<typename OT> void animateNodeFromRemoveToNearIter(OT* node);
 
     template<typename OT> void animateNodeFromDisabledToFocus(OT* node);
 

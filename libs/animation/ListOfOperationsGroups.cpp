@@ -379,13 +379,25 @@ void ListOfOperationsGroups<T>::animateTransText(OT* obj, const std::string &src
 template<typename T>
 template<typename OT> 
 void ListOfOperationsGroups<T>::animateDisplace(OT* obj, int Sx, int Sy, int Dx, int Dy) {
-    backGroup()->push(std::bind(&Animate::displace<OT>, obj, 0, 0, 1, 1, &currTime, &isReversed));
+    backGroup()->push(std::bind(&Animate::displace<OT>, obj, Sx, Sy, Dx, Dy, &currTime, &isReversed));
 }
 
 template<typename T>
 template<typename OT> 
 void ListOfOperationsGroups<T>::animateTransform(OT* obj, int Sx, int Sy, int Tx, int Ty) {
     backGroup()->push(std::bind(&Animate::transform<OT>, obj, Sx, Sy, Tx, Ty, &currTime, &isReversed));
+}
+
+template<typename T>
+template<typename OT> 
+void ListOfOperationsGroups<T>::animateFadeOutDisplace(OT* obj, int Sx, int Sy, int Dx, int Dy) {
+    backGroup()->push(std::bind(&Animate::fadeOutDisplace<OT>, obj, Sx, Sy, Dx, Dy, &currTime, &isReversed));
+}
+
+template<typename T>
+template<typename OT> 
+void ListOfOperationsGroups<T>::animateFadeOutTransform(OT* obj, int Sx, int Sy, int Tx, int Ty) {
+    backGroup()->push(std::bind(&Animate::fadeOutTransform<OT>, obj, Sx, Sy, Tx, Ty, &currTime, &isReversed));
 }
 
 template<typename T>
@@ -511,6 +523,22 @@ void ListOfOperationsGroups<T>::animateNodeFromNearIterToIter(OT* node) {
 
 template<typename T>
 template<typename OT>
+void ListOfOperationsGroups<T>::animateNodeFromNearIterToFocus(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER, &Theme::currTheme.NODE_BACKGROUND_FOCUS);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER_FOCUS);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
+}
+
+template<typename T>
+template<typename OT>
+void ListOfOperationsGroups<T>::animateNodeFromNearIterToRemove(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REMOVE);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER_FOCUS_REMOVE);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
+}
+
+template<typename T>
+template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromFocusToIter(OT* node) {
     animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER);
     animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);
@@ -530,6 +558,14 @@ void ListOfOperationsGroups<T>::animateNodeFromReferToNormal(OT* node) {
     animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REFER, &Theme::currTheme.NODE_BACKGROUND);
     animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_REFER, &Theme::currTheme.NODE_BORDER);
     animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND);
+}
+
+template<typename T>
+template<typename OT>
+void ListOfOperationsGroups<T>::animateNodeFromRemoveToNearIter(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REMOVE, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_REMOVE, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER);
 }
 
 template<typename T>

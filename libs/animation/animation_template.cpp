@@ -75,6 +75,42 @@ bool Animate::transform(T* obj, int Sx, int Sy, int Tx, int Ty, double* currTime
 
 // DO NOT USE DIRECTLY
 template<typename T>
+bool Animate::fadeOutDisplace(T* obj, int Sx, int Sy, int Dx, int Dy, double *currTime, bool* isReversed) {
+    if (*isReversed && (*currTime <= 0)) {
+        return obj->appear(), true;
+    }
+    if (!*isReversed && (*currTime >= FADEOUT_TIME)) {
+        obj->x = Dx;
+        obj->y = Dy;
+        return obj->vanish(), true;
+    }
+    // *currTime = std::max(0.0, std::min((double)FADEOUT_TIME, *currTime));
+    obj->x = Sx;
+    obj->y = Sy;
+    obj->transparent = bezier(1.0 - (*currTime) / FADEOUT_TIME);
+    return false;
+}
+
+// DO NOT USE DIRECTLY
+template<typename T>
+bool Animate::fadeOutTransform(T* obj, int Sx, int Sy, int Tx, int Ty, double *currTime, bool* isReversed) {
+    if (*isReversed && (*currTime <= 0)) {
+        return obj->appear(), true;
+    }
+    if (!*isReversed && (*currTime >= FADEOUT_TIME)) {
+        obj->x = Sx + Tx;
+        obj->y = Sy + Ty;
+        return obj->vanish(), true;
+    }
+    // *currTime = std::max(0.0, std::min((double)FADEOUT_TIME, *currTime));
+    obj->x = Sx;
+    obj->y = Sy;
+    obj->transparent = bezier(1.0 - (*currTime) / FADEOUT_TIME);
+    return false;
+}
+
+// DO NOT USE DIRECTLY
+template<typename T>
 bool Animate::slideIn(T* obj, double* currTime, bool* isReversed) {
     if (*isReversed && (*currTime <= 0)) {
         return obj->percent = 0.0, true;

@@ -23,6 +23,9 @@ namespace Animate {
     template<typename T> bool displace(T* obj, int Sx, int Sy, int Dx, int Dy, double* currTime, bool* isReversed);
     template<typename T> bool transform(T* obj, int Sx, int Sy, int Tx, int Ty, double* currTime, bool* isReversed);
 
+    template<typename T> bool fadeOutDisplace(T* obj, int Sx, int Sy, int Dx, int Dy, double* currTime, bool* isReversed);
+    template<typename T> bool fadeOutTransform(T* obj, int Sx, int Sy, int Tx, int Ty, double* currTime, bool* isReversed);
+
     template<typename T> bool slideIn(T* obj, double* currTime, bool* isReversed);
     template<typename T> bool slideOut(T* obj, double* currTime, bool* isReversed);
 
