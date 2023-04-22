@@ -24,9 +24,6 @@ private:
     void resetColorAllNodes();
     void resetSubTextAllNodes();
 
-    void appearAllNodes();
-    void vanishAllNodes();
-
 public:
     GraphicDoublyLinkedList();
 

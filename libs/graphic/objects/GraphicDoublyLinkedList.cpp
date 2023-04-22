@@ -23,20 +23,6 @@ void GraphicDoublyLinkedList::resetSubTextAllNodes() {
     }
 }
 
-void GraphicDoublyLinkedList::vanishAllNodes() {
-    for (GraphicDoublyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-        curr->vanish();
-        curr->aNext.vanish();
-    }
-}
-
-void GraphicDoublyLinkedList::appearAllNodes() {
-    for (GraphicDoublyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-        curr->appear();
-        curr->aNext.appear();
-    }
-}
-
 bool GraphicDoublyLinkedList::empty() const {
     return _size == 0;
 }
@@ -76,11 +62,11 @@ ExitStatus GraphicDoublyLinkedList::initialize(std::vector<int> vals, ListOfOper
     GraphicDoublyNode* curr = pHead;
     for (int i = 0; i < (int)vals.size(); ++i) {
         if (pHead == nullptr) {
-            pHead = new GraphicDoublyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, vals[i]);
+            pHead = new GraphicDoublyNode(Graphic::LL_ORG_X, Graphic::LL_ORG_Y, Graphic::NODE_SIZE, false, vals[i]);
             pHead->setSubText("head");
             curr = pHead;
         } else {
-            GraphicDoublyNode* newNode = new GraphicDoublyNode(curr->x + Graphic::SLL_NODE_DIST, curr->y, Graphic::NODE_SIZE, false, vals[i]);
+            GraphicDoublyNode* newNode = new GraphicDoublyNode(curr->x + Graphic::LL_NODE_DIST, curr->y, Graphic::NODE_SIZE, false, vals[i]);
             curr->setNext(newNode);
             newNode->setPrev(curr);
             curr = curr->pNext;
@@ -247,7 +233,7 @@ ExitStatus GraphicDoublyLinkedList::pushFront(int val, ListOfOperationsGroups<Gr
 
     if (pHead == nullptr) {
         // line number 0
-        pHead = new GraphicDoublyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y + Graphic::SLL_NODE_DIST, Graphic::NODE_SIZE, false, val);
+        pHead = new GraphicDoublyNode(Graphic::LL_ORG_X, Graphic::LL_ORG_Y + Graphic::LL_NODE_DIST, Graphic::NODE_SIZE, false, val);
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateFadeIn(pHead);
@@ -270,11 +256,11 @@ ExitStatus GraphicDoublyLinkedList::pushFront(int val, ListOfOperationsGroups<Gr
 
         // transform
         ALOG->addNewGroup();
-        ALOG->animateTransform(pHead, pHead->x, pHead->y, 0, -Graphic::SLL_NODE_DIST);
+        ALOG->animateTransform(pHead, pHead->x, pHead->y, 0, -Graphic::LL_NODE_DIST);
         // ---
     } else {
         // line number 0
-        GraphicDoublyNode* newNode = new GraphicDoublyNode(Graphic::SLL_ORG_X, Graphic::SLL_ORG_Y + Graphic::SLL_NODE_DIST, Graphic::NODE_SIZE, false, val);
+        GraphicDoublyNode* newNode = new GraphicDoublyNode(Graphic::LL_ORG_X, Graphic::LL_ORG_Y + Graphic::LL_NODE_DIST, Graphic::NODE_SIZE, false, val);
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateFadeIn(newNode);
@@ -308,9 +294,9 @@ ExitStatus GraphicDoublyLinkedList::pushFront(int val, ListOfOperationsGroups<Gr
 
         // transform
         ALOG->addNewGroup();
-        ALOG->animateTransform(pHead, pHead->x, pHead->y, 0, -Graphic::SLL_NODE_DIST);
+        ALOG->animateTransform(pHead, pHead->x, pHead->y, 0, -Graphic::LL_NODE_DIST);
         for (GraphicDoublyNode* curr = pHead->pNext; curr != nullptr; curr = curr->pNext) {
-            ALOG->animateTransform(curr, curr->x, curr->y, Graphic::SLL_NODE_DIST, 0);
+            ALOG->animateTransform(curr, curr->x, curr->y, Graphic::LL_NODE_DIST, 0);
         }
     }
 
@@ -366,7 +352,7 @@ ExitStatus GraphicDoublyLinkedList::pushBack(int val, ListOfOperationsGroups<Gra
         ALOG->animateTransText(&curr->sub, "", "cur");
     }
 
-    GraphicDoublyNode* newNode = new GraphicDoublyNode(curr->x + Graphic::SLL_NODE_DIST, Graphic::SLL_ORG_Y, Graphic::NODE_SIZE, false, val);
+    GraphicDoublyNode* newNode = new GraphicDoublyNode(curr->x + Graphic::LL_NODE_DIST, Graphic::LL_ORG_Y, Graphic::NODE_SIZE, false, val);
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({3});
     ALOG->animateFadeIn(newNode);
@@ -451,7 +437,7 @@ ExitStatus GraphicDoublyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
     ALOG->animateSlideColorIn(&pre->aNext);
     ALOG->animateTransText(&nxt->sub, "", cf::num2str(k) + "/nxt");
 
-    GraphicDoublyNode* cur = new GraphicDoublyNode(nxt->x, Graphic::SLL_ORG_Y + Graphic::SLL_NODE_DIST, Graphic::NODE_SIZE, false, val);
+    GraphicDoublyNode* cur = new GraphicDoublyNode(nxt->x, Graphic::LL_ORG_Y + Graphic::LL_NODE_DIST, Graphic::NODE_SIZE, false, val);
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({4});
     ALOG->animateFadeIn(cur);
@@ -485,7 +471,7 @@ ExitStatus GraphicDoublyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
     ALOG->animateTransText(&nxt->sub, cf::num2str(k) + "/nxt", cf::num2str(k+1) + "/nxt");
 
     ALOG->addNewGroup();
-    ALOG->animateTransform(cur, cur->x, cur->y, 0, -Graphic::SLL_NODE_DIST);
+    ALOG->animateTransform(cur, cur->x, cur->y, 0, -Graphic::LL_NODE_DIST);
     ALOG->animateNodeFromIterToNormal(pre);
     ALOG->animateArrowSlideFromIterToNormal(&pre->aNext);
     ALOG->animateNodeFromReferToNormal(nxt);
@@ -499,7 +485,7 @@ ExitStatus GraphicDoublyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
         ALOG->animateSlideColorOut(&iter->aNext);
     }
     for (; nxt != nullptr; nxt = nxt->pNext) {
-        ALOG->animateTransform(nxt, nxt->x, nxt->y, Graphic::SLL_NODE_DIST, 0);
+        ALOG->animateTransform(nxt, nxt->x, nxt->y, Graphic::LL_NODE_DIST, 0);
     }
 
     ALOG->build();
@@ -550,7 +536,7 @@ ExitStatus GraphicDoublyLinkedList::popFront(ListOfOperationsGroups<GraphicDoubl
             ALOG->addNewGroup();
             ALOG->backGroup()->setHighlightLines({4});
             for (GraphicDoublyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-                ALOG->animateTransform(curr, curr->x, curr->y, -Graphic::SLL_NODE_DIST, 0);
+                ALOG->animateTransform(curr, curr->x, curr->y, -Graphic::LL_NODE_DIST, 0);
             }
         }
     }
@@ -697,7 +683,7 @@ ExitStatus GraphicDoublyLinkedList::popAtKth(int k, ListOfOperationsGroups<Graph
     nxt->setArrowTailTrans(&nxt->aPrev, tmp);
     ALOG->addNewGroup();
     ALOG->backGroup()->setHighlightLines({6,7});
-    ALOG->animateTransform(tmp, tmp->x, tmp->y, 0, Graphic::SLL_NODE_DIST);
+    ALOG->animateTransform(tmp, tmp->x, tmp->y, 0, Graphic::LL_NODE_DIST);
     ALOG->animateRedirectHead(pre, &pre->aNext, tmp);
     ALOG->animateRedirectTail(nxt, &nxt->aPrev, tmp);
     ALOG->animateTransText(&tmp->sub, cf::num2str(k) + "/tmp", "tmp");
@@ -721,7 +707,7 @@ ExitStatus GraphicDoublyLinkedList::popAtKth(int k, ListOfOperationsGroups<Graph
     ALOG->animateTransText(&pre->sub, cf::num2str(k-1) + "/pre", "");
     ALOG->animateTransText(&nxt->sub, cf::num2str(k) + "/nxt", "");
     for (; nxt != nullptr; nxt = nxt->pNext) {
-        ALOG->animateTransform(nxt, nxt->x, nxt->y, -Graphic::SLL_NODE_DIST, 0);
+        ALOG->animateTransform(nxt, nxt->x, nxt->y, -Graphic::LL_NODE_DIST, 0);
     }
 
     ALOG->build();
@@ -768,6 +754,7 @@ void GraphicDoublyLinkedList::destroy() {
     for (GraphicDoublyNode* curr : nodes) {
         delete curr;
     }
+    _size = 0;
     nodes.clear();
     arrows.clear();
 }

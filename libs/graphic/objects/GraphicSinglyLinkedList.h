@@ -23,9 +23,6 @@ private:
     void resetColorAllNodes();
     void resetSubTextAllNodes();
 
-    void appearAllNodes();
-    void vanishAllNodes();
-
 public:
     GraphicSinglyLinkedList();
 
