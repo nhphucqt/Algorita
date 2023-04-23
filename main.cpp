@@ -19,7 +19,6 @@ int main() {
     Gfont::loadFont();
 
     Theme::loadTheme();
-    Theme::setLightTheme();
 
     screen.load();
 

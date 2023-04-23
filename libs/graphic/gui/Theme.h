@@ -2,6 +2,7 @@
 #define THEME_H
 
 #include <string>
+#include <fstream>
 
 #include "../../conf_raylib.h"
 #include "../../global.h"
@@ -62,10 +63,11 @@ namespace Theme {
         void load();
     };
 
+    const int NUM_THEME = 2;
     const int LIGHT_THEME_ID = 0;
     const int DARK_THEME_ID = 1;
 
-    inline ColorTheme themes[2];
+    inline ColorTheme themes[NUM_THEME];
     inline ColorTheme currTheme;
     inline int currThemeID;
 

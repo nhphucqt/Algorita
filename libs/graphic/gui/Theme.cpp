@@ -105,12 +105,34 @@ void Theme::loadTheme() {
     themes[DARK_THEME_ID].CODEBLOCK_FOREGROUND_FOCUS = BLACK;
 
     themes[DARK_THEME_ID].EXIT_MESSAGE = Color{255, 0, 0, 255};
+
+    // Get last theme
+    std::ifstream fin("assets/styles/theme.data");
+    if (!fin.is_open()) {
+        std::cerr << "ERROR: Cannot open theme.data for reading!!\n";
+        currThemeID = 0;
+    } else {
+        fin >> currThemeID;
+        if (currThemeID < 0 || currThemeID > NUM_THEME) {
+            currThemeID = 0;
+        }
+    }
+    fin.close();
+    setTheme(currThemeID);
 }
 
 void Theme::setTheme(int id) {
     currThemeID = id;
     currTheme = themes[id];
     currTheme.load();
+
+    // Save last theme
+    std::ofstream fout("assets/styles/theme.data");
+    if (!fout.is_open()) {
+        std::cerr << "ERROR: Cannot open theme.data for writing!!\n";
+    } else {
+        fout << currThemeID;
+    }
 }
 
 void Theme::setLightTheme() {
