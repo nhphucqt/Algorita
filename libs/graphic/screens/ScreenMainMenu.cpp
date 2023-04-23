@@ -4,12 +4,18 @@ ScreenMainMenu::ScreenMainMenu() {}
 
 void ScreenMainMenu::load() {
     title = StyledText(App::title, Gfont::titleFont);
+    desc = StyledText(App::description, Gfont::defaultFont);
+    author = StyledText(App::author, Gfont::defaultFont);
 }
 
 void ScreenMainMenu::init() {}
 
 void ScreenMainMenu::draw() {
-    title.draw((Window::WIDTH - title.dim.x) / 2, 90, Theme::currTheme.TITLE);
+    int yAxis = 40;
+    int padding = 5;
+    title.draw((Window::WIDTH - title.dim.x) / 2, yAxis, Theme::currTheme.TITLE);
+    desc.draw((Window::WIDTH - desc.dim.x) / 2, yAxis + title.dim.y + padding*2, Theme::currTheme.TITLE);
+    author.draw((Window::WIDTH - author.dim.x) / 2, yAxis + title.dim.y + padding + desc.dim.y + padding, Theme::currTheme.TITLE);
     if (GuiButton(Rectangle{250, 300, 300, 200}, "Singly Linked List")) {
         Layout::setScreen(Screen::SINGLY_LINKED_LIST);
     }
