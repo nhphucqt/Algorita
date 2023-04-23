@@ -103,16 +103,14 @@ void GraphicHookArrow::draw() {
     Color slide = TRNSP(pSlideColor == nullptr ? slideColor : *pSlideColor, transparent);
 
     for (int i = 0; i < pos; ++i) {
-        DrawLineEx(p[i], p[i+1], Graphic::ARROW_LINE_WIDTH, line);
-        DrawCircle(p[i+1].x, p[i+1].y, Graphic::ARROW_LINE_WIDTH / 2, line);
+        DrawLineEx(p[i], trans(p[i+1], p[i+1]-p[i], Graphic::ARROW_LINE_WIDTH / 2), Graphic::ARROW_LINE_WIDTH, line);
     }
     DrawLineEx(p[pos], pCentr, Graphic::ARROW_LINE_WIDTH, line);
 
 
     std::tie(pos, pSum) = getPercent(slidePercent);
     for (int i = 0; i < pos; ++i) {
-        DrawLineEx(p[i], p[i+1], Graphic::ARROW_LINE_WIDTH, slide);
-        DrawCircle(p[i+1].x, p[i+1].y, Graphic::ARROW_LINE_WIDTH / 2, slide);
+        DrawLineEx(p[i], trans(p[i+1], p[i+1]-p[i], Graphic::ARROW_LINE_WIDTH / 2), Graphic::ARROW_LINE_WIDTH, slide);
     }
     DrawLineEx(p[pos], trans(p[pos], p[pos+1]-p[pos], pSum), Graphic::ARROW_LINE_WIDTH, slide);
 
