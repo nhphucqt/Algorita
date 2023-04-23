@@ -32,7 +32,7 @@ void Theme::loadTheme() {
     themes[LIGHT_THEME_ID].NODE_BORDER_FOCUS_REMOVE = BROWN;
 
     themes[LIGHT_THEME_ID].NODE_SUBTEXT = RED;
-    themes[LIGHT_THEME_ID].NODE_SUPERTEXT = Color{17, 45, 78, 255};
+    themes[LIGHT_THEME_ID].NODE_SUPERTEXT = BLACK;
 
     // ARROW COLOR
     themes[LIGHT_THEME_ID].ARROW_LINE = BLACK;
