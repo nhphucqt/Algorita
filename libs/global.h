@@ -56,8 +56,8 @@ namespace CPath {
 }
 namespace App {
     const char* const title = "Algorita";
-    const char* const author = "Nguyen Hoang Phuc";
-    const char* const description = "Project Lab CS162";
+    const char* const description = "Project Lab CS162 - A data structures and algorithms visualizer based on VisuAlgo";
+    const char* const author = "by Nguyen Hoang Phuc - 22125077";
 }
 
 namespace Geo {
@@ -195,7 +195,7 @@ namespace Gui {
     const int USER_DEF_INPUT_HEIGHT = 40;
 
     const int LOG_SPEED_SIGN_WIDTH = 70;
-    const int LOG_SPEED_SIGN_HEIGHT = 50;
+    const int LOG_SPEED_SIGN_HEIGHT = 60;
     const int LOG_SLIDER_WIDTH = 200;
     const int LOG_SLIDER_HEIGHT = 20;
     const int LOG_SLIDER_BAR_WIDTH = 400;
