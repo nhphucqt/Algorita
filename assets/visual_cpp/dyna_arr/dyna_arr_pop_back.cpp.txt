@@ -1,2 +1,2 @@
 if (size == 0) return;
-arr[size--] = 0;
+arr[--size] = 0;
