@@ -30,12 +30,12 @@ int main() {
         EndDrawing();
     }
 
+    Screen::destroy();
+    Gfont::unloadFont();
+    
     CloseWindow();
 
     // Unload
-    Gfont::unloadFont();
-
-    Screen::destroy();
 
     return 0;
 }
