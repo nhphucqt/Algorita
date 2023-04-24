@@ -104,7 +104,7 @@ void Theme::loadTheme() {
     themes[DARK_THEME_ID].CODEBLOCK_FOREGROUND = WHITE;
     themes[DARK_THEME_ID].CODEBLOCK_FOREGROUND_FOCUS = BLACK;
 
-    themes[DARK_THEME_ID].EXIT_MESSAGE = Color{255, 0, 0, 255};
+    themes[DARK_THEME_ID].EXIT_MESSAGE = Color{255, 117, 151, 255};
 
     // Get last theme
     std::ifstream fin("assets/styles/theme.data");
