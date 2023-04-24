@@ -68,10 +68,14 @@ void Screen::ScreenSinglyLinkedList::draw() {
             char const * filePath = TinyDial::guiOpenTextFile();
             if (filePath != nullptr) {
                 std::ifstream fin(filePath);
-                std::stringstream ss;
-                ss << fin.rdbuf();
-                fin.close();
-                obj.initialize(ss.str(), &ALOG);
+                if (!fin.is_open()) {
+                    std::cerr << "ERROR: Cannot open " << filePath << '\n';                    
+                } else {
+                    std::stringstream ss;
+                    ss << fin.rdbuf();
+                    fin.close();
+                    exitMessage.assign(obj.initialize(ss.str(), &ALOG).message);
+                }
             }
         }
     }
@@ -228,7 +232,7 @@ void Screen::ScreenSinglyLinkedList::draw() {
     ALOG.run();
     obj.draw();
     ALOG.draw(keyActive);
-    exitMessage.draw(10, 865, Theme::currTheme.EXIT_MESSAGE);
+    exitMessage.draw(20, (Window::HEIGHT - Layout::BOTTOM_HEIGHT + (Layout::BOTTOM_HEIGHT - exitMessage.dim.y) / 2), Theme::currTheme.EXIT_MESSAGE);
     Layout::drawTopNavigation(keyActive);
 }
 

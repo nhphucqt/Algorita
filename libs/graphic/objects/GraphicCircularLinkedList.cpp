@@ -111,7 +111,7 @@ ExitStatus GraphicCircularLinkedList::initialize(std::vector<int> vals, ListOfOp
 }
 
 ExitStatus GraphicCircularLinkedList::initialize(std::string strVals, ListOfOperationsGroups<GraphicCircularLinkedList>* ALOG) {
-    std::pair<ExitStatus, std::vector<int>> input = User::input2vector(strVals, Valid::DIGIT + " ,");
+    std::pair<ExitStatus, std::vector<int>> input = User::input2vector(strVals, Valid::DIGIT + " ,\r\n");
     if (input.first.success) {
         return initialize(input.second, ALOG);
     } else {

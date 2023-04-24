@@ -68,10 +68,14 @@ void Screen::ScreenDoublyLinkedList::draw() {
             char const * filePath = TinyDial::guiOpenTextFile();
             if (filePath != nullptr) {
                 std::ifstream fin(filePath);
-                std::stringstream ss;
-                ss << fin.rdbuf();
-                fin.close();
-                obj.initialize(ss.str(), &ALOG);
+                if (!fin.is_open()) {
+                    std::cerr << "ERROR: Cannot open " << filePath << '\n';
+                } else {
+                    std::stringstream ss;
+                    ss << fin.rdbuf();
+                    fin.close();
+                    exitMessage.assign(obj.initialize(ss.str(), &ALOG).message);
+                }
             }
         }
     }
@@ -130,7 +134,7 @@ void Screen::ScreenDoublyLinkedList::draw() {
             }
             GuiDummyRec(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 2, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 3, Gui::BUTTON_OPER_WIDTH, Gui::BUTTON_OPER_HEIGHT}, "");
             GuiLabel(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 2 + Gui::LABEL_PADDING_LEFT, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 3, Gui::BUTTON_OPER_GO_WIDTH, Gui::BUTTON_OPER_HEIGHT}, "v =");
-            keyActive &= !inputInsertBack.draw();
+            keyActive &= !inputInsertBack.draw();exitMessage.draw(20, (Window::HEIGHT - Layout::BOTTOM_HEIGHT + (Layout::BOTTOM_HEIGHT - exitMessage.dim.y) / 2), Theme::currTheme.EXIT_MESSAGE);
             if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 2 + Gui::BUTTON_OPER_WIDTH - (Gui::BUTTON_OPER_GO_WIDTH + 5) * 2, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 3 + 5, Gui::BUTTON_OPER_GO_HEIGHT, Gui::BUTTON_OPER_GO_HEIGHT}, Gicon::BUTTON_RANDOM)) {
                 inputInsertBack.setnum(GetRandomValue(Core::NODE_MIN_VALUE, Core::NODE_MAX_VALUE));
             }
@@ -225,7 +229,7 @@ void Screen::ScreenDoublyLinkedList::draw() {
     ALOG.run();
     obj.draw();
     ALOG.draw(keyActive);
-    exitMessage.draw(10, 865, Theme::currTheme.EXIT_MESSAGE);
+    exitMessage.draw(20, (Window::HEIGHT - Layout::BOTTOM_HEIGHT + (Layout::BOTTOM_HEIGHT - exitMessage.dim.y) / 2), Theme::currTheme.EXIT_MESSAGE);
     Layout::drawTopNavigation(keyActive);
 }
 

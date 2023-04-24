@@ -87,7 +87,7 @@ ExitStatus GraphicDynamicArray::initialize(const std::vector<int> &vals, ListOfO
 }
 
 ExitStatus GraphicDynamicArray::initialize(const std::string &strVals, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
-    std::pair<ExitStatus, std::vector<int>> input = User::input2vector(strVals, Valid::DIGIT + " ,");
+    std::pair<ExitStatus, std::vector<int>> input = User::input2vector(strVals, Valid::DIGIT + " ,\r\n");
     if (input.first.success) {
         return initialize(input.second, ALOG);
     } else {

@@ -93,7 +93,7 @@ ExitStatus GraphicDoublyLinkedList::initialize(std::vector<int> vals, ListOfOper
 }
 
 ExitStatus GraphicDoublyLinkedList::initialize(std::string strVals, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG) {
-    std::pair<ExitStatus, std::vector<int>> input = User::input2vector(strVals, Valid::DIGIT + " ,");
+    std::pair<ExitStatus, std::vector<int>> input = User::input2vector(strVals, Valid::DIGIT + " ,\r\n");
     if (input.first.success) {
         return initialize(input.second, ALOG);
     } else {
