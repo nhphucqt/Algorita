@@ -292,6 +292,9 @@ namespace Gfont {
         UnloadFont(ptsans_bold_def);
         UnloadFont(ptsans_bold_tit);
         UnloadFont(consolas_code);
+        defaultFont = nullptr;
+        titleFont = nullptr;
+        codeFont = nullptr;
     }
 }
 
