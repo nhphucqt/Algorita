@@ -14,14 +14,15 @@
 class GraphicDynamicArray {
 private:
     GraphicNode* arr;
-    int _capacity;
     int _size;
 
     GraphicNode* oldArr;
     int _oldSize;
 
+    void deleteCurArray();
     void deleteOldArray();
     void resetColorAllNodes();
+    void resetSubTextAllNodes();
 
 public:
     GraphicDynamicArray();
@@ -38,8 +39,13 @@ public:
     ExitStatus updateValue(int k, int val, ListOfOperationsGroups<GraphicDynamicArray>* ALOG);
     ExitStatus accessValue(int k, ListOfOperationsGroups<GraphicDynamicArray>* ALOG);
 
+    ExitStatus pushFront(int val, ListOfOperationsGroups<GraphicDynamicArray>* ALOG);
     ExitStatus pushBack(int val, ListOfOperationsGroups<GraphicDynamicArray>* ALOG);
+    ExitStatus pushAtKth(int val, int k, ListOfOperationsGroups<GraphicDynamicArray>* ALOG);
+
+    ExitStatus popFront(ListOfOperationsGroups<GraphicDynamicArray>* ALOG);
     ExitStatus popBack(ListOfOperationsGroups<GraphicDynamicArray>* ALOG);
+    ExitStatus popAtKth(int k, ListOfOperationsGroups<GraphicDynamicArray>* ALOG);
 
     void draw();
 

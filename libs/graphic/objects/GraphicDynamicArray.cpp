@@ -2,10 +2,15 @@
 
 GraphicDynamicArray::GraphicDynamicArray() {
     _size = 0;
-    _capacity = 0;
     arr = nullptr;
     _oldSize = 0;
     oldArr = nullptr;
+}
+
+void GraphicDynamicArray::deleteCurArray() {
+    _size = 0;
+    delete[] arr;
+    arr = nullptr;
 }
 
 void GraphicDynamicArray::deleteOldArray() {
@@ -18,8 +23,11 @@ void GraphicDynamicArray::resetColorAllNodes() {
     for (int i = 0; i < _size; ++i) {
         arr[i].resetColor();   
     }
-    for (int i = _size; i < _capacity; ++i) {
-        arr[i].setDisabledColor();
+}
+
+void GraphicDynamicArray::resetSubTextAllNodes() {
+    for (int i = 0; i < _size; ++i) {
+        arr[i].setSubText("");
     }
 }
 
@@ -61,23 +69,16 @@ ExitStatus GraphicDynamicArray::initialize(const std::vector<int> &vals, ListOfO
         return ExitMess::SUCCESS;
     }
 
-    _capacity = 1;
-    while (_capacity < (int)vals.size()) {
-        _capacity <<= 1;
-    }
     _size = (int)vals.size();
 
-    arr = new GraphicNode[_capacity];
-    for (int i = 0; i < _capacity; ++i) {
-        arr[i] = GraphicNode(Graphic::ARR_ORG_X + (Graphic::NODE_SIZE + Graphic::ARR_EML_DIST) * i, Graphic::ARR_ORG_Y, Graphic::NODE_SIZE, true, i < _size ? vals[i] : 0);
+    arr = new GraphicNode[_size];
+    for (int i = 0; i < _size; ++i) {
+        arr[i] = GraphicNode(Graphic::ARR_ORG_X + (Graphic::NODE_SIZE + Graphic::ARR_EML_HOR_DIST) * i, Graphic::ARR_ORG_Y, Graphic::NODE_SIZE, true, i < _size ? vals[i] : 0);
         arr[i].setSuperText(cf::num2str(i));
-        if (i >= _size) {
-            arr[i].setDisabledColor();
-        }
     }
 
     ALOG->addNewGroup();
-    for (int i = 0; i < _capacity; ++i) {
+    for (int i = 0; i < _size; ++i) {
         ALOG->animateFadeIn(arr+i);
     }
 
@@ -87,12 +88,13 @@ ExitStatus GraphicDynamicArray::initialize(const std::vector<int> &vals, ListOfO
 }
 
 ExitStatus GraphicDynamicArray::initialize(const std::string &strVals, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
-    std::pair<ExitStatus, std::vector<int>> input = User::input2vector(strVals, Valid::DIGIT + " ,\r\n");
-    if (input.first.success) {
-        return initialize(input.second, ALOG);
-    } else {
-        return input.first;
+    ExitStatus status;
+    std::vector<int> vals;
+    status = User::input2vector(strVals, vals, Valid::DIGIT + " ,\r\n");
+    if (!status.success) {
+        return status;
     }
+    return initialize(vals, ALOG);
 }
 
 ExitStatus GraphicDynamicArray::searchFirst(int val, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
@@ -178,69 +180,158 @@ ExitStatus GraphicDynamicArray::accessValue(int k, ListOfOperationsGroups<Graphi
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDynamicArray::pushBack(int val, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::pushFront(int val, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
         return ExitMess::FAIL_VALUE_OOB;
     }
-    if (_size == _capacity && _capacity == Core::MAX_NUM_ARRAY_ELM) {
+    if (_size == Core::MAX_NUM_ARRAY_ELM) {
         return ExitMess::FAIL_ARR_REACH_MAX_SIZE;
     }
 
     ALOG->clearGroup();
-    ALOG->loadCode(CPath::DYNA_ARR_PUSH_BACK);
+    ALOG->loadCode(CPath::DYNA_ARR_INSERT_FORD);
     reset();
 
-    if (_size == _capacity) {
-        _capacity = _capacity == 0 ? 1 : _capacity * 2;
+    GraphicNode* newArr = new GraphicNode[_size+1];
+    for (int i = 0; i < _size+1; ++i) {
+        newArr[i] = GraphicNode(Graphic::ARR_ORG_X + (Graphic::NODE_SIZE + Graphic::ARR_EML_HOR_DIST) * i, Graphic::ARR_ORG_Y + Graphic::ARR_EML_VER_DIST, Graphic::NODE_SIZE, true, 0);
+        newArr[i].setSuperText(cf::num2str(i));
+    }
+    newArr[0].setDisabledColor();
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({0});
+    for (int i = 0; i < _size+1; ++i) {
+        ALOG->animateFadeIn(newArr+i);
+    }
+
+    for (int i = 0; i < _size; ++i) {
         ALOG->addNewGroup();
-        ALOG->backGroup()->setHighlightLines({0});
+        ALOG->backGroup()->setHighlightLines({1});
+        if (i > 0) {
+            ALOG->animateNodeFromIterToNearIter(arr+i-1);
+        }
+        ALOG->animateNodeFromNormalToIter(arr+i);
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2});
+        ALOG->animateNodeFromNormalToFocus(newArr+i+1);
+        ALOG->animateAssignValue(newArr+i+1, 0, arr[i].nVal);
+    }
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({1});
+    if (_size > 0) {
+        ALOG->animateNodeFromIterToNearIter(arr+_size-1);
+    } else {
         ALOG->animateDelay();
-        
-        GraphicNode* newArr = new GraphicNode[_capacity];
-        for (int i = 0; i < _capacity; ++i) {
-            newArr[i] = GraphicNode(Graphic::ARR_ORG_X + (Graphic::NODE_SIZE + Graphic::ARR_EML_DIST) * i, Graphic::ARR_ORG_Y + Graphic::NODE_SIZE * 2, Graphic::NODE_SIZE, true, 0);
-            newArr[i].setSuperText(cf::num2str(i));
-        }
+    }
 
-        ALOG->addNewGroup();
-        ALOG->backGroup()->setHighlightLines({1,2});
-        for (int i = 0; i < _capacity; ++i) {
-            ALOG->animateFadeIn(newArr+i);
-            if (i >= _size) {
-                ALOG->animateNodeFromNormalToDisabled(newArr+i);
-            }
-        }
+    _oldSize = _size;
+    oldArr = arr;
+    arr = newArr;
 
-        for (int i = 0; i < _size; ++i) {
-            ALOG->addNewGroup();
-            ALOG->backGroup()->setHighlightLines({3});
-            ALOG->animateNodeFromNormalToIter(arr+i);
-            
-            ALOG->addNewGroup();
-            ALOG->backGroup()->setHighlightLines({4});
-            ALOG->animateNodeFromNormalToFocus(newArr+i);
-            ALOG->animateAssignValue(newArr+i, 0, arr[i].nVal);
-        }
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({3});
+    for (int i = 0; i < _oldSize; ++i) {
+        ALOG->animateFadeOut(oldArr+i);
+    }
 
-        _oldSize = _size;
-        oldArr = arr;
-        arr = newArr;
-
-        ALOG->addNewGroup();
-        ALOG->backGroup()->setHighlightLines({5});
-        for (int i = 0; i < _oldSize; ++i) {
-            ALOG->animateFadeOut(oldArr+i);
-        }
-
-        ALOG->addNewGroup();
-        ALOG->backGroup()->setHighlightLines({6});
-        for (int i = 0; i < _capacity; ++i) {
-            ALOG->animateTransform(arr+i, arr[i].x, arr[i].y, 0, - Graphic::NODE_SIZE * 2);        
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({4});
+    for (int i = 0; i < _size+1; ++i) {
+        ALOG->animateTransform(arr+i, arr[i].x, arr[i].y, 0, - Graphic::ARR_EML_VER_DIST);
+        if (i > 0) {
+            ALOG->animateNodeFromFocusToNormal(arr+i);
         }
     }
 
     ALOG->addNewGroup();
-    ALOG->backGroup()->setHighlightLines({8});
+    ALOG->backGroup()->setHighlightLines({5});
+    ALOG->animateNodeFromDisabledToFocus(arr);
+    ALOG->animateAssignValue(arr, 0, val);
+    _size++;
+
+    ALOG->build();
+
+    return ExitMess::SUCCESS;
+}
+
+ExitStatus GraphicDynamicArray::pushBack(int val, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
+        return ExitMess::FAIL_VALUE_OOB;
+    }
+    if (_size == Core::MAX_NUM_ARRAY_ELM) {
+        return ExitMess::FAIL_ARR_REACH_MAX_SIZE;
+    }
+
+    ALOG->clearGroup();
+    ALOG->loadCode(CPath::DYNA_ARR_INSERT_BACK);
+    reset();
+    
+    GraphicNode* newArr = new GraphicNode[_size+1];
+    for (int i = 0; i < _size+1; ++i) {
+        newArr[i] = GraphicNode(Graphic::ARR_ORG_X + (Graphic::NODE_SIZE + Graphic::ARR_EML_HOR_DIST) * i, Graphic::ARR_ORG_Y + Graphic::ARR_EML_VER_DIST, Graphic::NODE_SIZE, true, 0);
+        newArr[i].setSuperText(cf::num2str(i));
+    }
+    newArr[_size].setDisabledColor();
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({0});
+    for (int i = 0; i < _size+1; ++i) {
+        ALOG->animateFadeIn(newArr+i);
+    }
+
+    for (int i = 0; i < _size; ++i) {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({1});
+        if (i > 0) {
+            ALOG->animateNodeFromIterToNearIter(arr+i-1);
+        }
+        ALOG->animateNodeFromNormalToIter(arr+i);
+        
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2});
+        ALOG->animateNodeFromNormalToFocus(newArr+i);
+        ALOG->animateAssignValue(newArr+i, 0, arr[i].nVal);
+
+        // if (i > 0) {
+        //     ALOG->animateTransText(&arr[i-1].sub, "i", "");
+        //     ALOG->animateTransText(&newArr[i-1].sub, "i", "");
+        // }
+        // ALOG->animateTransText(&arr[i].sub, "", "i");
+        // ALOG->animateTransText(&newArr[i].sub, "", "i");
+    }
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({1});
+    if (_size > 0) {
+        ALOG->animateNodeFromIterToNearIter(arr+_size-1);
+    } else {
+        ALOG->animateDelay();
+    }
+
+    _oldSize = _size;
+    oldArr = arr;
+    arr = newArr;
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({3});
+    for (int i = 0; i < _oldSize; ++i) {
+        ALOG->animateFadeOut(oldArr+i);
+    }
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({4});
+    for (int i = 0; i < _size+1; ++i) {
+        ALOG->animateTransform(arr+i, arr[i].x, arr[i].y, 0, - Graphic::ARR_EML_VER_DIST);
+        if (i < _size) {
+            ALOG->animateNodeFromFocusToNormal(arr+i);
+        }
+    }
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({5});
     ALOG->animateNodeFromDisabledToFocus(arr+_size);
     ALOG->animateAssignValue(arr+_size, 0, val);
     _size++;
@@ -250,9 +341,118 @@ ExitStatus GraphicDynamicArray::pushBack(int val, ListOfOperationsGroups<Graphic
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDynamicArray::popBack(ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::pushAtKth(int val, int k, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
+        return ExitMess::FAIL_VALUE_OOB;
+    }
+    if (_size == Core::MAX_NUM_ARRAY_ELM) {
+        return ExitMess::FAIL_ARR_REACH_MAX_SIZE;
+    }
+    if (k < 0 || k > _size) {
+        return ExitStatus(false, "i is out of bounds: Allow from 0 to " + cf::num2str(_size));
+    }
+
     ALOG->clearGroup();
-    ALOG->loadCode(CPath::DYNA_ARR_POP_BACK);
+    ALOG->loadCode(CPath::DYNA_ARR_INSERT_KTH);
+    reset();
+    
+    GraphicNode* newArr = new GraphicNode[_size+1];
+    for (int i = 0; i < _size+1; ++i) {
+        newArr[i] = GraphicNode(Graphic::ARR_ORG_X + (Graphic::NODE_SIZE + Graphic::ARR_EML_HOR_DIST) * i, Graphic::ARR_ORG_Y + Graphic::ARR_EML_VER_DIST, Graphic::NODE_SIZE, true, 0);
+        newArr[i].setSuperText(cf::num2str(i));
+    }
+    newArr[k].setDisabledColor();
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({0});
+    for (int i = 0; i < _size+1; ++i) {
+        ALOG->animateFadeIn(newArr+i);
+    }
+
+    for (int i = 0; i < k; ++i) {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({1});
+        if (i > 0) {
+            ALOG->animateNodeFromIterToNearIter(arr+i-1);
+        }
+        ALOG->animateNodeFromNormalToIter(arr+i);
+        
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2});
+        ALOG->animateNodeFromNormalToFocus(newArr+i);
+        ALOG->animateAssignValue(newArr+i, 0, arr[i].nVal);
+
+        // if (i > 0) {
+        //     ALOG->animateTransText(&arr[i-1].sub, "i", "");
+        //     ALOG->animateTransText(&newArr[i-1].sub, "i", "");
+        // }
+        // ALOG->animateTransText(&arr[i].sub, "", "i");
+        // ALOG->animateTransText(&newArr[i].sub, "", "i");
+    }
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({1});
+    if (_size > 0) {
+        ALOG->animateNodeFromIterToNearIter(arr+k-1);
+    } else {
+        ALOG->animateDelay();
+    }
+
+    for (int i = k; i < _size; ++i) {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({3});
+        if (i > k) {
+            ALOG->animateNodeFromIterToNearIter(arr+i-1);
+        }
+        ALOG->animateNodeFromNormalToIter(arr+i);
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({4});
+        ALOG->animateNodeFromNormalToFocus(newArr+i+1);
+        ALOG->animateAssignValue(newArr+i+1, 0, arr[i].nVal);
+    }
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({3});
+    if (_size > k) {
+        ALOG->animateNodeFromIterToNearIter(arr+_size-1);
+    } else {
+        ALOG->animateDelay();
+    }
+
+    _oldSize = _size;
+    oldArr = arr;
+    arr = newArr;
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({5});
+    for (int i = 0; i < _oldSize; ++i) {
+        ALOG->animateFadeOut(oldArr+i);
+    }
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({6});
+    for (int i = 0; i < _size+1; ++i) {
+        ALOG->animateTransform(arr+i, arr[i].x, arr[i].y, 0, - Graphic::ARR_EML_VER_DIST);
+        if (i != k) {
+            ALOG->animateNodeFromFocusToNormal(arr+i);
+        }
+    }
+
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({7});
+    ALOG->animateNodeFromDisabledToFocus(arr+k);
+    ALOG->animateAssignValue(arr+k, 0, val);
+    _size++;
+
+    ALOG->build();
+
+    return ExitMess::SUCCESS;
+}
+
+ExitStatus GraphicDynamicArray::popFront(ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+    ALOG->clearGroup();
+    ALOG->loadCode(CPath::DYNA_ARR_REMOVE_FORD);
     reset();
 
     if (_size == 0) {
@@ -260,11 +460,222 @@ ExitStatus GraphicDynamicArray::popBack(ListOfOperationsGroups<GraphicDynamicArr
         ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateDelay();
     } else {
-        _size--;
+        GraphicNode* newArr = new GraphicNode[_size-1];
+        for (int i = 0; i < _size-1; ++i) {
+            newArr[i] = GraphicNode(Graphic::ARR_ORG_X + (Graphic::NODE_SIZE + Graphic::ARR_EML_HOR_DIST) * i, Graphic::ARR_ORG_Y + Graphic::ARR_EML_VER_DIST, Graphic::NODE_SIZE, true, 0);
+            newArr[i].setSuperText(cf::num2str(i));
+        }
+
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({1});
-        ALOG->animateAssignValue(arr+_size, arr[_size].nVal, 0);
-        ALOG->animateNodeFromNormalToDisabled(arr+_size);
+        for (int i = 0; i < _size-1; ++i) {
+            ALOG->animateFadeIn(newArr+i);
+        }
+
+        for (int i = 1; i < _size; ++i) {
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({2});
+            if (i > 1) {
+                ALOG->animateNodeFromIterToNearIter(arr+i-1);
+            }
+            ALOG->animateNodeFromNormalToIter(arr+i);
+            
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({3});
+            ALOG->animateNodeFromNormalToFocus(newArr+i-1);
+            ALOG->animateAssignValue(newArr+i-1, 0, arr[i].nVal);
+        }
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2});
+        if (_size > 1) {
+            ALOG->animateNodeFromIterToNearIter(arr+_size-1);
+        } else {
+            ALOG->animateDelay();
+        }
+
+        _oldSize = _size;
+        oldArr = arr;
+        arr = newArr;
+        _size--;
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({4});
+        for (int i = 0; i < _oldSize; ++i) {
+            ALOG->animateFadeOut(oldArr+i);
+        }
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({5});
+        for (int i = 0; i < _size; ++i) {
+            ALOG->animateTransform(arr+i, arr[i].x, arr[i].y, 0, - Graphic::ARR_EML_VER_DIST);
+            ALOG->animateNodeFromFocusToNormal(arr+i);
+        }
+    }
+
+    ALOG->build();
+
+    return ExitMess::SUCCESS;
+}
+
+ExitStatus GraphicDynamicArray::popBack(ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+    ALOG->clearGroup();
+    ALOG->loadCode(CPath::DYNA_ARR_REMOVE_BACK);
+    reset();
+
+    if (_size == 0) {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0});
+        ALOG->animateDelay();
+    } else {
+        GraphicNode* newArr = new GraphicNode[_size-1];
+        for (int i = 0; i < _size-1; ++i) {
+            newArr[i] = GraphicNode(Graphic::ARR_ORG_X + (Graphic::NODE_SIZE + Graphic::ARR_EML_HOR_DIST) * i, Graphic::ARR_ORG_Y + Graphic::ARR_EML_VER_DIST, Graphic::NODE_SIZE, true, 0);
+            newArr[i].setSuperText(cf::num2str(i));
+        }
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({1});
+        for (int i = 0; i < _size-1; ++i) {
+            ALOG->animateFadeIn(newArr+i);
+        }
+
+        for (int i = 0; i < _size-1; ++i) {
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({2});
+            if (i > 0) {
+                ALOG->animateNodeFromIterToNearIter(arr+i-1);
+            }
+            ALOG->animateNodeFromNormalToIter(arr+i);
+            
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({3});
+            ALOG->animateNodeFromNormalToFocus(newArr+i);
+            ALOG->animateAssignValue(newArr+i, 0, arr[i].nVal);
+        }
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2});
+        if (_size > 1) {
+            ALOG->animateNodeFromIterToNearIter(arr+_size-2);
+        } else {
+            ALOG->animateDelay();
+        }
+
+        _oldSize = _size;
+        oldArr = arr;
+        arr = newArr;
+        _size--;
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({4});
+        for (int i = 0; i < _oldSize; ++i) {
+            ALOG->animateFadeOut(oldArr+i);
+        }
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({5});
+        for (int i = 0; i < _size; ++i) {
+            ALOG->animateTransform(arr+i, arr[i].x, arr[i].y, 0, - Graphic::ARR_EML_VER_DIST);
+            ALOG->animateNodeFromFocusToNormal(arr+i);
+        }
+    }
+
+    ALOG->build();
+
+    return ExitMess::SUCCESS;
+}
+
+ExitStatus GraphicDynamicArray::popAtKth(int k, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+    if (_size == 0) {
+        return ExitMess::FAIL_ARR_EMPTY;
+    }
+    if (k < 0 || k >= _size) {
+        return ExitStatus(false, "i is out of bounds: Allow from 0 to " + cf::num2str(_size-1));
+    }
+
+    ALOG->clearGroup();
+    ALOG->loadCode(CPath::DYNA_ARR_REMOVE_KTH);
+    reset();
+
+    if (_size == 0) {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0});
+        ALOG->animateDelay();
+    } else {
+        GraphicNode* newArr = new GraphicNode[_size-1];
+        for (int i = 0; i < _size-1; ++i) {
+            newArr[i] = GraphicNode(Graphic::ARR_ORG_X + (Graphic::NODE_SIZE + Graphic::ARR_EML_HOR_DIST) * i, Graphic::ARR_ORG_Y + Graphic::ARR_EML_VER_DIST, Graphic::NODE_SIZE, true, 0);
+            newArr[i].setSuperText(cf::num2str(i));
+        }
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({1});
+        for (int i = 0; i < _size-1; ++i) {
+            ALOG->animateFadeIn(newArr+i);
+        }
+
+        for (int i = 0; i < k; ++i) {
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({2});
+            if (i > 0) {
+                ALOG->animateNodeFromIterToNearIter(arr+i-1);
+            }
+            ALOG->animateNodeFromNormalToIter(arr+i);
+            
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({3});
+            ALOG->animateNodeFromNormalToFocus(newArr+i);
+            ALOG->animateAssignValue(newArr+i, 0, arr[i].nVal);
+        }
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2});
+        if (k > 0) {
+            ALOG->animateNodeFromIterToNearIter(arr+k-1);
+        } else {
+            ALOG->animateDelay();
+        }
+
+        for (int i = k+1; i < _size; ++i) {
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({4});
+            if (i > k+1) {
+                ALOG->animateNodeFromIterToNearIter(arr+i-1);
+            }
+            ALOG->animateNodeFromNormalToIter(arr+i);
+            
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({5});
+            ALOG->animateNodeFromNormalToFocus(newArr+i-1);
+            ALOG->animateAssignValue(newArr+i-1, 0, arr[i].nVal);
+        }
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({4});
+        if (_size > k+1) {
+            ALOG->animateNodeFromIterToNearIter(arr+_size-1);
+        } else {
+            ALOG->animateDelay();
+        }
+
+        _oldSize = _size;
+        oldArr = arr;
+        arr = newArr;
+        _size--;
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({6});
+        for (int i = 0; i < _oldSize; ++i) {
+            ALOG->animateFadeOut(oldArr+i);
+        }
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({7});
+        for (int i = 0; i < _size; ++i) {
+            ALOG->animateTransform(arr+i, arr[i].x, arr[i].y, 0, - Graphic::ARR_EML_VER_DIST);
+            ALOG->animateNodeFromFocusToNormal(arr+i);
+        }
     }
 
     ALOG->build();
@@ -273,7 +684,7 @@ ExitStatus GraphicDynamicArray::popBack(ListOfOperationsGroups<GraphicDynamicArr
 }
 
 void GraphicDynamicArray::draw() {
-    for (int i = 0; i < _capacity; ++i) {
+    for (int i = 0; i < _size; ++i) {
         arr[i].draw();
     }
     for (int i = 0; i < _oldSize; ++i) {
@@ -283,13 +694,11 @@ void GraphicDynamicArray::draw() {
 
 void GraphicDynamicArray::reset() {
     resetColorAllNodes();
+    resetSubTextAllNodes();
     deleteOldArray();
 }
 
 void GraphicDynamicArray::destroy() {
-    _size = 0;
-    _capacity = 0;
-    delete[] arr;
-    arr = nullptr;
+    deleteCurArray();
     deleteOldArray();
 }
