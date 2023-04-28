@@ -30,7 +30,7 @@ int GraphicSinglyLinkedList::size() const {
     return _size;
 }
 
-ExitStatus GraphicSinglyLinkedList::initialize(int initSize, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) { // Randomly initialize
+ExitStatus GraphicSinglyLinkedList::initialize(int initSize, ListOfOperationsGroups* ALOG) { // Randomly initialize
     if (initSize < 0 || initSize > Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_SIZE_OOB;
     }
@@ -41,7 +41,7 @@ ExitStatus GraphicSinglyLinkedList::initialize(int initSize, ListOfOperationsGro
     return initialize(vals, ALOG);
 }
 
-ExitStatus GraphicSinglyLinkedList::initialize(std::vector<int> vals, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) { // Initialize with given values
+ExitStatus GraphicSinglyLinkedList::initialize(std::vector<int> vals, ListOfOperationsGroups* ALOG) { // Initialize with given values
     if ((int)vals.size() > Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_SIZE_OOB;
     }
@@ -88,7 +88,7 @@ ExitStatus GraphicSinglyLinkedList::initialize(std::vector<int> vals, ListOfOper
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicSinglyLinkedList::initialize(std::string strVals, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+ExitStatus GraphicSinglyLinkedList::initialize(std::string strVals, ListOfOperationsGroups* ALOG) {
     ExitStatus status;
     std::vector<int> vals;
     status = User::input2vector(strVals, vals, Valid::DIGIT + " ,\r\n");
@@ -98,7 +98,7 @@ ExitStatus GraphicSinglyLinkedList::initialize(std::string strVals, ListOfOperat
     return initialize(vals, ALOG);
 }
 
-ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups* ALOG) {
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
         return ExitMess::FAIL_VALUE_OOB;
     }
@@ -171,7 +171,7 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicSinglyLinkedList::updateHeadValue(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+ExitStatus GraphicSinglyLinkedList::updateHeadValue(int val, ListOfOperationsGroups* ALOG) {
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
         return ExitMess::FAIL_VALUE_OOB;
     }
@@ -197,7 +197,7 @@ ExitStatus GraphicSinglyLinkedList::updateHeadValue(int val, ListOfOperationsGro
 }
 
 
-ExitStatus GraphicSinglyLinkedList::updateValue(int k, int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+ExitStatus GraphicSinglyLinkedList::updateValue(int k, int val, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_LL_EMPTY;
     }
@@ -243,7 +243,7 @@ ExitStatus GraphicSinglyLinkedList::updateValue(int k, int val, ListOfOperations
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicSinglyLinkedList::peek(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+ExitStatus GraphicSinglyLinkedList::peek(ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
     ALOG->loadCode(CPath::SLL_PEEK);
     reset();
@@ -264,7 +264,7 @@ ExitStatus GraphicSinglyLinkedList::peek(ListOfOperationsGroups<GraphicSinglyLin
 }
 
 
-ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
@@ -347,7 +347,7 @@ ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups<Gr
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicSinglyLinkedList::pushBack(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+ExitStatus GraphicSinglyLinkedList::pushBack(int val, ListOfOperationsGroups* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
@@ -414,7 +414,7 @@ ExitStatus GraphicSinglyLinkedList::pushBack(int val, ListOfOperationsGroups<Gra
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val, ListOfOperationsGroups* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
@@ -517,7 +517,7 @@ ExitStatus GraphicSinglyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicSinglyLinkedList::popFront(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+ExitStatus GraphicSinglyLinkedList::popFront(ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
     ALOG->loadCode(CPath::SLL_REMOVE_FORD);
     reset();
@@ -565,7 +565,7 @@ ExitStatus GraphicSinglyLinkedList::popFront(ListOfOperationsGroups<GraphicSingl
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicSinglyLinkedList::popBack(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+ExitStatus GraphicSinglyLinkedList::popBack(ListOfOperationsGroups* ALOG) {
     if (_size == 1) {
         return popFront(ALOG);
     }
@@ -646,7 +646,7 @@ ExitStatus GraphicSinglyLinkedList::popBack(ListOfOperationsGroups<GraphicSingly
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicSinglyLinkedList::popAtKth(int k, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
+ExitStatus GraphicSinglyLinkedList::popAtKth(int k, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_LL_EMPTY;
     }

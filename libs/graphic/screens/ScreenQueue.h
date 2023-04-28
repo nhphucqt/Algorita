@@ -40,7 +40,7 @@ namespace Screen {
 
         StyledText exitMessage;
 
-        ListOfOperationsGroups<GraphicQueue> ALOG;
+        ListOfOperationsGroups ALOG;
 
         // GuiFileDialogState fileDialogState;
 

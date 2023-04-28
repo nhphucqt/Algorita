@@ -5,4 +5,8 @@
 
 using GraphicStack = GraphicSinglyLinkedList;
 
+// class GraphicStack : GraphicSinglyLinkedList {
+
+// };
+
 #endif

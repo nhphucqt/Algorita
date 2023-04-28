@@ -9,7 +9,6 @@
 #include "../graphic/gui/Codeblock.h"
 #include "../core/ExitStatus.h"
 
-template<typename T>
 class ListOfOperationsGroups {
 // public:
 private:
@@ -22,8 +21,8 @@ private:
     double currTime;
     int speedID;
 
-    std::list<OperationsGroups<T>> groups;
-    typename std::list<OperationsGroups<T>>::iterator iter;
+    std::list<OperationsGroups> groups;
+    typename std::list<OperationsGroups>::iterator iter;
     Codeblock codeblock;
 
 public:
@@ -32,7 +31,7 @@ public:
     double* getCurrTime();
     bool* getIsReversed();
 
-    typename std::list<OperationsGroups<T>>::iterator curGroup() const;
+    typename std::list<OperationsGroups>::iterator curGroup() const;
 
     void loadCode(const std::string &path);
     void updateCode();
@@ -40,7 +39,7 @@ public:
 
     void addNewGroup();
 
-    OperationsGroups<T>* backGroup();
+    OperationsGroups* backGroup();
 
     ExitStatus runNext(Animate::RunType rt);
     ExitStatus runPrev(Animate::RunType rt);
@@ -143,5 +142,5 @@ public:
     template<typename OT> void animateArrowSlideFromNormalToIter(OT* node);
 };
 
-#include "ListOfOperationsGroups.cpp"
+#include "ListOfOperationsGroups_template.cpp"
 #endif

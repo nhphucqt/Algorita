@@ -31,14 +31,14 @@ public:
     bool empty() const;
     int size() const;
 
-    ExitStatus initialize(int initSize, ListOfOperationsGroups<GraphicQueue>* ALOG); // Randomly initialize
-    ExitStatus initialize(std::vector<int> vals, ListOfOperationsGroups<GraphicQueue>* ALOG); // Initialize with given values
-    ExitStatus initialize(std::string strVals, ListOfOperationsGroups<GraphicQueue>* ALOG); // Initialize with given values
+    ExitStatus initialize(int initSize, ListOfOperationsGroups* ALOG); // Randomly initialize
+    ExitStatus initialize(std::vector<int> vals, ListOfOperationsGroups* ALOG); // Initialize with given values
+    ExitStatus initialize(std::string strVals, ListOfOperationsGroups* ALOG); // Initialize with given values
 
-    ExitStatus peek(ListOfOperationsGroups<GraphicQueue>* ALOG);
-    ExitStatus update(int val, ListOfOperationsGroups<GraphicQueue>* ALOG);
-    ExitStatus push(int val, ListOfOperationsGroups<GraphicQueue>* ALOG);
-    ExitStatus pop(ListOfOperationsGroups<GraphicQueue>* ALOG);
+    ExitStatus peek(ListOfOperationsGroups* ALOG);
+    ExitStatus update(int val, ListOfOperationsGroups* ALOG);
+    ExitStatus push(int val, ListOfOperationsGroups* ALOG);
+    ExitStatus pop(ListOfOperationsGroups* ALOG);
 
     void draw();
 

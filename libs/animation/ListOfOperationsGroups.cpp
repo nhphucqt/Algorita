@@ -1,10 +1,7 @@
-#ifndef LIST_OF_OPERATIONS_GROUPS_CPP
-#define LIST_OF_OPERATIONS_GROUPS_CPP
-
 #include "ListOfOperationsGroups.h"
 
-template<typename T>
-ListOfOperationsGroups<T>::ListOfOperationsGroups() {
+
+ListOfOperationsGroups::ListOfOperationsGroups() {
     iter = groups.end();
     isReversed = false;
     runType = Animate::RUN_ALL;
@@ -13,28 +10,28 @@ ListOfOperationsGroups<T>::ListOfOperationsGroups() {
     resetSpeed();
 }
 
-template<typename T>
-double* ListOfOperationsGroups<T>::getCurrTime() {
+
+double* ListOfOperationsGroups::getCurrTime() {
     return &currTime;
 }
 
-template<typename T>
-bool* ListOfOperationsGroups<T>::getIsReversed() {
+
+bool* ListOfOperationsGroups::getIsReversed() {
     return &isReversed;
 }
 
-template<typename T>
-typename std::list<OperationsGroups<T>>::iterator ListOfOperationsGroups<T>::curGroup() const {
+
+typename std::list<OperationsGroups>::iterator ListOfOperationsGroups::curGroup() const {
     return groups.empty() || isReversed ? iter : prev(iter);
 }
 
-template<typename T>
-void ListOfOperationsGroups<T>::loadCode(const std::string &path) {
+
+void ListOfOperationsGroups::loadCode(const std::string &path) {
     codeblock.load(path);
 }
 
-template<typename T>
-void ListOfOperationsGroups<T>::updateCode() {
+
+void ListOfOperationsGroups::updateCode() {
     if (isReversed && iter != groups.end()) {
         if (next(curGroup()) != groups.end()) {
             next(curGroup())->passHighlightLines(&codeblock);
@@ -46,23 +43,23 @@ void ListOfOperationsGroups<T>::updateCode() {
     }
 }
 
-template<typename T>
-void ListOfOperationsGroups<T>::resetCode() {
+
+void ListOfOperationsGroups::resetCode() {
     codeblock.reset();
 }
 
-template<typename T>
-void ListOfOperationsGroups<T>::addNewGroup() {
-    groups.push_front(OperationsGroups<T>());
+
+void ListOfOperationsGroups::addNewGroup() {
+    groups.push_front(OperationsGroups());
 }
 
-template<typename T>
-OperationsGroups<T>* ListOfOperationsGroups<T>::backGroup() {
+
+OperationsGroups* ListOfOperationsGroups::backGroup() {
     return &(*groups.begin());
 }
 
-template<typename T>
-ExitStatus ListOfOperationsGroups<T>::runPrev(Animate::RunType rt) {
+
+ExitStatus ListOfOperationsGroups::runPrev(Animate::RunType rt) {
     if (groups.empty()) {
         return ExitStatus(false, "");
     }
@@ -93,8 +90,8 @@ ExitStatus ListOfOperationsGroups<T>::runPrev(Animate::RunType rt) {
     return ExitStatus(true, "");
 }
 
-template<typename T>
-ExitStatus ListOfOperationsGroups<T>::runNext(Animate::RunType rt) {
+
+ExitStatus ListOfOperationsGroups::runNext(Animate::RunType rt) {
     if (groups.empty()) {
         return ExitStatus(false, "");
     }
@@ -126,21 +123,21 @@ ExitStatus ListOfOperationsGroups<T>::runNext(Animate::RunType rt) {
     return ExitStatus(true, "");
 }
 
-template<typename T>
-bool ListOfOperationsGroups<T>::isPaused() const {
+
+bool ListOfOperationsGroups::isPaused() const {
     return runType == Animate::RUN_STEP;
 }
 
-template<typename T>
-bool ListOfOperationsGroups<T>::isFinished() const {
+
+bool ListOfOperationsGroups::isFinished() const {
     if (groups.empty()) {
         return true;
     }
     return !isReversed && (!canRunOper() || (iter == next(groups.begin()) && isPaused() && !canRunScene()));
 }
 
-template<typename T>
-ExitStatus ListOfOperationsGroups<T>::toggleRun() {
+
+ExitStatus ListOfOperationsGroups::toggleRun() {
     if (runType == Animate::RUN_ALL) {
         runType = Animate::RUN_STEP;
     } else if (runType == Animate::RUN_STEP) {
@@ -149,34 +146,34 @@ ExitStatus ListOfOperationsGroups<T>::toggleRun() {
     return ExitStatus(true, "");
 }
 
-template<typename T>
-void ListOfOperationsGroups<T>::build() {
+
+void ListOfOperationsGroups::build() {
     assert(iter == groups.end());
     curGroup()->passHighlightLines(&codeblock);
 }
 
-template<typename T>
-void ListOfOperationsGroups<T>::updateCurrTime() {
+
+void ListOfOperationsGroups::updateCurrTime() {
     currTime += (isReversed ? -Animate::elapseTime : +Animate::elapseTime) * SPEED_SIGNATURE[speedID];
 }
 
-template<typename T>
-void ListOfOperationsGroups<T>::resetCurrTime() {
+
+void ListOfOperationsGroups::resetCurrTime() {
     currTime = isReversed ? Animate::ANIMATE_TIME : 0.0;
 }
 
-template<typename T>
-bool ListOfOperationsGroups<T>::canRunOper() const {
+
+bool ListOfOperationsGroups::canRunOper() const {
     return (isReversed && iter != groups.end()) || (!isReversed && iter != groups.begin());
 }
 
-template<typename T>
-bool ListOfOperationsGroups<T>::canRunScene() const {
+
+bool ListOfOperationsGroups::canRunScene() const {
     return (isReversed && currTime > 0.0) || (!isReversed && currTime < Animate::ANIMATE_TIME);
 }
 
-template<typename T>
-bool ListOfOperationsGroups<T>::run() {
+
+bool ListOfOperationsGroups::run() {
     if (runType == Animate::RUN_ALL) {
         if (!canRunOper()) {
             return true;
@@ -217,33 +214,33 @@ bool ListOfOperationsGroups<T>::run() {
     return false;
 }
 
-template<typename T>
-ExitStatus ListOfOperationsGroups<T>::toFirstState() {
+
+ExitStatus ListOfOperationsGroups::toFirstState() {
     runPrev(Animate::RUN_ALL);
     while (!run());
     toggleRun();
     return ExitStatus(true, "");
 }
 
-template<typename T>
-ExitStatus ListOfOperationsGroups<T>::toLastState() {
+
+ExitStatus ListOfOperationsGroups::toLastState() {
     runNext(Animate::RUN_ALL);
     while (!run());
     return ExitStatus(true, "");
 }
 
-template<typename T>
-ExitStatus ListOfOperationsGroups<T>::replay() {
+
+ExitStatus ListOfOperationsGroups::replay() {
     toFirstState();
     toggleRun();
     return ExitStatus(true, "");
 }
 
 
-template<typename T>
-void ListOfOperationsGroups<T>::clearGroup() {
+
+void ListOfOperationsGroups::clearGroup() {
     toLastState();
-    for (typename std::list<OperationsGroups<T>>::iterator curr = groups.begin(); curr != groups.end(); ++curr) {
+    for (typename std::list<OperationsGroups>::iterator curr = groups.begin(); curr != groups.end(); ++curr) {
         curr->destroy();
     }
     groups.clear();
@@ -253,34 +250,34 @@ void ListOfOperationsGroups<T>::clearGroup() {
     codeblock.reset();
 }
 
-template<typename T>
-int ListOfOperationsGroups<T>::closestSpeedID(double s) {
+
+int ListOfOperationsGroups::closestSpeedID(double s) {
     return round(s);
 }
 
-template<typename T>
-void ListOfOperationsGroups<T>::decSpeed() {
+
+void ListOfOperationsGroups::decSpeed() {
     if (speedID > 0) {
         speedID--;
     }
 }
 
-template<typename T>
-void ListOfOperationsGroups<T>::incSpeed() {
+
+void ListOfOperationsGroups::incSpeed() {
     if (speedID < NUM_SPEED-1) {
         speedID++;
     }
 }
 
-template<typename T>
-void ListOfOperationsGroups<T>::resetSpeed() {
+
+void ListOfOperationsGroups::resetSpeed() {
     speedID = std::lower_bound(SPEED_SIGNATURE, SPEED_SIGNATURE + NUM_SPEED, 1.0) - SPEED_SIGNATURE;
 }
 
-template<typename T>
-double ListOfOperationsGroups<T>::getProgress() {
+
+double ListOfOperationsGroups::getProgress() {
     int cnt = 0;
-    for (typename std::list<OperationsGroups<T>>::iterator it = groups.end(); it != iter; --it, ++cnt);
+    for (typename std::list<OperationsGroups>::iterator it = groups.end(); it != iter; --it, ++cnt);
     double progress = runType == Animate::RUN_ALL ? cnt : cnt + (!canRunScene() ? (isReversed ? -1 : +1) : 0);
     if (canRunScene()) {
         progress += currTime / Animate::ANIMATE_TIME - isReversed;
@@ -288,8 +285,8 @@ double ListOfOperationsGroups<T>::getProgress() {
     return progress;
 }
 
-template<typename T>
-void ListOfOperationsGroups<T>::draw(bool keyActive) {
+
+void ListOfOperationsGroups::draw(bool keyActive) {
     codeblock.draw(Window::DIMENSION - toVector2(0, Layout::BOTTOM_HEIGHT) - codeblock.getBlockDimension());
     float posX = Window::WIDTH - Gui::LOG_SPEED_SIGN_WIDTH;
     GuiLabel(Rectangle{posX, Window::HEIGHT - Gui::LOG_SPEED_SIGN_HEIGHT, Gui::LOG_SPEED_SIGN_WIDTH, Gui::LOG_SPEED_SIGN_HEIGHT}, (" " + cf::double2str(SPEED_SIGNATURE[speedID]) + "x").c_str());
@@ -333,311 +330,17 @@ void ListOfOperationsGroups<T>::draw(bool keyActive) {
     }
 }   
 
-template<typename T>
-void ListOfOperationsGroups<T>::destroy() {
+void ListOfOperationsGroups::destroy() {
     clearGroup();
     resetCurrTime();
     resetCode();
     resetSpeed();
 }
 
-template<typename T>
-void ListOfOperationsGroups<T>::animateDelay() {
+void ListOfOperationsGroups::animateDelay() {
     backGroup()->push(std::bind(&Animate::delay, &currTime, &isReversed));
 }
 
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateAssignValue(OT* obj, int oldVal, int newVal) {
-    backGroup()->push(std::bind(&Animate::assignValue<OT>, obj, oldVal, newVal, &currTime, &isReversed));
-}
-
-template<typename T> 
-template<typename OT>
-void ListOfOperationsGroups<T>::animateFadeIn(OT* obj) {
-    backGroup()->push(std::bind(&Animate::fadeIn<OT>, obj, &currTime, &isReversed));
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateFadeOut(OT* obj) {
-    backGroup()->push(std::bind(&Animate::fadeOut<OT>, obj, &currTime, &isReversed));
-}
-
-template<typename T>
-void ListOfOperationsGroups<T>::animateTransColor(Color* obj, Color** robj, Color* src, Color* snk) {
+void ListOfOperationsGroups::animateTransColor(Color* obj, Color** robj, Color* src, Color* snk) {
     backGroup()->push(std::bind(Animate::transColor, obj, robj, src, snk, &currTime, &isReversed));
 }
-
-template<typename T>
-template<typename OT> 
-void ListOfOperationsGroups<T>::animateTransText(OT* obj, const std::string &src, const std::string &snk) {
-    backGroup()->push(std::bind(Animate::transText<OT>, obj, src, snk, &currTime, &isReversed));
-}
-
-
-template<typename T>
-template<typename OT> 
-void ListOfOperationsGroups<T>::animateDisplace(OT* obj, int Sx, int Sy, int Dx, int Dy) {
-    backGroup()->push(std::bind(&Animate::displace<OT>, obj, Sx, Sy, Dx, Dy, &currTime, &isReversed));
-}
-
-template<typename T>
-template<typename OT> 
-void ListOfOperationsGroups<T>::animateTransform(OT* obj, int Sx, int Sy, int Tx, int Ty) {
-    backGroup()->push(std::bind(&Animate::transform<OT>, obj, Sx, Sy, Tx, Ty, &currTime, &isReversed));
-}
-
-template<typename T>
-template<typename OT> 
-void ListOfOperationsGroups<T>::animateFadeOutDisplace(OT* obj, int Sx, int Sy, int Dx, int Dy) {
-    backGroup()->push(std::bind(&Animate::fadeOutDisplace<OT>, obj, Sx, Sy, Dx, Dy, &currTime, &isReversed));
-}
-
-template<typename T>
-template<typename OT> 
-void ListOfOperationsGroups<T>::animateFadeOutTransform(OT* obj, int Sx, int Sy, int Tx, int Ty) {
-    backGroup()->push(std::bind(&Animate::fadeOutTransform<OT>, obj, Sx, Sy, Tx, Ty, &currTime, &isReversed));
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateSlideIn(OT* obj) {
-    backGroup()->push(std::bind(&Animate::slideIn<OT>, obj, &currTime, &isReversed));
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateSlideOut(OT* obj) {
-    backGroup()->push(std::bind(&Animate::slideOut<OT>, obj, &currTime, &isReversed));
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateSlideColorIn(OT* obj) {
-    backGroup()->push(std::bind(&Animate::slideColorIn<OT>, obj, &currTime, &isReversed));
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateSlideColorOut(OT* obj) {
-    backGroup()->push(std::bind(&Animate::slideColorOut<OT>, obj, &currTime, &isReversed));
-}
-
-template<typename T>
-template<typename OT, typename MT> 
-void ListOfOperationsGroups<T>::animateRedirectHead(OT* A, MT* arrow, OT* C) {
-    backGroup()->push(std::bind(&Animate::redirectHead<OT, MT>, A, arrow, C, &currTime, &isReversed));
-}
-
-template<typename T>
-template<typename OT, typename MT> 
-void ListOfOperationsGroups<T>::animateRedirectTail(OT* A, MT* arrow, OT* C) {
-    backGroup()->push(std::bind(&Animate::redirectTail<OT, MT>, A, arrow, C, &currTime, &isReversed));
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromNormalToIter(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromNormalToFocus(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_FOCUS);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_FOCUS);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromNormalToRefer(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REFER);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_FOCUS_REFER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromNormalToRemove(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REMOVE);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_FOCUS_REMOVE);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromNormalToDisabled(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_DISABLED);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_DISABLED);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND, &Theme::currTheme.NODE_FOREGROUND_DISABLED);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromIterToNormal(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER, &Theme::currTheme.NODE_BACKGROUND);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromIterToNearIter(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromIterToFocus(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER, &Theme::currTheme.NODE_BACKGROUND_FOCUS);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER_FOCUS);
-}
-
-template<typename T>
-template<typename OT> 
-void ListOfOperationsGroups<T>::animateNodeFromIterToRemove(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REMOVE);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER_FOCUS_REMOVE);
-}
-
-template<typename T>
-template<typename OT> 
-void ListOfOperationsGroups<T>::animateNodeFromIterToDisabled(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER, &Theme::currTheme.NODE_BACKGROUND_DISABLED);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER_DISABLED);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND_DISABLED);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromNearIterToNormal(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER, &Theme::currTheme.NODE_BACKGROUND);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER, &Theme::currTheme.NODE_FOREGROUND);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromNearIterToIter(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromNearIterToFocus(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER, &Theme::currTheme.NODE_BACKGROUND_FOCUS);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER_FOCUS);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromNearIterToRemove(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REMOVE);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER_FOCUS_REMOVE);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromFocusToIter(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromFocusToNormal(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS, &Theme::currTheme.NODE_BACKGROUND);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS, &Theme::currTheme.NODE_BORDER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromReferToNormal(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REFER, &Theme::currTheme.NODE_BACKGROUND);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_REFER, &Theme::currTheme.NODE_BORDER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromReferToIter(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REFER, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_REFER, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromRemoveToNearIter(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REMOVE, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_REMOVE, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromDisabledToNormal(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_DISABLED, &Theme::currTheme.NODE_BACKGROUND);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_DISABLED, &Theme::currTheme.NODE_BORDER);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_DISABLED, &Theme::currTheme.NODE_FOREGROUND);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateNodeFromDisabledToFocus(OT* node) {
-    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_DISABLED, &Theme::currTheme.NODE_BACKGROUND_FOCUS);
-    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_DISABLED, &Theme::currTheme.NODE_BORDER_FOCUS);
-    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_DISABLED, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowFromNormalToIter(OT* arrow) {
-    animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS_ITER);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowFromNormalToFocus(OT* arrow) {
-    animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowFromIterToNormal(OT* arrow) {
-    animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE_FOCUS_ITER, &Theme::currTheme.ARROW_LINE);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowFromIterToFocus(OT* arrow) {
-    animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE_FOCUS_ITER, &Theme::currTheme.ARROW_LINE_FOCUS);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowFromFocusToNormal(OT* arrow) {
-    animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE_FOCUS, &Theme::currTheme.ARROW_LINE);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowSlideFromIterToNormal(OT* arrow) {
-    animateTransColor(&arrow->slideColor, &arrow->pSlideColor, &Theme::currTheme.ARROW_LINE_FOCUS_ITER, &Theme::currTheme.ARROW_LINE);
-}
-
-template<typename T>
-template<typename OT>
-void ListOfOperationsGroups<T>::animateArrowSlideFromNormalToIter(OT* arrow) {
-    animateTransColor(&arrow->slideColor, &arrow->pSlideColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS_ITER);
-}
-
-#endif

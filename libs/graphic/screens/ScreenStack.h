@@ -38,7 +38,7 @@ namespace Screen {
 
         StyledText exitMessage;
 
-        ListOfOperationsGroups<GraphicStack> ALOG;
+        ListOfOperationsGroups ALOG;
 
     public:
         ScreenStack();

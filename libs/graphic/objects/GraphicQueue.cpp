@@ -35,7 +35,7 @@ int GraphicQueue::size() const {
     return _size;
 }
 
-ExitStatus GraphicQueue::initialize(int initSize, ListOfOperationsGroups<GraphicQueue>* ALOG) { // Randomly initialize
+ExitStatus GraphicQueue::initialize(int initSize, ListOfOperationsGroups* ALOG) { // Randomly initialize
     if (initSize < 0 || initSize > Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_SIZE_OOB;
     }
@@ -46,7 +46,7 @@ ExitStatus GraphicQueue::initialize(int initSize, ListOfOperationsGroups<Graphic
     return initialize(vals, ALOG);
 }
 
-ExitStatus GraphicQueue::initialize(std::vector<int> vals, ListOfOperationsGroups<GraphicQueue>* ALOG) { // Initialize with given values
+ExitStatus GraphicQueue::initialize(std::vector<int> vals, ListOfOperationsGroups* ALOG) { // Initialize with given values
     if ((int)vals.size() > Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_SIZE_OOB;
     }
@@ -100,7 +100,7 @@ ExitStatus GraphicQueue::initialize(std::vector<int> vals, ListOfOperationsGroup
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicQueue::initialize(std::string strVals, ListOfOperationsGroups<GraphicQueue>* ALOG) { // Initialize with given values
+ExitStatus GraphicQueue::initialize(std::string strVals, ListOfOperationsGroups* ALOG) { // Initialize with given values
     ExitStatus status;
     std::vector<int> vals;
     status = User::input2vector(strVals, vals, Valid::DIGIT + " ,\r\n");
@@ -110,7 +110,7 @@ ExitStatus GraphicQueue::initialize(std::string strVals, ListOfOperationsGroups<
     return initialize(vals, ALOG);
 }
 
-ExitStatus GraphicQueue::peek(ListOfOperationsGroups<GraphicQueue>* ALOG) {
+ExitStatus GraphicQueue::peek(ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
     ALOG->loadCode(CPath::QUEUE_PEEK);
     reset();
@@ -130,7 +130,7 @@ ExitStatus GraphicQueue::peek(ListOfOperationsGroups<GraphicQueue>* ALOG) {
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicQueue::update(int val, ListOfOperationsGroups<GraphicQueue>* ALOG) {
+ExitStatus GraphicQueue::update(int val, ListOfOperationsGroups* ALOG) {
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
         return ExitMess::FAIL_VALUE_OOB;
     }
@@ -155,7 +155,7 @@ ExitStatus GraphicQueue::update(int val, ListOfOperationsGroups<GraphicQueue>* A
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicQueue::push(int val, ListOfOperationsGroups<GraphicQueue>* ALOG) {
+ExitStatus GraphicQueue::push(int val, ListOfOperationsGroups* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
@@ -221,7 +221,7 @@ ExitStatus GraphicQueue::push(int val, ListOfOperationsGroups<GraphicQueue>* ALO
 
     return ExitMess::SUCCESS;
 }
-ExitStatus GraphicQueue::pop(ListOfOperationsGroups<GraphicQueue>* ALOG) {
+ExitStatus GraphicQueue::pop(ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
     ALOG->loadCode(CPath::QUEUE_POP);
     reset();

@@ -1,57 +1,37 @@
-#ifndef OPERATIONS_GROUPS_CPP
-#define OPERATIONS_GROUPS_CPP
-
 #include "OperationsGroups.h"
 
-template<typename T>
-OperationsGroups<T>::OperationsGroups() {
+OperationsGroups::OperationsGroups() {
     highlightLines = std::vector<int>();
     opers = Animate::QueueOfScenes();
     // std::cerr << "OG::() resetcur " << (opers.q.end() == opers.iter) << '\n';
 }
 
-template<typename T>
-void OperationsGroups<T>::push(const std::function<bool()> &f) {
+void OperationsGroups::push(const std::function<bool()> &f) {
     opers.push(f);
 }
 
-template<typename T>
-void OperationsGroups<T>::setHighlightLines(const std::vector<int> &highlight) {
+void OperationsGroups::setHighlightLines(const std::vector<int> &highlight) {
     highlightLines = highlight;
 }
 
-template<typename T>
-bool OperationsGroups<T>::passHighlightLines(Codeblock* codeblock) const {
+bool OperationsGroups::passHighlightLines(Codeblock* codeblock) const {
     codeblock->setHighlight(highlightLines);
     return true;
 }
 
-template<typename T>
-void OperationsGroups<T>::pushHighlightLines(const std::vector<int> &highlight, Codeblock* codeblock) {
-    setHighlightLines(highlight);
-    pushNew(std::bind(&passHighlightLines, this, codeblock));
-}
-
-
-template<typename T>
-void OperationsGroups<T>::reset() {
+void OperationsGroups::reset() {
     clearFunc();
 }
 
-template<typename T>
-void OperationsGroups<T>::clearFunc() {
+void OperationsGroups::clearFunc() {
     opers.clearScenes();
 }
 
-template<typename T>
-bool OperationsGroups<T>::run() {
+bool OperationsGroups::run() {
     return opers.run();
 }
 
-template<typename T>
-void OperationsGroups<T>::destroy() {
+void OperationsGroups::destroy() {
     highlightLines.clear();
     opers.clearScenes();
 }
-
-#endif

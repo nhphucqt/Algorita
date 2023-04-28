@@ -29,24 +29,24 @@ public:
     bool empty() const;
     int size() const;
 
-    ExitStatus initialize(int initSize, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG); // Randomly initialize
-    ExitStatus initialize(std::vector<int> vals, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG); // Initialize with given values
-    ExitStatus initialize(std::string strVals, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG); // Initialize with given values
+    ExitStatus initialize(int initSize, ListOfOperationsGroups* ALOG); // Randomly initialize
+    ExitStatus initialize(std::vector<int> vals, ListOfOperationsGroups* ALOG); // Initialize with given values
+    ExitStatus initialize(std::string strVals, ListOfOperationsGroups* ALOG); // Initialize with given values
 
-    ExitStatus searchFirst(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
+    ExitStatus searchFirst(int val, ListOfOperationsGroups* ALOG);
 
-    ExitStatus updateHeadValue(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
-    ExitStatus updateValue(int k, int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
+    ExitStatus updateHeadValue(int val, ListOfOperationsGroups* ALOG);
+    ExitStatus updateValue(int k, int val, ListOfOperationsGroups* ALOG);
 
-    ExitStatus peek(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
+    ExitStatus peek(ListOfOperationsGroups* ALOG);
 
-    ExitStatus pushFront(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
-    ExitStatus pushBack(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
-    ExitStatus pushAtKth(int k, int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
+    ExitStatus pushFront(int val, ListOfOperationsGroups* ALOG);
+    ExitStatus pushBack(int val, ListOfOperationsGroups* ALOG);
+    ExitStatus pushAtKth(int k, int val, ListOfOperationsGroups* ALOG);
     
-    ExitStatus popFront(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
-    ExitStatus popBack(ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
-    ExitStatus popAtKth(int k, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG);
+    ExitStatus popFront(ListOfOperationsGroups* ALOG);
+    ExitStatus popBack(ListOfOperationsGroups* ALOG);
+    ExitStatus popAtKth(int k, ListOfOperationsGroups* ALOG);
 
     void draw();
 

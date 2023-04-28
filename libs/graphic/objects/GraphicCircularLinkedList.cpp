@@ -35,7 +35,7 @@ int GraphicCircularLinkedList::size() const {
     return _size;
 }
 
-ExitStatus GraphicCircularLinkedList::initialize(int initSize, ListOfOperationsGroups<GraphicCircularLinkedList>* ALOG) { // Randomly initialize
+ExitStatus GraphicCircularLinkedList::initialize(int initSize, ListOfOperationsGroups* ALOG) { // Randomly initialize
     if (initSize < 0 || initSize > Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_SIZE_OOB;
     }
@@ -46,7 +46,7 @@ ExitStatus GraphicCircularLinkedList::initialize(int initSize, ListOfOperationsG
     return initialize(vals, ALOG);
 }
 
-ExitStatus GraphicCircularLinkedList::initialize(std::vector<int> vals, ListOfOperationsGroups<GraphicCircularLinkedList>* ALOG) { // Initialize with given values
+ExitStatus GraphicCircularLinkedList::initialize(std::vector<int> vals, ListOfOperationsGroups* ALOG) { // Initialize with given values
     if ((int)vals.size() > Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_SIZE_OOB;
     }
@@ -110,7 +110,7 @@ ExitStatus GraphicCircularLinkedList::initialize(std::vector<int> vals, ListOfOp
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicCircularLinkedList::initialize(std::string strVals, ListOfOperationsGroups<GraphicCircularLinkedList>* ALOG) {
+ExitStatus GraphicCircularLinkedList::initialize(std::string strVals, ListOfOperationsGroups* ALOG) {
     ExitStatus status;
     std::vector<int> vals;
     status = User::input2vector(strVals, vals, Valid::DIGIT + " ,\r\n");
@@ -120,7 +120,7 @@ ExitStatus GraphicCircularLinkedList::initialize(std::string strVals, ListOfOper
     return initialize(vals, ALOG);
 }
 
-ExitStatus GraphicCircularLinkedList::searchFirst(int val, ListOfOperationsGroups<GraphicCircularLinkedList>* ALOG) {
+ExitStatus GraphicCircularLinkedList::searchFirst(int val, ListOfOperationsGroups* ALOG) {
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
         return ExitMess::FAIL_VALUE_OOB;
     }
@@ -190,7 +190,7 @@ ExitStatus GraphicCircularLinkedList::searchFirst(int val, ListOfOperationsGroup
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicCircularLinkedList::updateValue(int k, int val, ListOfOperationsGroups<GraphicCircularLinkedList>* ALOG) {
+ExitStatus GraphicCircularLinkedList::updateValue(int k, int val, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_LL_EMPTY;
     }
@@ -236,7 +236,7 @@ ExitStatus GraphicCircularLinkedList::updateValue(int k, int val, ListOfOperatio
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicCircularLinkedList::pushFront(int val, ListOfOperationsGroups<GraphicCircularLinkedList>* ALOG) {
+ExitStatus GraphicCircularLinkedList::pushFront(int val, ListOfOperationsGroups* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
@@ -353,7 +353,7 @@ ExitStatus GraphicCircularLinkedList::pushFront(int val, ListOfOperationsGroups<
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicCircularLinkedList::pushBack(int val, ListOfOperationsGroups<GraphicCircularLinkedList>* ALOG) {
+ExitStatus GraphicCircularLinkedList::pushBack(int val, ListOfOperationsGroups* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
@@ -473,7 +473,7 @@ ExitStatus GraphicCircularLinkedList::pushBack(int val, ListOfOperationsGroups<G
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicCircularLinkedList::pushAtKth(int k, int val, ListOfOperationsGroups<GraphicCircularLinkedList>* ALOG) {
+ExitStatus GraphicCircularLinkedList::pushAtKth(int k, int val, ListOfOperationsGroups* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
@@ -579,7 +579,7 @@ ExitStatus GraphicCircularLinkedList::pushAtKth(int k, int val, ListOfOperations
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicCircularLinkedList::popFront(ListOfOperationsGroups<GraphicCircularLinkedList>* ALOG) {
+ExitStatus GraphicCircularLinkedList::popFront(ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
     ALOG->loadCode(CPath::CLL_REMOVE_FORD);
     reset();
@@ -678,7 +678,7 @@ ExitStatus GraphicCircularLinkedList::popFront(ListOfOperationsGroups<GraphicCir
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicCircularLinkedList::popBack(ListOfOperationsGroups<GraphicCircularLinkedList>* ALOG) {
+ExitStatus GraphicCircularLinkedList::popBack(ListOfOperationsGroups* ALOG) {
     if (_size == 1) {
         return popFront(ALOG);
     }
@@ -764,7 +764,7 @@ ExitStatus GraphicCircularLinkedList::popBack(ListOfOperationsGroups<GraphicCirc
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicCircularLinkedList::popAtKth(int k, ListOfOperationsGroups<GraphicCircularLinkedList>* ALOG) {
+ExitStatus GraphicCircularLinkedList::popAtKth(int k, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_LL_EMPTY;
     }

@@ -7,7 +7,6 @@
 #include "animation.h"
 #include "../graphic/gui/Codeblock.h"
 
-template<typename T>
 class OperationsGroups {
 public:
 // private:
@@ -21,7 +20,6 @@ public:
 
     void setHighlightLines(const std::vector<int> &highlight);
     bool passHighlightLines(Codeblock* codeblock) const;
-    void pushHighlightLines(const std::vector<int> &highlight, Codeblock* codeblock);
 
     void reset();
 
@@ -32,5 +30,4 @@ public:
     void destroy();
 };
 
-#include "OperationsGroups.cpp"
 #endif

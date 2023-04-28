@@ -30,21 +30,21 @@ public:
     bool empty() const;
     int size() const;
 
-    ExitStatus initialize(int initSize, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG); // Randomly initialize
-    ExitStatus initialize(std::vector<int> vals, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG); // Initialize with given values
-    ExitStatus initialize(std::string strVals, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG); // Initialize with given values
+    ExitStatus initialize(int initSize, ListOfOperationsGroups* ALOG); // Randomly initialize
+    ExitStatus initialize(std::vector<int> vals, ListOfOperationsGroups* ALOG); // Initialize with given values
+    ExitStatus initialize(std::string strVals, ListOfOperationsGroups* ALOG); // Initialize with given values
 
-    ExitStatus searchFirst(int val, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG);
+    ExitStatus searchFirst(int val, ListOfOperationsGroups* ALOG);
 
-    ExitStatus updateValue(int k, int val, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG);
+    ExitStatus updateValue(int k, int val, ListOfOperationsGroups* ALOG);
 
-    ExitStatus pushFront(int val, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG);
-    ExitStatus pushBack(int val, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG);
-    ExitStatus pushAtKth(int k, int val, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG);
+    ExitStatus pushFront(int val, ListOfOperationsGroups* ALOG);
+    ExitStatus pushBack(int val, ListOfOperationsGroups* ALOG);
+    ExitStatus pushAtKth(int k, int val, ListOfOperationsGroups* ALOG);
     
-    ExitStatus popFront(ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG);
-    ExitStatus popBack(ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG);
-    ExitStatus popAtKth(int k, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG);
+    ExitStatus popFront(ListOfOperationsGroups* ALOG);
+    ExitStatus popBack(ListOfOperationsGroups* ALOG);
+    ExitStatus popAtKth(int k, ListOfOperationsGroups* ALOG);
 
     void draw();
 

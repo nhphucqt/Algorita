@@ -16,7 +16,7 @@ int main() {
 
     GraphicSinglyLinkedList li;
 
-    ListOfOperationsGroups<GraphicSinglyLinkedList> ALOG;
+    ListOfOperationsGroups ALOG;
     ALOG.setMainObj(&li);
 
     OperationsGroups<GraphicSinglyLinkedList> group;

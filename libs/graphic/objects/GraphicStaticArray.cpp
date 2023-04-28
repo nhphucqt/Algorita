@@ -33,7 +33,7 @@ bool GraphicStaticArray::empty() const {
     return _size == 0;
 }
 
-ExitStatus GraphicStaticArray::initialize(int initCapa, int initSize, bool isRand, ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::initialize(int initCapa, int initSize, bool isRand, ListOfOperationsGroups* ALOG) {
     if (initCapa < 0 || initCapa > Core::MAX_NUM_ARRAY_ELM) {
         return ExitMess::FAIL_ARR_CAPA_OOB;
     }
@@ -49,7 +49,7 @@ ExitStatus GraphicStaticArray::initialize(int initCapa, int initSize, bool isRan
     return initialize(initCapa, vals, ALOG);
 }
 
-ExitStatus GraphicStaticArray::initialize(int initCapa, const std::vector<int> &vals, ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::initialize(int initCapa, const std::vector<int> &vals, ListOfOperationsGroups* ALOG) {
     if (initCapa < 0 || initCapa > Core::MAX_NUM_ARRAY_ELM) {
         return ExitMess::FAIL_ARR_CAPA_OOB;
     }
@@ -89,7 +89,7 @@ ExitStatus GraphicStaticArray::initialize(int initCapa, const std::vector<int> &
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicStaticArray::initialize(int initCapa, const std::string &strVals, ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::initialize(int initCapa, const std::string &strVals, ListOfOperationsGroups* ALOG) {
     _capacity = initCapa;
     ExitStatus status;
     std::vector<int> vals;
@@ -100,7 +100,7 @@ ExitStatus GraphicStaticArray::initialize(int initCapa, const std::string &strVa
     return initialize(initCapa, vals, ALOG);
 }
 
-ExitStatus GraphicStaticArray::initialize(const std::string &strVals, ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::initialize(const std::string &strVals, ListOfOperationsGroups* ALOG) {
     ExitStatus status;
     std::stringstream ss(strVals);
     bool flagEOF = false;
@@ -116,7 +116,7 @@ ExitStatus GraphicStaticArray::initialize(const std::string &strVals, ListOfOper
     return initialize(_capacity, vals, ALOG);
 }
 
-ExitStatus GraphicStaticArray::searchFirst(int val, ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::searchFirst(int val, ListOfOperationsGroups* ALOG) {
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
         return ExitMess::FAIL_VALUE_OOB;
     }
@@ -159,7 +159,7 @@ ExitStatus GraphicStaticArray::searchFirst(int val, ListOfOperationsGroups<Graph
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicStaticArray::updateValue(int k, int val, ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::updateValue(int k, int val, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_ARR_EMPTY;
     }
@@ -185,7 +185,7 @@ ExitStatus GraphicStaticArray::updateValue(int k, int val, ListOfOperationsGroup
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicStaticArray::accessValue(int k, ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::accessValue(int k, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_ARR_EMPTY;
     }
@@ -207,7 +207,7 @@ ExitStatus GraphicStaticArray::accessValue(int k, ListOfOperationsGroups<Graphic
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicStaticArray::pushFront(int val, ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::pushFront(int val, ListOfOperationsGroups* ALOG) {
     if (_size == _capacity) {
         return ExitMess::FAIL_ARR_REACH_MAX_SIZE_CAPA;
     }
@@ -269,7 +269,7 @@ ExitStatus GraphicStaticArray::pushFront(int val, ListOfOperationsGroups<Graphic
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicStaticArray::pushBack(int val, ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::pushBack(int val, ListOfOperationsGroups* ALOG) {
     if (_size == _capacity) {
         return ExitMess::FAIL_ARR_REACH_MAX_SIZE_CAPA;
     }
@@ -292,7 +292,7 @@ ExitStatus GraphicStaticArray::pushBack(int val, ListOfOperationsGroups<GraphicS
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicStaticArray::pushAtKth(int val, int k, ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::pushAtKth(int val, int k, ListOfOperationsGroups* ALOG) {
     if (_size == _capacity) {
         return ExitMess::FAIL_ARR_REACH_MAX_SIZE_CAPA;
     }
@@ -356,7 +356,7 @@ ExitStatus GraphicStaticArray::pushAtKth(int val, int k, ListOfOperationsGroups<
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicStaticArray::popFront(ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::popFront(ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
     ALOG->loadCode(CPath::STAT_ARR_REMOVE_FORD);
     reset();
@@ -412,7 +412,7 @@ ExitStatus GraphicStaticArray::popFront(ListOfOperationsGroups<GraphicStaticArra
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicStaticArray::popBack(ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::popBack(ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
     ALOG->loadCode(CPath::STAT_ARR_REMOVE_BACK);
     reset();
@@ -434,7 +434,7 @@ ExitStatus GraphicStaticArray::popBack(ListOfOperationsGroups<GraphicStaticArray
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicStaticArray::popAtKth(int k, ListOfOperationsGroups<GraphicStaticArray>* ALOG) {
+ExitStatus GraphicStaticArray::popAtKth(int k, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_ARR_EMPTY;
     }

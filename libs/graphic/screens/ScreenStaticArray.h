@@ -55,7 +55,7 @@ namespace Screen {
 
         StyledText exitMessage;
 
-        ListOfOperationsGroups<GraphicStaticArray> ALOG;
+        ListOfOperationsGroups ALOG;
         
     public:
         ScreenStaticArray();

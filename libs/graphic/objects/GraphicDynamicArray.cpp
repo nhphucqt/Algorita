@@ -39,7 +39,7 @@ bool GraphicDynamicArray::empty() const {
     return _size == 0;
 }
 
-ExitStatus GraphicDynamicArray::initialize(int initSize, bool isRand, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::initialize(int initSize, bool isRand, ListOfOperationsGroups* ALOG) {
     if (initSize < 0 || initSize > Core::MAX_NUM_ARRAY_ELM) {
         return ExitMess::FAIL_ARR_SIZE_OOB;
     }
@@ -52,7 +52,7 @@ ExitStatus GraphicDynamicArray::initialize(int initSize, bool isRand, ListOfOper
     return initialize(vals, ALOG);
 }
 
-ExitStatus GraphicDynamicArray::initialize(const std::vector<int> &vals, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::initialize(const std::vector<int> &vals, ListOfOperationsGroups* ALOG) {
     if ((int)vals.size() < 0 || (int)vals.size() > Core::MAX_NUM_ARRAY_ELM) {
         return ExitMess::FAIL_ARR_SIZE_OOB;
     }
@@ -87,7 +87,7 @@ ExitStatus GraphicDynamicArray::initialize(const std::vector<int> &vals, ListOfO
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDynamicArray::initialize(const std::string &strVals, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::initialize(const std::string &strVals, ListOfOperationsGroups* ALOG) {
     ExitStatus status;
     std::vector<int> vals;
     status = User::input2vector(strVals, vals, Valid::DIGIT + " ,\r\n");
@@ -97,7 +97,7 @@ ExitStatus GraphicDynamicArray::initialize(const std::string &strVals, ListOfOpe
     return initialize(vals, ALOG);
 }
 
-ExitStatus GraphicDynamicArray::searchFirst(int val, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::searchFirst(int val, ListOfOperationsGroups* ALOG) {
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
         return ExitMess::FAIL_VALUE_OOB;
     }
@@ -134,7 +134,7 @@ ExitStatus GraphicDynamicArray::searchFirst(int val, ListOfOperationsGroups<Grap
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDynamicArray::updateValue(int k, int val, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::updateValue(int k, int val, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_ARR_EMPTY;
     }
@@ -159,7 +159,7 @@ ExitStatus GraphicDynamicArray::updateValue(int k, int val, ListOfOperationsGrou
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDynamicArray::accessValue(int k, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::accessValue(int k, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_ARR_EMPTY;
     }
@@ -180,7 +180,7 @@ ExitStatus GraphicDynamicArray::accessValue(int k, ListOfOperationsGroups<Graphi
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDynamicArray::pushFront(int val, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::pushFront(int val, ListOfOperationsGroups* ALOG) {
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
         return ExitMess::FAIL_VALUE_OOB;
     }
@@ -257,7 +257,7 @@ ExitStatus GraphicDynamicArray::pushFront(int val, ListOfOperationsGroups<Graphi
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDynamicArray::pushBack(int val, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::pushBack(int val, ListOfOperationsGroups* ALOG) {
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
         return ExitMess::FAIL_VALUE_OOB;
     }
@@ -341,7 +341,7 @@ ExitStatus GraphicDynamicArray::pushBack(int val, ListOfOperationsGroups<Graphic
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDynamicArray::pushAtKth(int val, int k, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::pushAtKth(int val, int k, ListOfOperationsGroups* ALOG) {
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
         return ExitMess::FAIL_VALUE_OOB;
     }
@@ -450,7 +450,7 @@ ExitStatus GraphicDynamicArray::pushAtKth(int val, int k, ListOfOperationsGroups
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDynamicArray::popFront(ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::popFront(ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
     ALOG->loadCode(CPath::DYNA_ARR_REMOVE_FORD);
     reset();
@@ -518,7 +518,7 @@ ExitStatus GraphicDynamicArray::popFront(ListOfOperationsGroups<GraphicDynamicAr
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDynamicArray::popBack(ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::popBack(ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
     ALOG->loadCode(CPath::DYNA_ARR_REMOVE_BACK);
     reset();
@@ -586,7 +586,7 @@ ExitStatus GraphicDynamicArray::popBack(ListOfOperationsGroups<GraphicDynamicArr
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDynamicArray::popAtKth(int k, ListOfOperationsGroups<GraphicDynamicArray>* ALOG) {
+ExitStatus GraphicDynamicArray::popAtKth(int k, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_ARR_EMPTY;
     }

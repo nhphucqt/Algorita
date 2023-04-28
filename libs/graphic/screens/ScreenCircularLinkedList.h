@@ -48,7 +48,7 @@ namespace Screen {
 
         StyledText exitMessage;
 
-        ListOfOperationsGroups<GraphicCircularLinkedList> ALOG;
+        ListOfOperationsGroups ALOG;
         
     public:
         ScreenCircularLinkedList();

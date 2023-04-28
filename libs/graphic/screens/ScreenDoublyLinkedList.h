@@ -48,7 +48,7 @@ namespace Screen {
 
         StyledText exitMessage;
 
-        ListOfOperationsGroups<GraphicDoublyLinkedList> ALOG;
+        ListOfOperationsGroups ALOG;
 
     public:
         ScreenDoublyLinkedList();

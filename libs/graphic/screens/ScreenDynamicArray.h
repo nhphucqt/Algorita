@@ -55,7 +55,7 @@ namespace Screen {
 
         StyledText exitMessage;
 
-        ListOfOperationsGroups<GraphicDynamicArray> ALOG;
+        ListOfOperationsGroups ALOG;
         
     public:
         ScreenDynamicArray();

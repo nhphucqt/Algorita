@@ -31,7 +31,7 @@ int GraphicDoublyLinkedList::size() const {
     return _size;
 }
 
-ExitStatus GraphicDoublyLinkedList::initialize(int initSize, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG) { // Randomly initialize
+ExitStatus GraphicDoublyLinkedList::initialize(int initSize, ListOfOperationsGroups* ALOG) { // Randomly initialize
     if (initSize < 0 || initSize > Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_SIZE_OOB;
     }
@@ -42,7 +42,7 @@ ExitStatus GraphicDoublyLinkedList::initialize(int initSize, ListOfOperationsGro
     return initialize(vals, ALOG);
 }
 
-ExitStatus GraphicDoublyLinkedList::initialize(std::vector<int> vals, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG) { // Initialize with given values
+ExitStatus GraphicDoublyLinkedList::initialize(std::vector<int> vals, ListOfOperationsGroups* ALOG) { // Initialize with given values
     if ((int)vals.size() > Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_SIZE_OOB;
     }
@@ -92,7 +92,7 @@ ExitStatus GraphicDoublyLinkedList::initialize(std::vector<int> vals, ListOfOper
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDoublyLinkedList::initialize(std::string strVals, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG) {
+ExitStatus GraphicDoublyLinkedList::initialize(std::string strVals, ListOfOperationsGroups* ALOG) {
     ExitStatus status;
     std::vector<int> vals;
     status = User::input2vector(strVals, vals, Valid::DIGIT + " ,\r\n");
@@ -102,7 +102,7 @@ ExitStatus GraphicDoublyLinkedList::initialize(std::string strVals, ListOfOperat
     return initialize(vals, ALOG);
 }
 
-ExitStatus GraphicDoublyLinkedList::searchFirst(int val, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG) {
+ExitStatus GraphicDoublyLinkedList::searchFirst(int val, ListOfOperationsGroups* ALOG) {
     if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
         return ExitMess::FAIL_VALUE_OOB;
     }
@@ -172,7 +172,7 @@ ExitStatus GraphicDoublyLinkedList::searchFirst(int val, ListOfOperationsGroups<
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDoublyLinkedList::updateValue(int k, int val, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG) {
+ExitStatus GraphicDoublyLinkedList::updateValue(int k, int val, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_LL_EMPTY;
     }
@@ -218,7 +218,7 @@ ExitStatus GraphicDoublyLinkedList::updateValue(int k, int val, ListOfOperations
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDoublyLinkedList::pushFront(int val, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG) {
+ExitStatus GraphicDoublyLinkedList::pushFront(int val, ListOfOperationsGroups* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
@@ -306,7 +306,7 @@ ExitStatus GraphicDoublyLinkedList::pushFront(int val, ListOfOperationsGroups<Gr
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDoublyLinkedList::pushBack(int val, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG) {
+ExitStatus GraphicDoublyLinkedList::pushBack(int val, ListOfOperationsGroups* ALOG) {
         if (_size == Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
@@ -377,7 +377,7 @@ ExitStatus GraphicDoublyLinkedList::pushBack(int val, ListOfOperationsGroups<Gra
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDoublyLinkedList::pushAtKth(int k, int val, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG) {
+ExitStatus GraphicDoublyLinkedList::pushAtKth(int k, int val, ListOfOperationsGroups* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
         return ExitMess::FAIL_LL_REACH_MAX_SIZE;
     }
@@ -494,7 +494,7 @@ ExitStatus GraphicDoublyLinkedList::pushAtKth(int k, int val, ListOfOperationsGr
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDoublyLinkedList::popFront(ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG) {
+ExitStatus GraphicDoublyLinkedList::popFront(ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
     ALOG->loadCode(CPath::DLL_REMOVE_FORD);
     reset();
@@ -547,7 +547,7 @@ ExitStatus GraphicDoublyLinkedList::popFront(ListOfOperationsGroups<GraphicDoubl
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDoublyLinkedList::popBack(ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG) {
+ExitStatus GraphicDoublyLinkedList::popBack(ListOfOperationsGroups* ALOG) {
     if (_size == 1) {
         return popFront(ALOG);
     }
@@ -610,7 +610,7 @@ ExitStatus GraphicDoublyLinkedList::popBack(ListOfOperationsGroups<GraphicDoubly
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicDoublyLinkedList::popAtKth(int k, ListOfOperationsGroups<GraphicDoublyLinkedList>* ALOG) {
+ExitStatus GraphicDoublyLinkedList::popAtKth(int k, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_LL_EMPTY;
     }
