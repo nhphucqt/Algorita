@@ -89,12 +89,13 @@ ExitStatus GraphicSinglyLinkedList::initialize(std::vector<int> vals, ListOfOper
 }
 
 ExitStatus GraphicSinglyLinkedList::initialize(std::string strVals, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {
-    std::pair<ExitStatus, std::vector<int>> input = User::input2vector(strVals, Valid::DIGIT + " ,\r\n");
-    if (input.first.success) {
-        return initialize(input.second, ALOG);
-    } else {
-        return input.first;
+    ExitStatus status;
+    std::vector<int> vals;
+    status = User::input2vector(strVals, vals, Valid::DIGIT + " ,\r\n");
+    if (!status.success) {
+        return status;
     }
+    return initialize(vals, ALOG);
 }
 
 ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups<GraphicSinglyLinkedList>* ALOG) {

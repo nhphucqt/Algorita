@@ -101,12 +101,13 @@ ExitStatus GraphicQueue::initialize(std::vector<int> vals, ListOfOperationsGroup
 }
 
 ExitStatus GraphicQueue::initialize(std::string strVals, ListOfOperationsGroups<GraphicQueue>* ALOG) { // Initialize with given values
-    std::pair<ExitStatus, std::vector<int>> input = User::input2vector(strVals, Valid::DIGIT + " ,\r\n");
-    if (input.first.success) {
-        return initialize(input.second, ALOG);
-    } else {
-        return input.first;
+    ExitStatus status;
+    std::vector<int> vals;
+    status = User::input2vector(strVals, vals, Valid::DIGIT + " ,\r\n");
+    if (!status.success) {
+        return status;
     }
+    return initialize(vals, ALOG);
 }
 
 ExitStatus GraphicQueue::peek(ListOfOperationsGroups<GraphicQueue>* ALOG) {
