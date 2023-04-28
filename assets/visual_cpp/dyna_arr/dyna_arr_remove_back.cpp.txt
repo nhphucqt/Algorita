@@ -1,0 +1,6 @@
+if (n == 0) return;
+int* new_arr = new int[n-1]();
+for (int i = 0; i < n-1; ++i)
+    new_arr[i] = arr[i];
+delete[] arr;
+arr = new_arr; n--;

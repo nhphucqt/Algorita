@@ -1,0 +1,6 @@
+int* new_arr = new int[n+1]();
+for (int i = 0; i < n; ++i)
+    new_arr[i+1] = arr[i];
+delete[] arr;
+arr = new_arr; n++;
+arr[0] = v;

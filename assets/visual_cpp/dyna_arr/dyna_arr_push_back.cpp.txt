@@ -1,9 +1,0 @@
-if (size == capacity) {
-    capacity = capacity == 0 ? 1 : capacity * 2;
-    int* new_arr = new int[capacity];
-    for (int i = 0; i < size; ++i)
-        new_arr[i] = arr[i];
-    delete[] arr;
-    arr = new_arr;
-}
-arr[size++] = v;
