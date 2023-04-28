@@ -1,6 +1,10 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include <filesystem>
+#include <io.h>
+#include <fcntl.h>
+
 #include <cmath>
 #include <cstring>
 #include <iostream>
@@ -131,7 +135,7 @@ namespace Graphic {
 
     // SINGLY LINKED LIST GRAPHIC
     const int LL_ORG_X = 200;
-    const int LL_ORG_Y = 250;
+    const int LL_ORG_Y = 225;
     const int LL_NODE_DIST = (int)NODE_DIST;
 
     // ARRAY
