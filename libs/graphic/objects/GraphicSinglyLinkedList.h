@@ -13,7 +13,7 @@
 #include "../../core/userfunc.h"
 
 class GraphicSinglyLinkedList {
-private:
+protected:
     GraphicSinglyNode* pHead;
     int _size;
 
@@ -35,10 +35,7 @@ public:
 
     ExitStatus searchFirst(int val, ListOfOperationsGroups* ALOG);
 
-    ExitStatus updateHeadValue(int val, ListOfOperationsGroups* ALOG);
     ExitStatus updateValue(int k, int val, ListOfOperationsGroups* ALOG);
-
-    ExitStatus peek(ListOfOperationsGroups* ALOG);
 
     ExitStatus pushFront(int val, ListOfOperationsGroups* ALOG);
     ExitStatus pushBack(int val, ListOfOperationsGroups* ALOG);

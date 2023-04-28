@@ -171,32 +171,6 @@ ExitStatus GraphicSinglyLinkedList::searchFirst(int val, ListOfOperationsGroups*
     return ExitMess::SUCCESS;
 }
 
-ExitStatus GraphicSinglyLinkedList::updateHeadValue(int val, ListOfOperationsGroups* ALOG) {
-    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
-        return ExitMess::FAIL_VALUE_OOB;
-    }
-    
-    ALOG->clearGroup();
-    ALOG->loadCode(CPath::SLL_UPDATE_HEAD);
-    reset();
-
-    if (pHead == nullptr) {
-        ALOG->addNewGroup();
-        ALOG->backGroup()->setHighlightLines({0});
-        ALOG->animateDelay();
-    } else {
-        ALOG->addNewGroup();
-        ALOG->backGroup()->setHighlightLines({1});
-        ALOG->animateNodeFromNormalToFocus(pHead);
-        ALOG->animateAssignValue(pHead, pHead->nVal, val);
-    }
-
-    ALOG->build();
-
-    return ExitMess::SUCCESS;
-}
-
-
 ExitStatus GraphicSinglyLinkedList::updateValue(int k, int val, ListOfOperationsGroups* ALOG) {
     if (_size == 0) {
         return ExitMess::FAIL_LL_EMPTY;
@@ -242,27 +216,6 @@ ExitStatus GraphicSinglyLinkedList::updateValue(int k, int val, ListOfOperations
 
     return ExitMess::SUCCESS;
 }
-
-ExitStatus GraphicSinglyLinkedList::peek(ListOfOperationsGroups* ALOG) {
-    ALOG->clearGroup();
-    ALOG->loadCode(CPath::SLL_PEEK);
-    reset();
-
-    if (pHead == nullptr) {
-        ALOG->addNewGroup();
-        ALOG->backGroup()->setHighlightLines({0});
-        ALOG->animateDelay();
-    } else {
-        ALOG->addNewGroup();
-        ALOG->backGroup()->setHighlightLines({1});
-        ALOG->animateNodeFromNormalToIter(pHead);
-    }
-
-    ALOG->build();
-
-    return ExitMess::SUCCESS;
-}
-
 
 ExitStatus GraphicSinglyLinkedList::pushFront(int val, ListOfOperationsGroups* ALOG) {
     if (_size == Core::MAX_NUM_NODE_SLL) {
