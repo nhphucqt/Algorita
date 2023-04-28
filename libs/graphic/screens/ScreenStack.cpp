@@ -52,16 +52,18 @@ void Screen::ScreenStack::draw() {
         }
         if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 3 + Gui::USER_DEF_BUTTON_WIDTH + Gui::BUTTON_OPER_DIST_X, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 7, Gui::FILE_DIALOG_OPEN_BUTTON_WIDTH, Gui::FILE_DIALOG_OPEN_BUTTON_HEIGHT}, "File")) {
             currOperation = CREATE_FILE;
-            char const * filePath = TinyDial::guiOpenTextFile();
+            wchar_t const * filePath = TinyDial::guiOpenTextFile();
             if (filePath != nullptr) {
-                std::ifstream fin(filePath);
+                std::wifstream fin(filePath);
                 if (!fin.is_open()) {
-                    std::cerr << "ERROR: Cannot open " << filePath << '\n';
+                    std::wcerr << L"ERROR: Cannot open " << filePath << '\n';
                 } else {
-                    std::stringstream ss;
+                    std::wstringstream ss;
                     ss << fin.rdbuf();
                     fin.close();
-                    exitMessage.assign(obj.initialize(ss.str(), &ALOG).message);
+                    std::wstring_convert<std::codecvt_utf8<wchar_t>,wchar_t> cv;
+                    std::string str = cv.to_bytes(ss.str());
+                    exitMessage.assign(obj.initialize(str, &ALOG).message);
                 }
             }
         }
