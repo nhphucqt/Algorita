@@ -22,7 +22,7 @@ namespace Screen {
     class ScreenDynamicArray {
     private:
         enum OperationType {OTNULL, CREATE, SEARCH, ACCESS, INSERT, UPDATE, REMOVE} currOperationType;
-        enum Operation {ONULL, CREATE_ALL_ZEROS, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE, SEARCH_FIRST, INSERT_BACK, REMOVE_BACK} currOperation;
+        enum Operation {ONULL, CREATE_ALL_ZEROS, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE, SEARCH_FIRST, INSERT_FORD, INSERT_BACK, INSERT_MIDD, REMOVE_FORD, REMOVE_BACK, REMOVE_MIDD} currOperation;
 
         GraphicDynamicArray obj;
 
@@ -32,7 +32,9 @@ namespace Screen {
         GuiTextBoxState inputSearchFirst;
         GuiTextBoxState inputAccessValue;
         GuiTextBoxState inputUpdateValuePos, inputUpdateValueVal;
-        GuiTextBoxState inputInsertBack;
+        GuiTextBoxState inputInsertFord, inputInsertBack;
+        GuiTextBoxState inputInsertMiddPos, inputInsertMiddVal;
+        GuiTextBoxState inputRemoveMidd;
 
         GuiToggleState toggleCreateType;
         GuiToggleState toggleCreateAllZeros;
@@ -41,9 +43,12 @@ namespace Screen {
         GuiToggleState toggleSearchType;
         GuiToggleState toggleAccessType;
         GuiToggleState toggleUpdateType;
+        
         GuiToggleState toggleInsertType;
-        GuiToggleState toggleInsertBack;
+        GuiToggleState toggleInsertFord, toggleInsertBack, toggleInsertMidd;
+
         GuiToggleState toggleRemoveType;
+        GuiToggleState toggleRemoveMidd;
         
         GuiToggleState toggleUserDefine;
         GuiToggleState toggleSearchFirst;
