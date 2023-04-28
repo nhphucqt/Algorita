@@ -10,6 +10,8 @@
 #include "graphic/gui/Theme.h"
 
 namespace CPath {
+    const char* const THEME_DATA = "assets/data/theme.data";
+
     const char* const SLL_SEARCH_FIRST = "assets/visual_cpp/sll/sll_search_first.cpp.txt";
     const char* const SLL_UPDATE_HEAD = "assets/visual_cpp/sll/sll_update_head.cpp.txt";
     const char* const SLL_UPDATE = "assets/visual_cpp/sll/sll_update.cpp.txt";
@@ -47,16 +49,26 @@ namespace CPath {
     const char* const STAT_ARR_SEARCH_FIRST = "assets/visual_cpp/stat_arr/stat_arr_search_first.cpp.txt";
     const char* const STAT_ARR_UPDATE = "assets/visual_cpp/stat_arr/stat_arr_update.cpp.txt";
     const char* const STAT_ARR_ACCESS = "assets/visual_cpp/stat_arr/stat_arr_access.cpp.txt";
+    const char* const STAT_ARR_INSERT_FORD = "assets/visual_cpp/stat_arr/stat_arr_insert_ford.cpp.txt";
+    const char* const STAT_ARR_INSERT_BACK = "assets/visual_cpp/stat_arr/stat_arr_insert_back.cpp.txt";
+    const char* const STAT_ARR_INSERT_KTH = "assets/visual_cpp/stat_arr/stat_arr_insert_kth.cpp.txt";
+    const char* const STAT_ARR_REMOVE_FORD = "assets/visual_cpp/stat_arr/stat_arr_remove_ford.cpp.txt";
+    const char* const STAT_ARR_REMOVE_BACK = "assets/visual_cpp/stat_arr/stat_arr_remove_back.cpp.txt";
+    const char* const STAT_ARR_REMOVE_KTH = "assets/visual_cpp/stat_arr/stat_arr_remove_kth.cpp.txt";
 
     const char* const DYNA_ARR_SEARCH_FIRST = "assets/visual_cpp/dyna_arr/dyna_arr_search_first.cpp.txt";
     const char* const DYNA_ARR_UPDATE = "assets/visual_cpp/dyna_arr/dyna_arr_update.cpp.txt";
     const char* const DYNA_ARR_ACCESS = "assets/visual_cpp/dyna_arr/dyna_arr_access.cpp.txt";
-    const char* const DYNA_ARR_PUSH_BACK = "assets/visual_cpp/dyna_arr/dyna_arr_push_back.cpp.txt";
-    const char* const DYNA_ARR_POP_BACK = "assets/visual_cpp/dyna_arr/dyna_arr_pop_back.cpp.txt";
+    const char* const DYNA_ARR_INSERT_FORD = "assets/visual_cpp/dyna_arr/dyna_arr_insert_ford.cpp.txt";
+    const char* const DYNA_ARR_INSERT_BACK = "assets/visual_cpp/dyna_arr/dyna_arr_insert_back.cpp.txt";
+    const char* const DYNA_ARR_INSERT_KTH = "assets/visual_cpp/dyna_arr/dyna_arr_insert_kth.cpp.txt";
+    const char* const DYNA_ARR_REMOVE_FORD = "assets/visual_cpp/dyna_arr/dyna_arr_remove_ford.cpp.txt";
+    const char* const DYNA_ARR_REMOVE_BACK = "assets/visual_cpp/dyna_arr/dyna_arr_remove_back.cpp.txt";
+    const char* const DYNA_ARR_REMOVE_KTH = "assets/visual_cpp/dyna_arr/dyna_arr_remove_kth.cpp.txt";
 }
 namespace App {
     const char* const title = "Algorita";
-    const char* const description = "Project Lab CS162 - A data structures and algorithms visualizer based on VisuAlgo";
+    const char* const description = "Project Lab CS162 - A data structures visualizer based on VisuAlgo";
     const char* const author = "by Nguyen Hoang Phuc - 22125077";
 }
 
@@ -122,7 +134,8 @@ namespace Graphic {
     // ARRAY
     const int ARR_ORG_X = 150;
     const int ARR_ORG_Y = 200;
-    const int ARR_EML_DIST = NODE_SIZE / 2;
+    const int ARR_EML_HOR_DIST = NODE_SIZE / 2;
+    const int ARR_EML_VER_DIST = NODE_SIZE * 2;
 }
 
 namespace Layout {
