@@ -21,7 +21,7 @@
 namespace Screen {
     class ScreenStack {
     private:
-        enum OperationType {OTNULL, CREATE, PEEK, UPDATE, PUSH, POP} currOperationType;
+        enum OperationType {OTNULL, CREATE, PEEK, UPDATE, PUSH, POP, CLEAR} currOperationType;
         enum Operation {ONULL, CREATE_EMPTY, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE} currOperation;
 
         GraphicStack obj;

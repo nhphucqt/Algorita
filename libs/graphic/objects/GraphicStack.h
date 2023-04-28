@@ -3,10 +3,15 @@
 
 #include "GraphicSinglyLinkedList.h"
 
-using GraphicStack = GraphicSinglyLinkedList;
+class GraphicStack : public GraphicSinglyLinkedList {
+public:
+    GraphicStack();
 
-// class GraphicStack : GraphicSinglyLinkedList {
+    ExitStatus peek(ListOfOperationsGroups* ALOG);
 
-// };
+    ExitStatus update(int val, ListOfOperationsGroups* ALOG);
+
+    ExitStatus clear(ListOfOperationsGroups* ALOG);
+};
 
 #endif
