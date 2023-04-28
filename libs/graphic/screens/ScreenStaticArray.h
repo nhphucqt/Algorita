@@ -21,17 +21,19 @@
 namespace Screen {
     class ScreenStaticArray {
     private:
-        enum OperationType {OTNULL, CREATE, SEARCH, INSERT, UPDATE, REMOVE} currOperationType;
-        enum Operation {ONULL, CREATE_ALL_ZEROS, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE, SEARCH_FIRST} currOperation;
+        enum OperationType {OTNULL, CREATE, SEARCH, ACCESS, INSERT, UPDATE, REMOVE} currOperationType;
+        enum Operation {ONULL, CREATE_ALL_ZEROS, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE, SEARCH_FIRST, INSERT_FORD, INSERT_BACK, INSERT_MIDD, REMOVE_FORD, REMOVE_BACK, REMOVE_MIDD} currOperation;
 
         GraphicStaticArray obj;
 
-        GuiTextBoxState inputCreateAllZeros;
-        GuiTextBoxState inputCreateRandom;
-        GuiTextBoxState inputUserDefined;
+        GuiTextBoxState inputCreateAllZerosCapa, inputCreateAllZerosSize;
+        GuiTextBoxState inputCreateRandomCapa, inputCreateRandomSize;
+        GuiTextBoxState inputUserDefinedCapa, inputUserDefinedVals;
         GuiTextBoxState inputSearchFirst;
         GuiTextBoxState inputAccessValue;
         GuiTextBoxState inputUpdateValuePos, inputUpdateValueVal;
+        GuiTextBoxState inputInsertFord, inputInsertBack;
+        GuiTextBoxState inputInsertMiddPos, inputInsertMiddVal;
         GuiTextBoxState inputRemoveMidd;
 
         GuiToggleState toggleCreateType;
@@ -41,6 +43,12 @@ namespace Screen {
         GuiToggleState toggleSearchType;
         GuiToggleState toggleAccessType;
         GuiToggleState toggleUpdateType;
+
+        GuiToggleState toggleInsertType;
+        GuiToggleState toggleInsertFord, toggleInsertBack, toggleInsertMidd;
+        
+        GuiToggleState toggleRemoveType;
+        GuiToggleState toggleRemoveMidd;
         
         GuiToggleState toggleUserDefine;
         GuiToggleState toggleSearchFirst;
@@ -58,6 +66,5 @@ namespace Screen {
         void destroy();
     };
 }
-
 
 #endif
