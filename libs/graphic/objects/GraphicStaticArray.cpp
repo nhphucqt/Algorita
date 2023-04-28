@@ -90,7 +90,9 @@ ExitStatus GraphicStaticArray::initialize(int initCapa, const std::vector<int> &
 }
 
 ExitStatus GraphicStaticArray::initialize(int initCapa, const std::string &strVals, ListOfOperationsGroups* ALOG) {
-    _capacity = initCapa;
+    if (initCapa < 0 || initCapa > Core::MAX_NUM_ARRAY_ELM) {
+        return ExitMess::FAIL_ARR_CAPA_OOB;
+    }
     ExitStatus status;
     std::vector<int> vals;
     status = User::input2vector(strVals, vals, Valid::DIGIT + " ,\r\n");
