@@ -1,11 +1,41 @@
 #include "userfunc.h"
 
-std::pair<ExitStatus, std::vector<int>> User::input2vector(const std::string &input, const std::string &match) {
-    std::vector<int> res;
+ExitStatus User::getNum(std::stringstream &ss, int &num, bool &flagEOF, int minValue, int maxValue, const std::string &match) {
+    std::string str;
+    ExitStatus status;
+    num = 0;
+    flagEOF = false;
+    char c;
+    while (!isdigit(c = ss.get()) && !ss.eof() && ss) {
+        if (!(status = Valid::isMatch(c, match)).success) {
+            return status;
+        }
+    }
+    if (!isdigit(c)) {
+        flagEOF = true;
+        return ExitStatus(false, "Number not found");
+    }
+    str += c;
+    while (isdigit(c = ss.get()) && !ss.eof() && ss) {
+        str += c;
+    }
+    if (!ss.eof() && ss && !(status = Valid::isMatch(c, match)).success) {
+        return status;
+    }
+    if (!(status = Valid::isInRange(str, minValue, maxValue)).success) {
+        return status;
+    }
+    num = cf::str2num(str);
+    return ExitMess::SUCCESS;
+}
+
+
+ExitStatus User::input2vector(const std::string &input, std::vector<int> &result, const std::string &match) {
+    result.clear();
     ExitStatus status = Valid::isMatch(input, match);
     if (!status.success) {
         status.message = "Input contains invalid characters";
-        return std::make_pair(status, res);
+        return status;
     }
     for (int i = 0, cnt = 0; i < (int)input.size(); ++i) {
         cnt++;
@@ -14,12 +44,26 @@ std::pair<ExitStatus, std::vector<int>> User::input2vector(const std::string &in
                 std::string num = input.substr(i-cnt+1, cnt);
                 status = Valid::isInRange(num, Core::NODE_MIN_VALUE, Core::NODE_MAX_VALUE);
                 if (!status.success) {
-                    return std::make_pair(status, res);
+                    return status;
                 }
-                res.push_back(cf::str2num(num));
+                result.push_back(cf::str2num(num));
             }
             cnt = 0;
         }
     }
-    return std::make_pair(ExitMess::SUCCESS, res);
+    return ExitMess::SUCCESS;
+}
+
+ExitStatus User::extract2vector(std::stringstream &ss, std::vector<int> &result, const std::string &match) {
+    result.clear();
+    ExitStatus status;
+    bool flagEOF = false;
+    int num = 0;
+    while ((status = getNum(ss, num, flagEOF, Core::NODE_MIN_VALUE, Core::NODE_MAX_VALUE, match)).success) {
+        result.push_back(num);
+    }
+    if (!flagEOF) {
+        return status;
+    }
+    return ExitMess::SUCCESS;
 }
