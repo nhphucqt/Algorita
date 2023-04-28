@@ -6,7 +6,7 @@ ExitStatus Valid::isNumber(const std::string &str) {
             return ExitStatus(false, "Not a number");
         }
     }
-    return ExitStatus(true, "");
+    return ExitMess::SUCCESS;
 }
 
 ExitStatus Valid::isMatch(const std::string &str, std::string match) {
@@ -16,8 +16,16 @@ ExitStatus Valid::isMatch(const std::string &str, std::string match) {
             return ExitStatus(false, "String contains invalid characters");
         }
     }
-    return ExitStatus(true, "");
+    return ExitMess::SUCCESS;
 }
+
+ExitStatus Valid::isMatch(char chr, const std::string &match) {
+    if (match.find(chr) == match.npos) {
+        return ExitStatus(false, "Invalid character");
+    }
+    return ExitMess::SUCCESS;
+}
+
 
 ExitStatus Valid::isInRange(std::string num, int minValue, int maxValue) {
     assert(minValue <= maxValue);
