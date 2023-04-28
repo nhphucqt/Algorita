@@ -107,7 +107,7 @@ void Theme::loadTheme() {
     themes[DARK_THEME_ID].EXIT_MESSAGE = Color{255, 117, 151, 255};
 
     // Get last theme
-    std::ifstream fin("assets/styles/theme.data");
+    std::ifstream fin(CPath::THEME_DATA);
     if (!fin.is_open()) {
         std::cerr << "ERROR: Cannot open theme.data for reading!!\n";
         currThemeID = 0;
@@ -127,7 +127,7 @@ void Theme::setTheme(int id) {
     currTheme.load();
 
     // Save last theme
-    std::ofstream fout("assets/styles/theme.data");
+    std::ofstream fout(CPath::THEME_DATA);
     if (!fout.is_open()) {
         std::cerr << "ERROR: Cannot open theme.data for writing!!\n";
     } else {
