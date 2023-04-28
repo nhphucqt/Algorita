@@ -1,13 +1,5 @@
 #include "guiTinyDialog.h"
 
-char const * TinyDial::guiOpenTextFile() {
-    char const * lFilterPatterns[2] = {"*.txt", "*.text"};
-    return tinyfd_openFileDialog(
-        "Open File", 
-        "", 
-        2, 
-        lFilterPatterns,
-        "Text Files",
-        0
-    );
+wchar_t const * TinyDial::guiOpenTextFile() {
+    return tinyfd_openFileDialogW(L"Open File", L"", 0, {}, L"", 0);
 }

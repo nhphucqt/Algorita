@@ -4,7 +4,7 @@
 #include "../../external/tinyfiledialogs.h"
 
 namespace TinyDial {
-    char const * guiOpenTextFile();
+    wchar_t const * guiOpenTextFile();
 }
 
 
