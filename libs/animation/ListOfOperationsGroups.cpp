@@ -505,6 +505,13 @@ void ListOfOperationsGroups<T>::animateNodeFromIterToRemove(OT* node) {
     animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER_FOCUS_REMOVE);
 }
 
+template<typename T>
+template<typename OT> 
+void ListOfOperationsGroups<T>::animateNodeFromIterToDisabled(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER, &Theme::currTheme.NODE_BACKGROUND_DISABLED);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_ITER, &Theme::currTheme.NODE_BORDER_DISABLED);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND_DISABLED);
+}
 
 template<typename T>
 template<typename OT>
@@ -562,10 +569,25 @@ void ListOfOperationsGroups<T>::animateNodeFromReferToNormal(OT* node) {
 
 template<typename T>
 template<typename OT>
+void ListOfOperationsGroups<T>::animateNodeFromReferToIter(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REFER, &Theme::currTheme.NODE_BACKGROUND_FOCUS_ITER);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_REFER, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);
+}
+
+template<typename T>
+template<typename OT>
 void ListOfOperationsGroups<T>::animateNodeFromRemoveToNearIter(OT* node) {
     animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REMOVE, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER);
     animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_REMOVE, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);
     animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_FOCUS, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER);
+}
+
+template<typename T>
+template<typename OT>
+void ListOfOperationsGroups<T>::animateNodeFromDisabledToNormal(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_DISABLED, &Theme::currTheme.NODE_BACKGROUND);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_DISABLED, &Theme::currTheme.NODE_BORDER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND_DISABLED, &Theme::currTheme.NODE_FOREGROUND);
 }
 
 template<typename T>
