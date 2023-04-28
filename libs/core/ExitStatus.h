@@ -25,9 +25,12 @@ namespace ExitMess {
     const ExitStatus FAIL_LL_SIZE_OOB(false, "Size is out of bounds: Allow from 0 to " + cf::num2str(Core::MAX_NUM_NODE_SLL));
     const ExitStatus FAIL_LL_REACH_MAX_SIZE(false, "The list has reached maximum size which is " + cf::num2str(Core::MAX_NUM_NODE_SLL));
 
+    const ExitStatus FAIL_ARR_CAPA_OOB(false, "Capacity is out of bounds: Allow from 0 to " + cf::num2str(Core::MAX_NUM_ARRAY_ELM));
     const ExitStatus FAIL_ARR_SIZE_OOB(false, "Size is out of bounds: Allow from 0 to " + cf::num2str(Core::MAX_NUM_ARRAY_ELM));
+    const ExitStatus FAIL_ARR_SIZE_OOB_CAPA(false, "The size cannot be negative or larger than capacity");
     const ExitStatus FAIL_ARR_EMPTY(false, "The size of the array is 0");
     const ExitStatus FAIL_ARR_REACH_MAX_SIZE(false, "The array has reached maximum size which is " + cf::num2str(Core::MAX_NUM_ARRAY_ELM));
+    const ExitStatus FAIL_ARR_REACH_MAX_SIZE_CAPA(false, "The array has reached maximum size");
 }
 
 #endif
