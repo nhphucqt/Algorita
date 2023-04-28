@@ -39,12 +39,12 @@ public:
     ExitStatus update(int val, ListOfOperationsGroups* ALOG);
     ExitStatus push(int val, ListOfOperationsGroups* ALOG);
     ExitStatus pop(ListOfOperationsGroups* ALOG);
+    ExitStatus clear(ListOfOperationsGroups* ALOG);
 
     void draw();
 
     void reset();
     void clearSaparated();
-    void clearArrows();
     void destroy();
 };
 

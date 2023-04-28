@@ -286,6 +286,83 @@ ExitStatus GraphicQueue::pop(ListOfOperationsGroups* ALOG) {
     return ExitMess::SUCCESS;
 }
 
+ExitStatus GraphicQueue::clear(ListOfOperationsGroups* ALOG) {
+    ALOG->clearGroup();
+    ALOG->loadCode(CPath::QUEUE_CLEAR);
+    reset();
+
+    if (pHead == nullptr) {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0});
+        ALOG->animateDelay();
+    } else {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0});
+        ALOG->animateNodeFromNormalToIter(pHead);
+
+        int cnt = 0;
+        while (pHead != nullptr) {
+            GraphicSinglyNode* tmp = pHead;
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({1});
+            ALOG->animateNodeFromIterToRemove(tmp);
+            if (pHead != pTail) {
+                ALOG->animateTransText(&tmp->sub, "head", "head/tmp");
+            } else {
+                ALOG->animateTransText(&tmp->sub, "head/tail", "head/tail/tmp");
+            }
+
+            pHead = pHead->pNext;
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({2});
+            if (tmp != pTail) {
+                ALOG->animateTransText(&tmp->sub, "head/tmp", "tmp");
+            } else {
+                ALOG->animateTransText(&tmp->sub, "head/tail/tmp", "tail/tmp");
+            }
+            if (pHead != nullptr) {
+                tmp->aNext.pSlideColor = &Theme::currTheme.ARROW_LINE_FOCUS_ITER;
+                ALOG->animateSlideColorIn(&tmp->aNext);
+                ALOG->animateNodeFromNormalToFocus(pHead);
+                if (pHead != pTail) {
+                    ALOG->animateTransText(&pHead->sub, "", "head");
+                } else {
+                    ALOG->animateTransText(&pHead->sub, "tail", "head/tail");
+                }
+            }
+
+            nodes.push_back(tmp);
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({3});
+            ALOG->animateFadeOut(tmp);
+            if (pHead != nullptr) {
+                ALOG->animateSlideOut(&tmp->aNext);
+                ALOG->animateFadeOut(&tmp->aNext);
+            }
+
+            if (pHead != nullptr) {
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({0});
+                ALOG->animateNodeFromFocusToIter(pHead);
+                for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
+                    ALOG->animateTransform(curr, curr->x - Graphic::NODE_DIST * cnt, curr->y, -Graphic::NODE_DIST, 0);
+                }
+                cnt++;
+            }
+        }
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({5});
+        ALOG->animateDelay();
+        
+        _size = 0;
+    }
+
+    ALOG->build();
+
+    return ExitMess::SUCCESS;
+}
+
 void GraphicQueue::draw() {
     for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
         curr->draw();
