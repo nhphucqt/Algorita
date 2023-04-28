@@ -13,9 +13,7 @@ namespace CPath {
     const char* const THEME_DATA = "assets/data/theme.data";
 
     const char* const SLL_SEARCH_FIRST = "assets/visual_cpp/sll/sll_search_first.cpp.txt";
-    const char* const SLL_UPDATE_HEAD = "assets/visual_cpp/sll/sll_update_head.cpp.txt";
     const char* const SLL_UPDATE = "assets/visual_cpp/sll/sll_update.cpp.txt";
-    const char* const SLL_PEEK = "assets/visual_cpp/sll/sll_peek.cpp.txt";
     const char* const SLL_INSERT_FORD = "assets/visual_cpp/sll/sll_insert_ford.cpp.txt";
     const char* const SLL_INSERT_BACK = "assets/visual_cpp/sll/sll_insert_back.cpp.txt";
     const char* const SLL_INSERT_KTH = "assets/visual_cpp/sll/sll_insert_kth.cpp.txt";
@@ -41,10 +39,15 @@ namespace CPath {
     const char* const CLL_REMOVE_BACK = "assets/visual_cpp/cll/cll_remove_back.cpp.txt";
     const char* const CLL_REMOVE_KTH = "assets/visual_cpp/cll/cll_remove_kth.cpp.txt";
 
+    const char* const STACK_UPDATE = "assets/visual_cpp/stack/stack_update.cpp.txt";
+    const char* const STACK_PEEK = "assets/visual_cpp/stack/stack_peek.cpp.txt";
+    const char* const STACK_CLEAR = "assets/visual_cpp/stack/stack_clear.cpp.txt";
+
     const char* const QUEUE_PEEK = "assets/visual_cpp/queue/queue_peek.cpp.txt";
     const char* const QUEUE_UPDATE = "assets/visual_cpp/queue/queue_update.cpp.txt";
     const char* const QUEUE_PUSH = "assets/visual_cpp/queue/queue_push.cpp.txt";
     const char* const QUEUE_POP = "assets/visual_cpp/queue/queue_pop.cpp.txt";
+    const char* const QUEUE_CLEAR = "assets/visual_cpp/queue/queue_clear.cpp.txt";
 
     const char* const STAT_ARR_SEARCH_FIRST = "assets/visual_cpp/stat_arr/stat_arr_search_first.cpp.txt";
     const char* const STAT_ARR_UPDATE = "assets/visual_cpp/stat_arr/stat_arr_update.cpp.txt";
