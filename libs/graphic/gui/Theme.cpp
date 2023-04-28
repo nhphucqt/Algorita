@@ -12,31 +12,31 @@ void Theme::loadTheme() {
     themes[LIGHT_THEME_ID].TITLE = Color{17, 45, 78, 255};
 
     themes[LIGHT_THEME_ID].NODE_BACKGROUND = Color{249,247,247,255};
-    themes[LIGHT_THEME_ID].NODE_BACKGROUND_DISABLED = Color{150,150,150,255};
-    themes[LIGHT_THEME_ID].NODE_BACKGROUND_FOCUS = GREEN;
-    themes[LIGHT_THEME_ID].NODE_BACKGROUND_FOCUS_REFER = BLUE;
+    themes[LIGHT_THEME_ID].NODE_BACKGROUND_DISABLED = Color{216,216,216,255};
+    themes[LIGHT_THEME_ID].NODE_BACKGROUND_FOCUS = Color{82, 188, 105, 255};
+    themes[LIGHT_THEME_ID].NODE_BACKGROUND_FOCUS_REFER = Color{46, 186, 209, 255};
     themes[LIGHT_THEME_ID].NODE_BACKGROUND_FOCUS_ITER = ORANGE;
     themes[LIGHT_THEME_ID].NODE_BACKGROUND_FOCUS_NEAR_ITER = Color{255, 226, 204, 255};
-    themes[LIGHT_THEME_ID].NODE_BACKGROUND_FOCUS_REMOVE = BROWN;
+    themes[LIGHT_THEME_ID].NODE_BACKGROUND_FOCUS_REMOVE = Color{217, 81, 60, 255};
 
     themes[LIGHT_THEME_ID].NODE_FOREGROUND = BLACK;
-    themes[LIGHT_THEME_ID].NODE_FOREGROUND_DISABLED = BLACK;
+    themes[LIGHT_THEME_ID].NODE_FOREGROUND_DISABLED = Color{80,80,80,255};
     themes[LIGHT_THEME_ID].NODE_FOREGROUND_FOCUS = WHITE;
     themes[LIGHT_THEME_ID].NODE_FOREGROUND_FOCUS_ITER = Color{255, 135, 0, 255};
 
     themes[LIGHT_THEME_ID].NODE_BORDER = BLACK;
-    themes[LIGHT_THEME_ID].NODE_BORDER_DISABLED = Color{60,60,60,255};
-    themes[LIGHT_THEME_ID].NODE_BORDER_FOCUS = GREEN;
-    themes[LIGHT_THEME_ID].NODE_BORDER_FOCUS_REFER = BLUE;
+    themes[LIGHT_THEME_ID].NODE_BORDER_DISABLED = Color{80,80,80,255};
+    themes[LIGHT_THEME_ID].NODE_BORDER_FOCUS = Color{82, 188, 105, 255};
+    themes[LIGHT_THEME_ID].NODE_BORDER_FOCUS_REFER = Color{46, 186, 209, 255};
     themes[LIGHT_THEME_ID].NODE_BORDER_FOCUS_ITER = ORANGE;
-    themes[LIGHT_THEME_ID].NODE_BORDER_FOCUS_REMOVE = BROWN;
+    themes[LIGHT_THEME_ID].NODE_BORDER_FOCUS_REMOVE = Color{217, 81, 60, 255};
 
     themes[LIGHT_THEME_ID].NODE_SUBTEXT = RED;
     themes[LIGHT_THEME_ID].NODE_SUPERTEXT = BLACK;
 
     // ARROW COLOR
     themes[LIGHT_THEME_ID].ARROW_LINE = BLACK;
-    themes[LIGHT_THEME_ID].ARROW_LINE_FOCUS = GREEN;
+    themes[LIGHT_THEME_ID].ARROW_LINE_FOCUS = Color{82, 188, 105, 255};
     themes[LIGHT_THEME_ID].ARROW_LINE_FOCUS_ITER = ORANGE;
 
     themes[LIGHT_THEME_ID].ARROW_HEAD = BLACK;
@@ -109,7 +109,7 @@ void Theme::loadTheme() {
     // Get last theme
     std::ifstream fin(CPath::THEME_DATA);
     if (!fin.is_open()) {
-        std::cerr << "ERROR: Cannot open theme.data for reading!!\n";
+        std::wcerr << L"ERROR: Cannot open theme.data for reading!!\n";
         currThemeID = 0;
     } else {
         fin >> currThemeID;
@@ -129,7 +129,7 @@ void Theme::setTheme(int id) {
     // Save last theme
     std::ofstream fout(CPath::THEME_DATA);
     if (!fout.is_open()) {
-        std::cerr << "ERROR: Cannot open theme.data for writing!!\n";
+        std::wcerr << L"ERROR: Cannot open theme.data for writing!!\n";
     } else {
         fout << currThemeID;
     }
