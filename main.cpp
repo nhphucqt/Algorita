@@ -22,6 +22,8 @@ int main() {
 
     screen.load();
 
+    _setmode(_fileno(stdout), _O_U16TEXT);
+    
     while (!WindowShouldClose()) {
         Animate::elapseTime = GetFrameTime(); // DO NOT DELETE
         BeginDrawing();

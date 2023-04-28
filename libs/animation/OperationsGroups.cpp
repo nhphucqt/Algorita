@@ -3,7 +3,6 @@
 OperationsGroups::OperationsGroups() {
     highlightLines = std::vector<int>();
     opers = Animate::QueueOfScenes();
-    // std::cerr << "OG::() resetcur " << (opers.q.end() == opers.iter) << '\n';
 }
 
 void OperationsGroups::push(const std::function<bool()> &f) {

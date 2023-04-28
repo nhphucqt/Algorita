@@ -34,27 +34,6 @@ int main() {
     }
 
     GraphicSinglyLinkedList li2;
-    // li2.makeCopy(li);
-    // li.destroy();
-
-    // for (int i = 0; i < 10; ++i) {
-    //     li2.focusAtKthNode(i, true);
-    // }
-
-
-    // for (auto curr = li.pHead; curr != nullptr; curr = curr->pNext) {
-    //     std::cerr << curr << ' ';
-    // }
-    // std::cerr << '\n';
-    // for (auto curr = li2.pHead; curr != nullptr; curr = curr->pNext) {
-    //     std::cerr << curr << ' ';
-    // }
-    // std::cerr << '\n';
-
-
-    // return 0;
-
-    // std::cerr << " >> li2::pointer = " << &li2 << '\n';
 
     auto func = [&](int k) {
         Animate::queueOfScenes.pushToNewScene(std::bind(&Animate::fadeInKthNode<GraphicSinglyLinkedList>, &li2, k, &Animate::queueOfScenes.currTime, Animate::FADEIN_TIME));
@@ -83,13 +62,6 @@ int main() {
     }
 
     ALOG.pushBackGroup(group);
-
-
-    // std::cerr << "ALOG.groups[0] [x] = ";
-    // for (auto curr = ALOG.groups[0].obj.pHead; curr != nullptr; curr = curr->pNext) {
-    //     std::cerr << curr->x << ' ';
-    // }
-    // std::cerr << '\n';
 
     group.reset();
     group.setObj(&li2);

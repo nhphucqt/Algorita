@@ -13,15 +13,12 @@ bool Animate::assignValue(T* obj, int oldVal, int newVal, double* currTime, bool
 // DO NOT USE DIRECTLY
 template<typename T> 
 bool Animate::fadeIn(T* obj, double* currTime, bool* isReversed) {
-    // std::cerr << "Animate::fadein -> " << *currTime << ' ' << *isReversed << '\n';
     if (*isReversed && *currTime <= 0) {
         return obj->vanish(), true;
     }
     if (!*isReversed && *currTime >= FADEIN_TIME) {
         return obj->appear(), true;
     }
-    // *currTime = std::max(0.0, std::min((double)FADEIN_TIME, *currTime));
-    // std::cerr << "Animate::fadein() -> currTime = " << *currTime << '\n';
     obj->transparent = bezier(*currTime / FADEIN_TIME);
     return false;
 }
@@ -35,7 +32,6 @@ bool Animate::fadeOut(T* obj, double *currTime, bool* isReversed) {
     if (!*isReversed && (*currTime >= FADEOUT_TIME)) {
         return obj->vanish(), true;
     }
-    // *currTime = std::max(0.0, std::min((double)FADEOUT_TIME, *currTime));
     obj->transparent = bezier(1.0 - (*currTime) / FADEOUT_TIME);
     return false;
 }
@@ -43,7 +39,6 @@ bool Animate::fadeOut(T* obj, double *currTime, bool* isReversed) {
 // DO NOT USE DIRECTLY
 template<typename T>
 bool Animate::displace(T* obj, int Sx, int Sy, int Dx, int Dy, double* currTime, bool* isReversed) {
-    // std::cerr << "obj->x,y " << obj->lx << ' ' << obj->ly << ' ' << obj->x << ' ' << obj->y << ' ' << *currTime << ' ' << *isReversed << '\n';
     if (*isReversed && (*currTime <= 0)) {
         obj->x = Sx;
         obj->y = Sy;
@@ -56,14 +51,10 @@ bool Animate::displace(T* obj, int Sx, int Sy, int Dx, int Dy, double* currTime,
     }
     double Ux = Dx - Sx;
     double Uy = Dy - Sy;
-    // std::cerr << "Ux,Uy " << Ux << ' ' << Uy << '\n';
     double leng = sqrt(Ux*Ux + Uy*Uy);
-    // std::cerr << "leng " << leng << '\n';
     double distance = leng * bezier(std::min((double)TRANS_TIME, *currTime) / TRANS_TIME);
-    // std::cerr << "distance " << distance << '\n';
     obj->x = Sx + Ux / leng * distance;
     obj->y = Sy + Uy / leng * distance;
-    // std::cerr << "new obj->x,y " << obj->x << ' ' << obj->y << '\n';
     return false;
 }
 
@@ -84,7 +75,6 @@ bool Animate::fadeOutDisplace(T* obj, int Sx, int Sy, int Dx, int Dy, double *cu
         obj->y = Dy;
         return obj->vanish(), true;
     }
-    // *currTime = std::max(0.0, std::min((double)FADEOUT_TIME, *currTime));
     obj->x = Sx;
     obj->y = Sy;
     obj->transparent = bezier(1.0 - (*currTime) / FADEOUT_TIME);
@@ -102,7 +92,6 @@ bool Animate::fadeOutTransform(T* obj, int Sx, int Sy, int Tx, int Ty, double *c
         obj->y = Sy + Ty;
         return obj->vanish(), true;
     }
-    // *currTime = std::max(0.0, std::min((double)FADEOUT_TIME, *currTime));
     obj->x = Sx;
     obj->y = Sy;
     obj->transparent = bezier(1.0 - (*currTime) / FADEOUT_TIME);

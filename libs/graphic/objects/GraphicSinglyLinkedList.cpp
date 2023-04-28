@@ -701,11 +701,6 @@ ExitStatus GraphicSinglyLinkedList::popAtKth(int k, ListOfOperationsGroups* ALOG
 }
 
 void GraphicSinglyLinkedList::draw() {
-    // for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
-    //     std::cerr << curr->x << ' '; 
-    // }
-    // std::cerr << '\n';
-
     for (GraphicSinglyNode* curr = pHead; curr != nullptr; curr = curr->pNext) {
         curr->draw();
     }

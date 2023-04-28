@@ -79,10 +79,6 @@ ExitStatus GraphicCircularLinkedList::initialize(std::vector<int> vals, ListOfOp
 
     if (_size > 0) {
         harrow = GraphicHookArrow(pHead->x, pHead->y, curr->x, curr->y, pHead->size, curr->size, pHead->outerShapeIn, curr->outerShapeOut);
-        // std::cerr << " >> harrow.x0y0 = " << harrow.p[0].x << ' ' << harrow.p[0].y << '\n';
-        // std::cerr << " >> curr.xy = " << curr->x << ' ' << curr->y << '\n';
-        // std::cerr << " >> curr.cxy = " << curr->x + curr->size/2 << ' ' << curr->y + curr->size/2 << '\n';
-        // std::cerr << " >> curr.dxy = " << curr->x + curr->size << ' ' << curr->y + curr->size/2 << '\n';
 
         curr->pNext = pHead;
         curr = pHead;
@@ -368,14 +364,12 @@ ExitStatus GraphicCircularLinkedList::pushBack(int val, ListOfOperationsGroups* 
     _size++;
 
     if (pHead == nullptr) {
-        //std::cerr << " LINE : " << __LINE__ << '\n';
         pHead = new GraphicSinglyNode(Graphic::LL_ORG_X, Graphic::LL_ORG_Y, Graphic::NODE_SIZE, false, val);
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({0,1});
         ALOG->animateFadeIn(pHead);
         ALOG->animateNodeFromNormalToIter(pHead);
 
-        //std::cerr << " LINE : " << __LINE__ << '\n';
         pHead->pNext = pHead;
         harrow = GraphicHookArrow(pHead->x, pHead->y, pHead->x, pHead->y, pHead->size, pHead->size, pHead->outerShapeIn, pHead->outerShapeOut);
         harrow.appear();
@@ -384,7 +378,6 @@ ExitStatus GraphicCircularLinkedList::pushBack(int val, ListOfOperationsGroups* 
         ALOG->animateNodeFromIterToFocus(pHead);
         ALOG->animateSlideIn(&harrow);
     } else {
-        //std::cerr << " LINE : " << __LINE__ << '\n';
         GraphicSinglyNode* cur = pHead;
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({3,4});
@@ -392,12 +385,10 @@ ExitStatus GraphicCircularLinkedList::pushBack(int val, ListOfOperationsGroups* 
         ALOG->animateTransText(&cur->sub, "head", "head/cur");
 
         while (cur->pNext != pHead) {
-            //std::cerr << " LINE : " << __LINE__ << '\n';
             ALOG->addNewGroup();
             ALOG->backGroup()->setHighlightLines({5});
             ALOG->animateNodeFromIterToNearIter(cur);
             
-            //std::cerr << " LINE : " << __LINE__ << '\n';
             ALOG->addNewGroup();
             ALOG->backGroup()->setHighlightLines({6});
             cur->aNext.pSlideColor = &Theme::currTheme.ARROW_LINE_FOCUS_ITER;
@@ -412,14 +403,12 @@ ExitStatus GraphicCircularLinkedList::pushBack(int val, ListOfOperationsGroups* 
             cur = cur->pNext;
         }
 
-        //std::cerr << " LINE : " << __LINE__ << '\n';
         GraphicSinglyNode* vxt = new GraphicSinglyNode(cur->x, cur->y - Graphic::LL_NODE_DIST, Graphic::NODE_SIZE, false, val);
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({7});
         ALOG->animateFadeIn(vxt);
         ALOG->animateNodeFromNormalToFocus(vxt);
 
-        //std::cerr << " LINE : " << __LINE__ << '\n';
         cur->setNext(vxt);
         cur->aNext.appear();
         ALOG->addNewGroup();
@@ -428,7 +417,6 @@ ExitStatus GraphicCircularLinkedList::pushBack(int val, ListOfOperationsGroups* 
         ALOG->animateSlideIn(&cur->aNext);
         ALOG->animateSlideOut(&harrow);
 
-        //std::cerr << " LINE : " << __LINE__ << '\n';
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({9});
         if (cur == pHead) {
@@ -442,14 +430,12 @@ ExitStatus GraphicCircularLinkedList::pushBack(int val, ListOfOperationsGroups* 
         }
         cur = vxt;
 
-        //std::cerr << " LINE : " << __LINE__ << '\n';
         cur->pNext = pHead;
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({10});
         ALOG->animateArrowFromNormalToFocus(&harrow);
         ALOG->animateSlideIn(&harrow);
 
-        //std::cerr << " LINE : " << __LINE__ << '\n';
         ALOG->addNewGroup();
         ALOG->animateTransform(cur, cur->x, cur->y, Graphic::LL_NODE_DIST, Graphic::LL_NODE_DIST);
         for (int i = 0; i <= 1; ++i) {
@@ -465,8 +451,6 @@ ExitStatus GraphicCircularLinkedList::pushBack(int val, ListOfOperationsGroups* 
         ALOG->animateArrowFromFocusToNormal(&cur->aNext);
         ALOG->animateArrowFromFocusToNormal(&harrow);
     }
-
-    //std::cerr << " LINE : " << __LINE__ << '\n';
 
     ALOG->build();    
 

@@ -41,7 +41,6 @@ int main() {
 
     while (!WindowShouldClose()) {
         Animate::elapseTime = GetFrameTime();
-        // std::cerr << "Elapse time: " << Animate::elapseTime << '\n';
         Animate::queueOfScenes.run();
         BeginDrawing();
             ClearBackground(WHITE);

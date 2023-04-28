@@ -24,8 +24,6 @@ void GuiTextBoxState::init(const Rectangle &_bounds, int _textSize, bool _digitM
     for (int i = 0; i < _textSize; ++i) {
         text[i] = '\0';
     }
-    // std::cerr << " CHECK text >> \"" << text << "\"\n";
-    // std::cerr << " CHECK text >> \"" << (int*)(text) << "\"\n";
     textSize = _textSize;
     digitMode = _digitMode;
     active = _active;

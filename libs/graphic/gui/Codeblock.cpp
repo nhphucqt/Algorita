@@ -67,7 +67,6 @@ void Codeblock::draw(float x, float y) {
     }
     for (int id : highlights) {
         if (id < 0 || id >= (int)lines.size()) {
-            // std::cerr << " >> id,lines.size() " << id << ' ' << lines.size() << '\n';
             assert(0 <= id && id < (int)lines.size());
         }
         DrawRectangleRec(toRectangle(org + getLineBoxPos(id), lineDimension), *pBackColor[1]);
