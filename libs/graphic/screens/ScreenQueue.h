@@ -1,7 +1,7 @@
 #ifndef SCREEN_QUEUE_H
 #define SCREEN_QUEUE_H
 
-#include <string.h>
+#include <cstring>
 
 #include "../../conf_raylib.h"
 

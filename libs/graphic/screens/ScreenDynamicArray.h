@@ -1,7 +1,7 @@
 #ifndef SCREEN_DYNAMIC_ARRAY_H
 #define SCREEN_DYNAMIC_ARRAY_H
 
-#include <string.h>
+#include <cstring>
 
 #include "../../conf_raylib.h"
 

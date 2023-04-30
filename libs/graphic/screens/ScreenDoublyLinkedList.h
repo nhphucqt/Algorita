@@ -1,7 +1,7 @@
 #ifndef SCREEN_DOUBLY_LINKED_LIST_H
 #define SCREEN_DOUBLY_LINKED_LIST_H
 
-#include <string.h>
+#include <cstring>
 
 #include "../../conf_raylib.h"
 

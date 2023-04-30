@@ -1,7 +1,7 @@
 #ifndef SCREEN_STACK_H
 #define SCREEN_STACK_H
 
-#include <string.h>
+#include <cstring>
 
 #include "../../conf_raylib.h"
 
