@@ -3,7 +3,6 @@
 
 #include <assert.h>
 #include <cmath>
-// #include <iostream>
 #include "../conf_raylib.h"
 
 const Vector2 Z_VECT = Vector2{0, 0};
