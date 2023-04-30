@@ -1,7 +1,6 @@
 #ifndef LIST_OF_OPERATIONS_GROUPS_H
 #define LIST_OF_OPERATIONS_GROUPS_H
 
-// #include <vector>
 #include <list>
 
 #include "animation.h"
