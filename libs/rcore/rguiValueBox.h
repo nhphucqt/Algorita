@@ -2,7 +2,7 @@
 #define RGUI_VALUEBOX_H
 
 #include <string>
-#include <string.h>
+#include <cstring>
 #include <assert.h>
 
 #include "../conf_raylib.h"
