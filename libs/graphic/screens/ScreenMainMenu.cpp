@@ -1,16 +1,16 @@
 #include "ScreenMainMenu.h"
 
-ScreenMainMenu::ScreenMainMenu() {}
+Screen::ScreenMainMenu::ScreenMainMenu() {}
 
-void ScreenMainMenu::load() {
+void Screen::ScreenMainMenu::load() {
     title = StyledText(App::title, Gfont::titleFont);
     desc = StyledText(App::description, Gfont::defaultFont);
     author = StyledText(App::author, Gfont::defaultFont);
 }
 
-void ScreenMainMenu::init() {}
+void Screen::ScreenMainMenu::init() {}
 
-void ScreenMainMenu::draw() {
+void Screen::ScreenMainMenu::draw() {
     int yAxis = 40;
     int padding = 5;
     title.draw((Window::WIDTH - title.dim.x) / 2, yAxis, Theme::currTheme.TITLE);
@@ -40,4 +40,4 @@ void ScreenMainMenu::draw() {
     Theme::draw(true);
 }
 
-void ScreenMainMenu::destroy() {}
+void Screen::ScreenMainMenu::destroy() {}

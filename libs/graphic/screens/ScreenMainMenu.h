@@ -6,19 +6,21 @@
 #include "../gui/StyledText.h"
 #include "globalLayout.h"
 
-class ScreenMainMenu {
-private:
-    StyledText title;
-    StyledText desc;
-    StyledText author;
+namespace Screen {
+    class ScreenMainMenu {
+    private:
+        StyledText title;
+        StyledText desc;
+        StyledText author;
 
-public:
-    ScreenMainMenu();
-    
-    void load();
-    void init();
-    void draw();
-    void destroy();
-};
+    public:
+        ScreenMainMenu();
+        
+        void load();
+        void init();
+        void draw();
+        void destroy();
+    };
+}
 
 #endif
