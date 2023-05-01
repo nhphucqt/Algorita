@@ -21,7 +21,7 @@ private:
     int speedID;
 
     std::list<OperationsGroups> groups;
-    typename std::list<OperationsGroups>::iterator iter;
+    std::list<OperationsGroups>::iterator iter;
     Codeblock codeblock;
 
 public:
@@ -30,7 +30,7 @@ public:
     double* getCurrTime();
     bool* getIsReversed();
 
-    typename std::list<OperationsGroups>::iterator curGroup() const;
+    std::list<OperationsGroups>::iterator curGroup() const;
 
     void loadCode(const std::string &path);
     void updateCode();
