@@ -42,8 +42,6 @@ namespace Screen {
 
         ListOfOperationsGroups ALOG;
 
-        // GuiFileDialogState fileDialogState;
-
     public:
         ScreenQueue();
 
