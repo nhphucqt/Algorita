@@ -1,8 +1,8 @@
 if (n == 0) return;
 int* new_arr = new int[n-1]();
 for (int k = 0; k < i; ++k)
-    new_arr[i] = arr[i];
+    new_arr[k] = arr[k];
 for (int k = i+1; k < n; ++k) 
-    new_arr[i-1] = arr[i];
+    new_arr[k-1] = arr[k];
 delete[] arr;
 arr = new_arr; n--;
