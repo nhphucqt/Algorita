@@ -5,9 +5,10 @@
 #include "../../global.h"
 #include "../gui/StyledText.h"
 #include "globalLayout.h"
+#include "ScreenView.h"
 
 namespace Screen {
-    class ScreenMainMenu {
+    class ScreenMainMenu: public ScreenView {
     private:
         StyledText title;
         StyledText desc;
@@ -15,11 +16,12 @@ namespace Screen {
 
     public:
         ScreenMainMenu();
+        ~ScreenMainMenu() override;
         
-        void load();
-        void init();
-        void draw();
-        void destroy();
+        void load() override;
+        void init() override;
+        void draw() override;
+        void destroy() override;
     };
 }
 

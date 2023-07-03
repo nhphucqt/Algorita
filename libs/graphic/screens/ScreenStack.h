@@ -9,6 +9,7 @@
 #include "../../animation/ListOfOperationsGroups.h"
 #include "../gui/Codeblock.h"
 #include "../../core/userfunc.h"
+#include "ScreenView.h"
 
 #include "../../rcore/rguiTextBox.h"
 #include "../../rcore/rguiToggle.h"
@@ -19,7 +20,7 @@
 #include "globalLayout.h"
 
 namespace Screen {
-    class ScreenStack {
+    class ScreenStack: public ScreenView {
     private:
         enum OperationType {OTNULL, CREATE, PEEK, UPDATE, PUSH, POP, CLEAR} currOperationType;
         enum Operation {ONULL, CREATE_EMPTY, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE} currOperation;
@@ -42,11 +43,12 @@ namespace Screen {
 
     public:
         ScreenStack();
+        ~ScreenStack() override;
 
-        void load();
-        void init();
-        void draw();
-        void destroy();
+        void load() override;
+        void init() override;
+        void draw() override;
+        void destroy() override;
     };
 
 }

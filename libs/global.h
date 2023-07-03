@@ -12,6 +12,7 @@
 
 #include "conf_raylib.h"
 #include "graphic/gui/Theme.h"
+#include "graphic/screens/ScreenView.h"
 
 namespace CPath {
     const char* const THEME_DATA = "assets/data/theme.data";
@@ -162,20 +163,24 @@ namespace Screen {
         NUM_SCREEN
     } currScreen;
     
-    inline std::function<void()> screenInit[NUM_SCREEN];
-    inline std::function<void()> screenDraw[NUM_SCREEN];
-    inline std::function<void()> screenDest[NUM_SCREEN];
+    inline ScreenView* screenViews[NUM_SCREEN];
 
     inline void init() {
-        screenInit[currScreen]();
+        screenViews[currScreen]->init();
+    }
+
+    inline void load() {
+        for (int i = 0; i < NUM_SCREEN; ++i) {
+            screenViews[i]->load();
+        }
     }
 
     inline void draw() {
-        screenDraw[currScreen]();
+        screenViews[currScreen]->draw();
     }
 
     inline void destroy() {
-        screenDest[currScreen]();
+        screenViews[currScreen]->destroy();
     }
 
     inline void setScreen(ScreenType screenType) {
@@ -187,6 +192,13 @@ namespace Screen {
     inline void updateScreen(ScreenType screenType) {
         if (currScreen != screenType) {
             setScreen(screenType);
+        }
+    }
+
+    inline void unload() {
+        for (int i = 0; i < NUM_SCREEN; ++i) {
+            screenViews[i]->destroy();
+            delete screenViews[i];
         }
     }
 

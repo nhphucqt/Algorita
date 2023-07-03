@@ -1,6 +1,7 @@
 #include "ScreenQueue.h"
 
 Screen::ScreenQueue::ScreenQueue() {}
+Screen::ScreenQueue::~ScreenQueue() {}
 
 void Screen::ScreenQueue::load() { // Ensure that obj has to be destroy before (prevent MEMORY LEAKING)
     inputUpdate.init(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 1 + Gui::LABEL_PADDING_LEFT + Gui::BUTTON_OPER_GO_WIDTH, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 5 + 5, Gui::BUTTON_OPER_WIDTH - Gui::BUTTON_OPER_GO_WIDTH * 3 - 20, Gui::INPUT_BOX_HEIGHT}, Graphic::MAX_DIGIT_INPUT, true, false);

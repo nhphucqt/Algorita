@@ -1,6 +1,7 @@
 #include "ScreenMainMenu.h"
 
 Screen::ScreenMainMenu::ScreenMainMenu() {}
+Screen::ScreenMainMenu::~ScreenMainMenu() {}
 
 void Screen::ScreenMainMenu::load() {
     title = StyledText(App::title, Gfont::titleFont);

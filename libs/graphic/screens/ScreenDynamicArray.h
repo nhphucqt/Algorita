@@ -9,6 +9,7 @@
 #include "../../animation/ListOfOperationsGroups.h"
 #include "../gui/Codeblock.h"
 #include "../../core/userfunc.h"
+#include "ScreenView.h"
 
 #include "../../rcore/rguiTextBox.h"
 #include "../../rcore/rguiToggle.h"
@@ -19,7 +20,7 @@
 #include "globalLayout.h"
 
 namespace Screen {
-    class ScreenDynamicArray {
+    class ScreenDynamicArray: public ScreenView {
     private:
         enum OperationType {OTNULL, CREATE, SEARCH, ACCESS, INSERT, UPDATE, REMOVE} currOperationType;
         enum Operation {ONULL, CREATE_ALL_ZEROS, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE, SEARCH_FIRST, INSERT_FORD, INSERT_BACK, INSERT_MIDD, REMOVE_FORD, REMOVE_BACK, REMOVE_MIDD} currOperation;
@@ -59,11 +60,12 @@ namespace Screen {
         
     public:
         ScreenDynamicArray();
+        ~ScreenDynamicArray() override;
 
-        void load();
-        void init();
-        void draw();
-        void destroy();
+        void load() override;
+        void init() override;
+        void draw() override;
+        void destroy() override;
     };
 }
 

@@ -9,6 +9,7 @@
 #include "../../animation/ListOfOperationsGroups.h"
 #include "../gui/Codeblock.h"
 #include "../../core/userfunc.h"
+#include "ScreenView.h"
 
 #include "../../rcore/rguiTextBox.h"
 #include "../../rcore/rguiToggle.h"
@@ -19,7 +20,7 @@
 #include "globalLayout.h"
 
 namespace Screen {
-    class ScreenDoublyLinkedList {
+    class ScreenDoublyLinkedList: public ScreenView {
     private:
         enum OperationType {OTNULL, CREATE, SEARCH, INSERT, UPDATE, REMOVE} currOperationType;
         enum Operation {ONULL, CREATE_EMPTY, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE, SEARCH_FIRST, INSERT_FORD, INSERT_BACK, INSERT_MIDD, REMOVE_MIDD} currOperation;
@@ -52,11 +53,12 @@ namespace Screen {
 
     public:
         ScreenDoublyLinkedList();
+        ~ScreenDoublyLinkedList() override;
 
-        void load();
-        void init();
-        void draw();
-        void destroy();
+        void load() override;
+        void init() override;
+        void draw() override;
+        void destroy() override;
     };
 }
 
