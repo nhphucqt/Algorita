@@ -1,0 +1,65 @@
+#ifndef SCREEN_HASH_TABLE_H
+#define SCREEN_HASH_TABLE_H
+
+#include <cstring>
+
+#include "../../conf_raylib.h"
+
+#include "../objects/GraphicHashTable.h"
+#include "../../animation/ListOfOperationsGroups.h"
+#include "../gui/Codeblock.h"
+#include "../../core/userfunc.h"
+#include "ScreenView.h"
+
+#include "../../rcore/rguiTextBox.h"
+#include "../../rcore/rguiToggle.h"
+#include "../../rcore/rRectangle.h"
+
+#include "../gui/guiTinyDialog.h"
+
+#include "globalLayout.h"
+
+namespace Screen {
+    class ScreenHashTable: public ScreenView {
+    private:
+        enum OperationType {OTNULL, CREATE, SEARCH, INSERT, REMOVE} currOperationType;
+        enum Operation {ONULL, CREATE_EMPTY, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE, SEARCH_FIRST, INSERT_FORD, INSERT_BACK, INSERT_MIDD, REMOVE_MIDD} currOperation;
+
+        GraphicHashTable obj;
+
+        GuiTextBoxState inputSearchFirst;
+        GuiTextBoxState inputInsertFord, inputInsertBack;
+        GuiTextBoxState inputInsertMiddPos, inputInsertMiddVal;
+        GuiTextBoxState inputUpdateValuePos, inputUpdateValueVal;
+        GuiTextBoxState inputRemoveMidd;
+        GuiTextBoxState inputUserDefined;
+
+        GuiToggleState toggleCreateType;
+        GuiToggleState toggleSearchType;
+        GuiToggleState toggleInsertType;
+        GuiToggleState toggleUpdateType;
+        GuiToggleState toggleRemoveType;
+        
+        GuiToggleState toggleUserDefine;
+        GuiToggleState toggleSearchFirst;
+        GuiToggleState toggleInsertFord;
+        GuiToggleState toggleInsertBack;
+        GuiToggleState toggleInsertMidd;
+        GuiToggleState toggleRemoveMidd;
+
+        StyledText exitMessage;
+
+        ListOfOperationsGroups ALOG;
+        
+    public:
+        ScreenHashTable();
+        ~ScreenHashTable() override;
+
+        void load() override;
+        void init() override;
+        void draw() override;
+        void destroy() override;
+    };
+}
+
+#endif
