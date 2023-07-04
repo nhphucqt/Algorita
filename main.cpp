@@ -4,10 +4,12 @@
 #include "libs/graphic/screens/ScreenDoublyLinkedList.h"
 #include "libs/graphic/screens/ScreenDynamicArray.h"
 #include "libs/graphic/screens/ScreenMainMenu.h"
+#include "libs/graphic/screens/ScreenMainMenuCs163.h"
 #include "libs/graphic/screens/ScreenQueue.h"
 #include "libs/graphic/screens/ScreenSinglyLinkedList.h"
 #include "libs/graphic/screens/ScreenStack.h"
 #include "libs/graphic/screens/ScreenStaticArray.h"
+#include "libs/graphic/screens/ScreenHashTable.h"
 
 int main() {
     SetRandomSeed(time(nullptr));
@@ -25,7 +27,6 @@ int main() {
 
     Theme::loadTheme();
 
-    // screen.load();
     // Load Screens
     Layout::initialize();
     Screen::screenViews[Screen::SINGLY_LINKED_LIST] = new Screen::ScreenSinglyLinkedList();
@@ -36,8 +37,11 @@ int main() {
     Screen::screenViews[Screen::STATIC_ARRAY] = new Screen::ScreenStaticArray();
     Screen::screenViews[Screen::DYNAMIC_ARRAY] = new Screen::ScreenDynamicArray();
     Screen::screenViews[Screen::MAIN_MENU] = new Screen::ScreenMainMenu();
+
+    Screen::screenViews[Screen::HASH_TABLE] = new Screen::ScreenHashTable();
+    Screen::screenViews[Screen::MAIN_MENU_CS163] = new Screen::ScreenMainMenuCs163();
     Screen::load();
-    Screen::setScreen(Screen::MAIN_MENU);
+    Screen::setScreen(Screen::MAIN_MENU_CS163);
     
     _setmode(_fileno(stdout), _O_U16TEXT);
     
