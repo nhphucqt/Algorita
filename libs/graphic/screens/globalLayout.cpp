@@ -14,7 +14,7 @@ void Layout::setScreen(Screen::ScreenType screen) {
 
 void Layout::drawTopNavigation(bool keyActive) {
     if (GuiButton(Rectangle{0,0,120,50}, App::title)) {
-        Layout::setScreen(Screen::MAIN_MENU);
+        Layout::setScreen(Screen::MAIN_MENU_CS163);
     }
     if (dropDownList.draw()) {
         if (!dropDownList.isEditMode()) {
