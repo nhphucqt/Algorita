@@ -15,6 +15,7 @@
 
 class GraphicTrackArrow {
 public:
+    float lineWidth, headWidth, headLength;
     Color slideColor, lineColor, headColor;
     Color *pSlideColor, *pLineColor, *pHeadColor;
     TrVector pA, pB;
@@ -26,6 +27,8 @@ public:
     bool isTrack, isAppear;
 
     GraphicTrackArrow();
+    GraphicTrackArrow(float _lineWidth, float _headWidth, float _headLength, const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB);
+    GraphicTrackArrow(float _lineWidth, float _headWidth, float _headLength, float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB);
     GraphicTrackArrow(const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB);
     GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB);
     GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB);

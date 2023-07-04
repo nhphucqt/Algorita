@@ -38,6 +38,7 @@ public:
 
     // Constructors
     GraphicNode();
+    GraphicNode(float _x, float _y, float _s, float _bs, bool _sqr, Font* font, int _v, const std::string &_subtext);
     GraphicNode(float _x, float _y, float _s, bool _sqr, int _v, const std::string &_subtext);
     GraphicNode(float _x, float _y, float _s, bool _sqr, int _v);
 

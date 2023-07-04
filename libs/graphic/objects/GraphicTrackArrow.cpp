@@ -2,23 +2,28 @@
 
 GraphicTrackArrow::GraphicTrackArrow() {
     resetColor();
-    pA = pB = TrVector(nullptr, nullptr);
-    transA = transB = Z_VECT;
-    sA = sB = nullptr;
-    ftA = ftB = cf::outerNull;
     transparent = 0.0; // vanish at first
     percent = 0.0;
     slidePercent = 0.0;
     isTrack = isAppear = false;
 }
 
-GraphicTrackArrow::GraphicTrackArrow(const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB) : GraphicTrackArrow() {
+GraphicTrackArrow::GraphicTrackArrow(float _lineWidth, float _headWidth, float _headLength, const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB): GraphicTrackArrow() {
+    lineWidth = _lineWidth;
+    headWidth = _headWidth;
+    headLength = _headLength;
     pA = A; pB = B;
     sA = _sA; sB = _sB;
     ftA = _ftA;
     ftB = _ftB;
     isTrack = true;
 }
+
+GraphicTrackArrow::GraphicTrackArrow(float _lineWidth, float _headWidth, float _headLength, float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB)
+: GraphicTrackArrow(_lineWidth, _headWidth, _headLength, TrVector(Ax,Ay), TrVector(Bx,By), _sA, _sB, _ftA, _ftB) {}
+
+GraphicTrackArrow::GraphicTrackArrow(const TrVector &A, const TrVector &B, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB)
+: GraphicTrackArrow(Graphic::ARROW_LINE_WIDTH, Graphic::ARROW_HEAD_WIDTH, Graphic::ARROW_HEAD_LENGTH, A, B, _sA, _sB, _ftA, _ftB) {}
 
 GraphicTrackArrow::GraphicTrackArrow(float* Ax, float* Ay, float* Bx, float* By, float* _sA, float* _sB, const std::function<Vector2(Vector2)> &_ftA, const std::function<Vector2(Vector2)> &_ftB)
 : GraphicTrackArrow(TrVector(Ax,Ay), TrVector(Bx,By), _sA, _sB, _ftA, _ftB) {}
@@ -96,14 +101,14 @@ void GraphicTrackArrow::draw() {
     newB = trans(newA, AB, percent * dist(newA, newB));
 
     // create arrow head
-    Vector2 pCentr = trans(newB, BA, Graphic::ARROW_HEAD_LENGTH);
-    Vector2 pLeft = trans(pCentr, normVector(AB), Graphic::ARROW_HEAD_WIDTH / 2);
-    Vector2 pRight = trans(pCentr, normVector(BA), Graphic::ARROW_HEAD_WIDTH / 2);
+    Vector2 pCentr = trans(newB, BA, headLength);
+    Vector2 pLeft = trans(pCentr, normVector(AB), headWidth / 2);
+    Vector2 pRight = trans(pCentr, normVector(BA), headWidth / 2);
 
     assert(CCW(pLeft, pRight, newB));
 
-    DrawLineEx(newA, pCentr, Graphic::ARROW_LINE_WIDTH, TRNSP(pLineColor == nullptr ? lineColor : *pLineColor, transparent));
-    DrawLineEx(newA, newA + ((pCentr - newA) * slidePercent), Graphic::ARROW_LINE_WIDTH, TRNSP(pSlideColor == nullptr ? slideColor : *pSlideColor, transparent));
+    DrawLineEx(newA, pCentr, lineWidth, TRNSP(pLineColor == nullptr ? lineColor : *pLineColor, transparent));
+    DrawLineEx(newA, newA + ((pCentr - newA) * slidePercent), lineWidth, TRNSP(pSlideColor == nullptr ? slideColor : *pSlideColor, transparent));
     DrawTriangle(pRight, pLeft, newB, TRNSP(pHeadColor == nullptr ? headColor : *pHeadColor, transparent));
 }
 
