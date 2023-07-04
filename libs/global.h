@@ -98,6 +98,10 @@ namespace Core {
     const int MAX_NUM_NODE_SLL = 10;
 
     const int MAX_NUM_ARRAY_ELM = 16;
+
+    const int MAX_NUM_HT_HOR_ELM = 20;
+    const int MAX_NUM_HT_VER_ELM = 8;
+    const int MAX_NUM_HT_ELM = MAX_NUM_HT_HOR_ELM * MAX_NUM_HT_VER_ELM;
 }
 
 namespace Window {
@@ -122,6 +126,9 @@ namespace Graphic {
     const float NODE_BORDER_WIDTH = 4;
     const float NODE_DIST = NODE_SIZE + NODE_SIZE;
 
+    const float NODE_SIZE_SMALL = 35;
+    const float NODE_BORDER_WIDTH_SMALL = 3;
+
     const float NODE_SUBTEXT_PADDING = 0;
     const float NODE_SUBTEXT_MARGIN_TOP = 2;
 
@@ -129,6 +136,10 @@ namespace Graphic {
     const float ARROW_LINE_WIDTH = 4;
     const float ARROW_HEAD_LENGTH = 10;
     const float ARROW_HEAD_WIDTH = 10;
+
+    const float ARROW_LINE_WIDTH_SMALL = 3;
+    const float ARROW_HEAD_LENGTH_SMALL = 8;
+    const float ARROW_HEAD_WIDTH_SMALL = 8;
 
     const int ARROW_NUM_JOIN = 6;
     const float ARROW_VERT_LENGTH = 70;
@@ -144,6 +155,12 @@ namespace Graphic {
     const int ARR_ORG_Y = 200;
     const int ARR_EML_HOR_DIST = NODE_SIZE / 2;
     const int ARR_EML_VER_DIST = NODE_SIZE * 2;
+
+    // HASH TABLE
+    const int HT_ORG_Y = 100;
+    const int HT_EML_HOR_DIST = NODE_SIZE_SMALL + NODE_SIZE_SMALL / 2;
+    const int HT_EML_VER_DIST = NODE_SIZE_SMALL + NODE_SIZE_SMALL / 2;
+
 }
 
 namespace Layout {
@@ -160,6 +177,8 @@ namespace Screen {
         STATIC_ARRAY,
         DYNAMIC_ARRAY,
         MAIN_MENU,
+        HASH_TABLE,
+        MAIN_MENU_CS163,
         NUM_SCREEN
     } currScreen;
     
@@ -288,16 +307,23 @@ namespace Animate {
 namespace Gfont {
     const int FONT_TITLE_SIZE = 96;
     const int FONT_DEFAULT_SIZE = 30;
+    const int FONT_DEFAULT_SIZE_SMALL = 22;
     const int FONT_CODE_SIZE = 20;
     inline Font* defaultFont;
+    inline Font* defaultFontSmall;
     inline Font* titleFont;
     inline Font* codeFont;
     inline Font ptsans_bold_def;
+    inline Font ptsans_bold_def_small;
     inline Font ptsans_bold_tit;
     inline Font consolas_code;
 
     inline void setDefaultFont(Font* font) {
         defaultFont = font;
+    }
+
+    inline void setDefaultFontSmall(Font* font) {
+        defaultFontSmall = font;
     }
 
     inline void setCodeFont(Font* font) {
@@ -311,17 +337,20 @@ namespace Gfont {
     inline void loadFont() {
         // Load fonts
         ptsans_bold_def = LoadFontEx("./assets/fonts/PTSans-Bold.ttf", FONT_DEFAULT_SIZE, 0, 250);
+        ptsans_bold_def_small = LoadFontEx("./assets/fonts/PTSans-Bold.ttf", FONT_DEFAULT_SIZE_SMALL, 0, 250);
         ptsans_bold_tit = LoadFontEx("./assets/fonts/PTSans-Bold.ttf", FONT_TITLE_SIZE, 0, 250);
         consolas_code = LoadFontEx("./assets/fonts/Consolas-Bold.ttf", FONT_CODE_SIZE, 0, 250);
 
         // Set default font
         setDefaultFont(&ptsans_bold_def);
+        setDefaultFontSmall(&ptsans_bold_def_small);
         setTitleFont(&ptsans_bold_tit);
         setCodeFont(&consolas_code);
     }
 
     inline void unloadFont() {
         UnloadFont(ptsans_bold_def);
+        UnloadFont(ptsans_bold_def_small);
         UnloadFont(ptsans_bold_tit);
         UnloadFont(consolas_code);
         defaultFont = nullptr;
