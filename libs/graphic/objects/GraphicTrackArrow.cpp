@@ -5,6 +5,7 @@ GraphicTrackArrow::GraphicTrackArrow() {
     transparent = 0.0; // vanish at first
     percent = 0.0;
     slidePercent = 0.0;
+    transA = transB = Vector2{0.f,0.f};
     isTrack = isAppear = false;
 }
 
@@ -58,6 +59,9 @@ void GraphicTrackArrow::setPercent(float _p) {
 }
 
 void GraphicTrackArrow::copyAttributes(GraphicTrackArrow* arrow) {
+    lineWidth = arrow->lineWidth;
+    headWidth = arrow->headWidth;
+    headLength = arrow->headLength;
     slideColor = arrow->slideColor;
     lineColor = arrow->lineColor;
     headColor = arrow->headColor;
@@ -84,6 +88,10 @@ void GraphicTrackArrow::draw() {
     }
     Vector2 cA = pA + toVector2(*sA/2, *sA/2);
     Vector2 cB = pB + toVector2(*sB/2, *sB/2);
+
+    // std::cerr << "cA: " << cA.x << ' ' << cA.y << std::endl;
+    // std::cerr << "cB: " << cB.x << ' ' << cB.y << std::endl;
+
     if (dist(cA, cB) <= *sA/2 + *sB/2) {
         return;
     }
@@ -91,6 +99,10 @@ void GraphicTrackArrow::draw() {
     Vector2 BA = cA - cB;
     Vector2 newA = cA + ftA(AB);
     Vector2 newB = cB + ftB(BA);
+
+    // std::cerr << "newA: " << newA.x << ' ' << newA.y << std::endl;
+    // std::cerr << "newB: " << newB.x << ' ' << newB.y << std::endl;
+
     // transform newA & newB
     newA = newA + transA;
     newB = newB + transB;
@@ -98,14 +110,25 @@ void GraphicTrackArrow::draw() {
     AB = newB - newA;
     BA = newA - newB;
 
+    // std::cerr << "AB: " << AB.x << ' ' << AB.y << std::endl;
+    // std::cerr << "BA: " << BA.x << ' ' << BA.y << std::endl;
+
     newB = trans(newA, AB, percent * dist(newA, newB));
+
+    // std::cerr << "percent: " << percent << std::endl;
+    // std::cerr << "newB: " << newB.x << ' ' << newB.y << std::endl;
 
     // create arrow head
     Vector2 pCentr = trans(newB, BA, headLength);
     Vector2 pLeft = trans(pCentr, normVector(AB), headWidth / 2);
     Vector2 pRight = trans(pCentr, normVector(BA), headWidth / 2);
 
+    // std::cerr << "pCentr: " << pCentr.x << ' ' << pCentr.y << std::endl;
+    // std::cerr << "pLeft: " << pLeft.x << ' ' << pLeft.y << std::endl;
+    // std::cerr << "pRight: " << pRight.x << ' ' << pRight.y << std::endl;
+    // std::cerr << "newB: " << newB.x << ' ' << newB.y << std::endl;
     assert(CCW(pLeft, pRight, newB));
+
 
     DrawLineEx(newA, pCentr, lineWidth, TRNSP(pLineColor == nullptr ? lineColor : *pLineColor, transparent));
     DrawLineEx(newA, newA + ((pCentr - newA) * slidePercent), lineWidth, TRNSP(pSlideColor == nullptr ? slideColor : *pSlideColor, transparent));
