@@ -195,6 +195,12 @@ void ListOfOperationsGroups::animateNodeFromReferToIter(OT* node) {
 }
 
 template<typename OT>
+void ListOfOperationsGroups::animateNodeFromReferToRemove(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REFER, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REMOVE);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_REFER, &Theme::currTheme.NODE_BORDER_FOCUS_REMOVE);
+}
+
+template<typename OT>
 void ListOfOperationsGroups::animateNodeFromRemoveToNearIter(OT* node) {
     animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REMOVE, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER);
     animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER_FOCUS_REMOVE, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);

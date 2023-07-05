@@ -122,6 +122,7 @@ public:
 
     template<typename OT> void animateNodeFromReferToNormal(OT* node);
     template<typename OT> void animateNodeFromReferToIter(OT* node);
+    template<typename OT> void animateNodeFromReferToRemove(OT* node);
 
     template<typename OT> void animateNodeFromRemoveToNearIter(OT* node);
 
