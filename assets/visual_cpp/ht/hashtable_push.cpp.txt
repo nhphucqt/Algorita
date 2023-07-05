@@ -1,0 +1,4 @@
+int hkey = hashFunc(v);
+Node* u = new Node(v);
+u->next = h[hkey]->next;
+h[hkey]->next = u;

@@ -1,0 +1,11 @@
+int hkey = hashFunc(v);
+Node* u = h[hkey];
+while (u->next != nullptr) {
+    if (u->next->val == v) {
+        Node* tmp = u->next;
+        u->next = tmp->next;
+        delete tmp;
+        return;
+    }
+    u = u->next;
+}
