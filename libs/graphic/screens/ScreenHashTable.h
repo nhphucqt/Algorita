@@ -23,29 +23,25 @@ namespace Screen {
     class ScreenHashTable: public ScreenView {
     private:
         enum OperationType {OTNULL, CREATE, SEARCH, INSERT, REMOVE} currOperationType;
-        enum Operation {ONULL, CREATE_EMPTY, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE, SEARCH_FIRST, INSERT_FORD, INSERT_BACK, INSERT_MIDD, REMOVE_MIDD} currOperation;
+        enum Operation {ONULL, CREATE_EMPTY, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE} currOperation;
 
         GraphicHashTable obj;
 
-        GuiTextBoxState inputSearchFirst;
-        GuiTextBoxState inputInsertFord, inputInsertBack;
-        GuiTextBoxState inputInsertMiddPos, inputInsertMiddVal;
-        GuiTextBoxState inputUpdateValuePos, inputUpdateValueVal;
-        GuiTextBoxState inputRemoveMidd;
-        GuiTextBoxState inputUserDefined;
+        GuiTextBoxState inputCreateEmptySize;
+        GuiTextBoxState inputCreateRandomNum, inputCreateRandomSize;
+        GuiTextBoxState inputUserDefinedSize, inputUserDefinedVals;
+        GuiTextBoxState inputSearch;
+        GuiTextBoxState inputInsert;
+        GuiTextBoxState inputRemove;
 
         GuiToggleState toggleCreateType;
+        GuiToggleState toggleCreateEmpty;
+        GuiToggleState toggleCreateRandom;
+
         GuiToggleState toggleSearchType;
         GuiToggleState toggleInsertType;
-        GuiToggleState toggleUpdateType;
         GuiToggleState toggleRemoveType;
-        
         GuiToggleState toggleUserDefine;
-        GuiToggleState toggleSearchFirst;
-        GuiToggleState toggleInsertFord;
-        GuiToggleState toggleInsertBack;
-        GuiToggleState toggleInsertMidd;
-        GuiToggleState toggleRemoveMidd;
 
         StyledText exitMessage;
 
