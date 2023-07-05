@@ -33,6 +33,7 @@ namespace ExitMess {
     const ExitStatus FAIL_ARR_REACH_MAX_SIZE_CAPA(false, "The array has reached maximum size");
 
     const ExitStatus FAIL_HT_SIZE_OOB(false, "M is out of bounds: Allow from 1 to " + cf::num2str(Core::MAX_NUM_HT_HOR_ELM));
+    const ExitStatus FAIL_HT_REACH_MAX_VER_SIZE(false, "The coresponding chain has reached maximum size which is " + cf::num2str(Core::MAX_NUM_HT_VER_ELM));
     const ExitStatus FAIL_HT_NUM_OOB(false, "N is out of bounds: Allow from 0 to Mx" + cf::num2str(Core::MAX_NUM_HT_VER_ELM));
 }
 
