@@ -73,6 +73,10 @@ namespace CPath {
     const char* const DYNA_ARR_REMOVE_FORD = "assets/visual_cpp/dyna_arr/dyna_arr_remove_ford.cpp.txt";
     const char* const DYNA_ARR_REMOVE_BACK = "assets/visual_cpp/dyna_arr/dyna_arr_remove_back.cpp.txt";
     const char* const DYNA_ARR_REMOVE_KTH = "assets/visual_cpp/dyna_arr/dyna_arr_remove_kth.cpp.txt";
+
+    const char* const HASHTABLE_SEARCH = "assets/visual_cpp/ht/hashtable_search.cpp.txt";
+    const char* const HASHTABLE_PUSH = "assets/visual_cpp/ht/hashtable_push.cpp.txt";
+    const char* const HASHTABLE_POP = "assets/visual_cpp/ht/hashtable_pop.cpp.txt";
 }
 namespace App {
     const char* const title = "Algorita";
