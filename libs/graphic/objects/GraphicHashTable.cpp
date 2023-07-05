@@ -402,5 +402,5 @@ void GraphicHashTable::destroy() {
     pHead = nullptr;
     chainSize = nullptr;
     clearSaparated();
-    clearArrows();
+    arrows.clear();
 }
