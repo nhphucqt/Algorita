@@ -21,7 +21,7 @@ void Screen::ScreenMainMenuCs163::draw() {
         Layout::setScreen(Screen::HASH_TABLE);
     }
     if (GuiButton(Rectangle{650, 300, 300, 200}, "AVL Tree")) {
-        Layout::setScreen(Screen::DOUBLY_LINKED_LIST);
+        Layout::setScreen(Screen::AVL_TREE);
     }
     if (GuiButton(Rectangle{1050, 300, 300, 200}, "234 Tree")) {
         Layout::setScreen(Screen::CIRCULAR_LINKED_LIST);

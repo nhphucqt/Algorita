@@ -54,7 +54,7 @@ ExitStatus GraphicSinglyLinkedList::initialize(std::vector<int> vals, ListOfOper
     ALOG->clearGroup();
     ALOG->resetCode();
 
-    clearSaparated();
+    // clearSaparated();
     destroy();
 
     // Initialize

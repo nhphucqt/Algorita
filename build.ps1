@@ -17,7 +17,7 @@ if ($args.count -eq 1 -or $args.count -eq 2) {
     $file_path = $file_path.replace("\", "/")
     $project_name = $project_name.replace("\", "/")
 
-    $compile_command = "C:/msys64/mingw64/bin/mingw32-make.exe"
+    $compile_command = "D:/MyPrograms/msys64/mingw64/bin/mingw32-make.exe"
 
     $all_lib_dirs = @($pwd.Path + "\libs")
     $all_lib_dirs += Get-ChildItem -Directory -Recurse libs | Where-Object {$_.PSIsContainer} | Foreach-Object {$_.FullName}

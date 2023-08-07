@@ -28,6 +28,9 @@ Vector2 normVector(const Vector2 &v); // Counter-clockwise
 Vector2 operator - (const Vector2 &a, const Vector2 &b);
 Vector2 operator + (const Vector2 &a, const Vector2 &b);
 
+void operator += (Vector2 &a, const Vector2 &b);
+void operator -= (Vector2 &a, const Vector2 &b);
+
 Vector2 operator * (const Vector2 &v, double k);
 Vector2 operator / (const Vector2 &v, double k);
 

@@ -26,7 +26,7 @@ GraphicSinglyNode::GraphicSinglyNode(float _x, float _y, float _s, bool _sqr, Gr
 
 void GraphicSinglyNode::setNext(GraphicSinglyNode* pNode) {
     pNext = pNode;
-    if (pNext != nullptr) {
+    if (pNode != nullptr) {
         aNext = GraphicTrackArrow(&x, &y, &pNode->x, &pNode->y, &size, &pNode->size, outerShapeOut, pNode->outerShapeIn);
     } else {
         aNext = GraphicTrackArrow();
@@ -35,7 +35,7 @@ void GraphicSinglyNode::setNext(GraphicSinglyNode* pNode) {
 
 void GraphicSinglyNode::setNext(GraphicSinglyNode* pNode, float lineWidth, float headWidth, float headLength) {
     pNext = pNode;
-    if (pNext != nullptr) {
+    if (pNode != nullptr) {
         aNext = GraphicTrackArrow(lineWidth, headWidth, headLength, &x, &y, &pNode->x, &pNode->y, &size, &pNode->size, outerShapeOut, pNode->outerShapeIn);
     } else {
         aNext = GraphicTrackArrow();

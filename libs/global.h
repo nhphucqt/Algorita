@@ -165,6 +165,11 @@ namespace Graphic {
     const int HT_EML_HOR_DIST = NODE_SIZE_SMALL + NODE_SIZE_SMALL / 2;
     const int HT_EML_VER_DIST = NODE_SIZE_SMALL + NODE_SIZE_SMALL / 2;
 
+    // BINARY SEARCH TREE
+    const int BST_ORG_X = 700;
+    const int BST_ORG_Y = 100;
+    const int BST_VERTICAL_MARGIN = 30;
+    const int BST_HORIZONTAL_MARGIN = 30; 
 }
 
 namespace Layout {
@@ -182,6 +187,7 @@ namespace Screen {
         DYNAMIC_ARRAY,
         MAIN_MENU,
         HASH_TABLE,
+        AVL_TREE,
         MAIN_MENU_CS163,
         NUM_SCREEN
     } currScreen;

@@ -10,6 +10,7 @@
 #include "libs/graphic/screens/ScreenStack.h"
 #include "libs/graphic/screens/ScreenStaticArray.h"
 #include "libs/graphic/screens/ScreenHashTable.h"
+#include "libs/graphic/screens/ScreenAVLTree.h"
 
 int main() {
     SetRandomSeed(time(nullptr));
@@ -39,6 +40,7 @@ int main() {
     Screen::screenViews[Screen::MAIN_MENU] = new Screen::ScreenMainMenu();
 
     Screen::screenViews[Screen::HASH_TABLE] = new Screen::ScreenHashTable();
+    Screen::screenViews[Screen::AVL_TREE] = new Screen::ScreenAVLTree();
     Screen::screenViews[Screen::MAIN_MENU_CS163] = new Screen::ScreenMainMenuCs163();
     Screen::load();
     Screen::setScreen(Screen::MAIN_MENU_CS163);

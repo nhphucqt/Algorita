@@ -38,7 +38,7 @@ bool Animate::fadeOut(T* obj, double *currTime, bool* isReversed) {
 
 // DO NOT USE DIRECTLY
 template<typename T>
-bool Animate::displace(T* obj, int Sx, int Sy, int Dx, int Dy, double* currTime, bool* isReversed) {
+bool Animate::displace(T* obj, double Sx, double Sy, double Dx, double Dy, double* currTime, bool* isReversed) {
     if (*isReversed && (*currTime <= 0)) {
         obj->x = Sx;
         obj->y = Sy;
@@ -60,42 +60,8 @@ bool Animate::displace(T* obj, int Sx, int Sy, int Dx, int Dy, double* currTime,
 
 // DO NOT USE DIRECTLY
 template<typename T>
-bool Animate::transform(T* obj, int Sx, int Sy, int Tx, int Ty, double* currTime, bool* isReversed) {
+bool Animate::transform(T* obj, double Sx, double Sy, double Tx, double Ty, double* currTime, bool* isReversed) {
     return displace(obj, Sx, Sy, Sx + Tx, Sy + Ty, currTime, isReversed);
-}
-
-// DO NOT USE DIRECTLY
-template<typename T>
-bool Animate::fadeOutDisplace(T* obj, int Sx, int Sy, int Dx, int Dy, double *currTime, bool* isReversed) {
-    if (*isReversed && (*currTime <= 0)) {
-        return obj->appear(), true;
-    }
-    if (!*isReversed && (*currTime >= FADEOUT_TIME)) {
-        obj->x = Dx;
-        obj->y = Dy;
-        return obj->vanish(), true;
-    }
-    obj->x = Sx;
-    obj->y = Sy;
-    obj->transparent = bezier(1.0 - (*currTime) / FADEOUT_TIME);
-    return false;
-}
-
-// DO NOT USE DIRECTLY
-template<typename T>
-bool Animate::fadeOutTransform(T* obj, int Sx, int Sy, int Tx, int Ty, double *currTime, bool* isReversed) {
-    if (*isReversed && (*currTime <= 0)) {
-        return obj->appear(), true;
-    }
-    if (!*isReversed && (*currTime >= FADEOUT_TIME)) {
-        obj->x = Sx + Tx;
-        obj->y = Sy + Ty;
-        return obj->vanish(), true;
-    }
-    obj->x = Sx;
-    obj->y = Sy;
-    obj->transparent = bezier(1.0 - (*currTime) / FADEOUT_TIME);
-    return false;
 }
 
 // DO NOT USE DIRECTLY

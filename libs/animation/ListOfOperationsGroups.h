@@ -85,11 +85,8 @@ public:
 
     template<typename OT> void animateTransText(OT* obj, const std::string &src, const std::string &snk);
 
-    template<typename OT> void animateDisplace(OT* obj, int Sx, int Sy, int Dx, int Dy);
-    template<typename OT> void animateTransform(OT* obj, int Sx, int Sy, int Tx, int Ty);
-
-    template<typename OT> void animateFadeOutDisplace(OT* obj, int Sx, int Sy, int Dx, int Dy);
-    template<typename OT> void animateFadeOutTransform(OT* obj, int Sx, int Sy, int Tx, int Ty);
+    template<typename OT> void animateDisplace(OT* obj, double Sx, double Sy, double Dx, double Dy);
+    template<typename OT> void animateTransform(OT* obj, double Sx, double Sy, double Tx, double Ty);
 
     template<typename OT> void animateSlideIn(OT* obj);
     template<typename OT> void animateSlideOut(OT* obj);

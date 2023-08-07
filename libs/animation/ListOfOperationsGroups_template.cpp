@@ -25,23 +25,13 @@ void ListOfOperationsGroups::animateTransText(OT* obj, const std::string &src, c
 
 
 template<typename OT> 
-void ListOfOperationsGroups::animateDisplace(OT* obj, int Sx, int Sy, int Dx, int Dy) {
+void ListOfOperationsGroups::animateDisplace(OT* obj, double Sx, double Sy, double Dx, double Dy) {
     backGroup()->push(std::bind(&Animate::displace<OT>, obj, Sx, Sy, Dx, Dy, &currTime, &isReversed));
 }
 
 template<typename OT> 
-void ListOfOperationsGroups::animateTransform(OT* obj, int Sx, int Sy, int Tx, int Ty) {
+void ListOfOperationsGroups::animateTransform(OT* obj, double Sx, double Sy, double Tx, double Ty) {
     backGroup()->push(std::bind(&Animate::transform<OT>, obj, Sx, Sy, Tx, Ty, &currTime, &isReversed));
-}
-
-template<typename OT> 
-void ListOfOperationsGroups::animateFadeOutDisplace(OT* obj, int Sx, int Sy, int Dx, int Dy) {
-    backGroup()->push(std::bind(&Animate::fadeOutDisplace<OT>, obj, Sx, Sy, Dx, Dy, &currTime, &isReversed));
-}
-
-template<typename OT> 
-void ListOfOperationsGroups::animateFadeOutTransform(OT* obj, int Sx, int Sy, int Tx, int Ty) {
-    backGroup()->push(std::bind(&Animate::fadeOutTransform<OT>, obj, Sx, Sy, Tx, Ty, &currTime, &isReversed));
 }
 
 template<typename OT>

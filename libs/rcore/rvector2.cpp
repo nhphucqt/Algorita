@@ -20,8 +20,16 @@ Vector2 operator - (const Vector2 &a, const Vector2 &b) {
     return Vector2{a.x-b.x, a.y-b.y};
 }
 
+void operator -= (Vector2& a, const Vector2& b) {
+    a = a - b;
+}
+
 Vector2 operator + (const Vector2 &a, const Vector2 &b) {
     return Vector2{a.x+b.x, a.y+b.y};
+}
+
+void operator += (Vector2& a, const Vector2& b) {
+    a = a + b;
 }
 
 Vector2 operator * (const Vector2 &v, double k) {
