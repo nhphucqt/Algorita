@@ -35,7 +35,7 @@ private:
     void animateTransformAllNodes(GraphicBinaryTreeNode* pRoot, ListOfOperationsGroups* ALOG);
     void balanceTreeLayout(ListOfOperationsGroups* ALOG);
 
-    void push(GraphicBinaryTreeNode* pRoot, int val, ListOfOperationsGroups* ALOG);
+    GraphicBinaryTreeNode* push(GraphicBinaryTreeNode* pRoot, int val, ListOfOperationsGroups* ALOG);
     void draw(GraphicBinaryTreeNode* pRoot);
 
 public:
@@ -45,8 +45,8 @@ public:
     int getBalanceFactor(GraphicBinaryTreeNode* pNode);
     void updateHeight(GraphicBinaryTreeNode* pNode);
 
-    GraphicBinaryTreeNode* rotateLeft(GraphicBinaryTreeNode* pNode);
-    GraphicBinaryTreeNode* rotateRight(GraphicBinaryTreeNode* pNode);
+    GraphicBinaryTreeNode* rotateLeft(GraphicBinaryTreeNode* pNode, ListOfOperationsGroups* ALOG);
+    GraphicBinaryTreeNode* rotateRight(GraphicBinaryTreeNode* pNode, ListOfOperationsGroups* ALOG);
 
 
     ExitStatus initialize(ListOfOperationsGroups* ALOG);
