@@ -36,6 +36,7 @@ private:
     void balanceTreeLayout(ListOfOperationsGroups* ALOG);
 
     GraphicBinaryTreeNode* push(GraphicBinaryTreeNode* pRoot, int val, ListOfOperationsGroups* ALOG);
+    void search(GraphicBinaryTreeNode* pRoot, int val, ListOfOperationsGroups* ALOG);
     void draw(GraphicBinaryTreeNode* pRoot);
 
 public:
@@ -52,6 +53,9 @@ public:
     ExitStatus initialize(ListOfOperationsGroups* ALOG);
 
     ExitStatus push(int val, ListOfOperationsGroups* ALOG);
+
+    ExitStatus search(int val, ListOfOperationsGroups* ALOG);
+
 
     void draw();
 

@@ -35,8 +35,6 @@ void Screen::ScreenAVLTree::load() { // Ensure that obj has to be destroy before
 void Screen::ScreenAVLTree::init() {
     currOperationType = OTNULL;
     currOperation = ONULL;
-    int initSize = GetRandomValue(1, Core::MAX_NUM_HT_HOR_ELM);
-    int initNum = GetRandomValue(0, Core::MAX_NUM_HT_VER_ELM * std::min((float)initSize, 1.5f));
     exitMessage.assign(obj.initialize(&ALOG).message);
 }
 
@@ -134,7 +132,7 @@ void Screen::ScreenAVLTree::draw() {
             inputSearch.setnum(GetRandomValue(Core::NODE_MIN_VALUE, Core::NODE_MAX_VALUE));
         }
         if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 1 + Gui::BUTTON_OPER_WIDTH - (Gui::BUTTON_OPER_GO_WIDTH + 5) * 1, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 4 + 5, Gui::BUTTON_OPER_GO_WIDTH, Gui::BUTTON_OPER_GO_HEIGHT}, "Go") || (keyActive && IsKeyPressed(KEY_ENTER))) {
-            // exitMessage.assign(obj.searchFirst(inputSearch.getNum(), &ALOG).message);
+            exitMessage.assign(obj.search(inputSearch.getNum(), &ALOG).message);
         }
     }
     // Insert type Button

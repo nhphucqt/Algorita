@@ -213,7 +213,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::push(GraphicBinaryTreeNode* pRoot, int va
 
     if (val == pRoot->nVal) {
         ALOG->addNewGroup();
-        ALOG->animateNodeFromIterToNearIter(pRoot);
+        ALOG->animateNodeFromIterToNormal(pRoot);
 
         return pRoot;
     }
@@ -230,6 +230,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::push(GraphicBinaryTreeNode* pRoot, int va
                 val,
                 ""
             );
+            _size++;
 
             newNode->updateLevel(1);
             pRoot->setLeft(newNode);
@@ -267,6 +268,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::push(GraphicBinaryTreeNode* pRoot, int va
                 val,
                 ""
             );
+            _size++;
 
             newNode->updateLevel(1);
             pRoot->setRight(newNode);
@@ -326,6 +328,13 @@ GraphicBinaryTreeNode* GraphicAVLTree::push(GraphicBinaryTreeNode* pRoot, int va
 }
 
 ExitStatus GraphicAVLTree::push(int val, ListOfOperationsGroups* ALOG) {
+    assert(_size <= Core::MAX_NUM_AVL_ELM);
+    if (_size == Core::MAX_NUM_AVL_ELM) {
+        return ExitMess::FAIL_AVL_REACH_MAX_SIZE;
+    }
+    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
+        return ExitMess::FAIL_VALUE_OOB;
+    }
 
     ALOG->clearGroup();
     ALOG->resetCode();
@@ -353,6 +362,50 @@ ExitStatus GraphicAVLTree::push(int val, ListOfOperationsGroups* ALOG) {
     }
 
     ALOG->build();
+
+    return ExitMess::SUCCESS;
+}
+
+void GraphicAVLTree::search(GraphicBinaryTreeNode* pRoot, int val, ListOfOperationsGroups* ALOG) {
+    if (pRoot == nullptr) {
+        return;
+    }
+
+    if (pRoot->nVal == val) {
+        ALOG->animateNodeFromNormalToFocus(pRoot);
+        return;
+    }
+
+    ALOG->animateNodeFromNormalToIter(pRoot);
+
+    ALOG->addNewGroup();
+    ALOG->animateNodeFromIterToNearIter(pRoot);
+    if (val < pRoot->nVal) {
+        if (pRoot->getLeft() != nullptr) {
+            ALOG->animateArrowSlideFromNormalToIter(pRoot->getLeftArrow());
+            ALOG->animateSlideColorIn(pRoot->getLeftArrow());
+        }
+        search(pRoot->getLeft(), val, ALOG);
+    } else {
+        if (pRoot->getRight() != nullptr) {
+            ALOG->animateArrowSlideFromNormalToIter(pRoot->getRightArrow());
+            ALOG->animateSlideColorIn(pRoot->getRightArrow());
+        }
+        search(pRoot->getRight(), val, ALOG);
+    }
+}
+
+ExitStatus GraphicAVLTree::search(int val, ListOfOperationsGroups* ALOG) {
+    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
+        return ExitMess::FAIL_VALUE_OOB;
+    }
+
+    ALOG->clearGroup();
+    ALOG->resetCode();
+    reset();
+
+    ALOG->addNewGroup();
+    search(pRoot, val, ALOG);
 
     return ExitMess::SUCCESS;
 }
@@ -399,4 +452,5 @@ void GraphicAVLTree::destroy() {
     reset();
     destroy(pRoot);
     pRoot = nullptr;
+    _size = 0;
 }
