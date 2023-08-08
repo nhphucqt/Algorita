@@ -106,6 +106,8 @@ namespace Core {
     const int MAX_NUM_HT_HOR_ELM = 20;
     const int MAX_NUM_HT_VER_ELM = 8;
     const int MAX_NUM_HT_ELM = MAX_NUM_HT_HOR_ELM * MAX_NUM_HT_VER_ELM;
+
+    const int MAX_NUM_AVL_ELM = 32;
 }
 
 namespace Window {
@@ -169,7 +171,7 @@ namespace Graphic {
     const int BST_ORG_X = 700;
     const int BST_ORG_Y = 100;
     const int BST_VERTICAL_MARGIN = 30;
-    const int BST_HORIZONTAL_MARGIN = 30; 
+    const int BST_HORIZONTAL_MARGIN = 15; 
 }
 
 namespace Layout {
