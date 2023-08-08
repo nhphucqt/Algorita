@@ -51,6 +51,7 @@ void ListOfOperationsGroups::resetCode() {
 
 void ListOfOperationsGroups::addNewGroup() {
     groups.push_front(OperationsGroups());
+    animateDelay();
 }
 
 
