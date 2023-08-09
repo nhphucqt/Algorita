@@ -22,6 +22,10 @@ void StyledText::assign(const std::string &text) {
     dim = MeasureTextEx(*font, text.c_str(), font->baseSize, spacing);
 }
 
+void StyledText::assign(int val) {
+    assign(cf::num2str(val));
+}
+
 void StyledText::draw(const Vector2 &p, const Color &color) {
     DrawTextEx(*font, content.c_str(), p, font->baseSize, spacing, color);
 }

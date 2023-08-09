@@ -51,7 +51,7 @@ void GraphicNode::displace(int Dx, int Dy) {
 
 void GraphicNode::setValue(int x) {
     assert(Core::NODE_MIN_VALUE <= x && x <= Core::NODE_MAX_VALUE);
-    val = StyledText(x, Gfont::defaultFont);
+    val.assign(x);
     nVal = x;
 }
 

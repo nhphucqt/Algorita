@@ -14,6 +14,7 @@
 
 int main() {
     SetRandomSeed(time(nullptr));
+    srand(time(nullptr));
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
 

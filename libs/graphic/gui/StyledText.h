@@ -21,6 +21,7 @@ public:
     StyledText(int _num, Font* _font);
     StyledText(int _num, Font* _font, float _spacing);
 
+    void assign(int val);
     void assign(const std::string &text);
 
     void draw(const Vector2 &p, const Color &color = BLACK);
