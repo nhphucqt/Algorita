@@ -36,6 +36,7 @@ namespace ExitMess {
     const ExitStatus FAIL_HT_REACH_MAX_VER_SIZE(false, "The coresponding chain has reached maximum size which is " + cf::num2str(Core::MAX_NUM_HT_VER_ELM));
     const ExitStatus FAIL_HT_NUM_OOB(false, "N is out of bounds: Allow from 0 to Mx" + cf::num2str(Core::MAX_NUM_HT_VER_ELM));
 
+    const ExitStatus FAIL_AVL_SIZE_OOB(false, "Size is out of bounds: Allow from 0 to " + cf::num2str(Core::MAX_NUM_AVL_ELM));
     const ExitStatus FAIL_AVL_REACH_MAX_SIZE(false, "The AVL Tree has reached maximum size which is " + cf::num2str(Core::MAX_NUM_AVL_ELM));
 }
 
