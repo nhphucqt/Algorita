@@ -32,23 +32,27 @@ GraphicBinaryTreeNode::GraphicBinaryTreeNode(float _x, float _y, float _s, bool 
 : GraphicBinaryTreeNode(_x, _y, _s, Graphic::NODE_BORDER_WIDTH, _sqr, Gfont::defaultFont, _v, "") {}
 
 void GraphicBinaryTreeNode::setLeft(GraphicBinaryTreeNode* pNode) {
-    pLeft = pNode;
-    if (pNode != nullptr) {
-        std::pair<Vector2, Vector2> nodePair = getPosition(this, pNode);
-        aLeft = GraphicArrow(Graphic::ARROW_LINE_WIDTH_SMALL, nodePair.first, nodePair.second);
-    } else {
-        aLeft = GraphicArrow();
+    if (pLeft == nullptr) {
+        if (pNode != nullptr) {
+            std::pair<Vector2, Vector2> nodePair = getPosition(this, pNode);
+            aLeft = GraphicArrow(Graphic::ARROW_LINE_WIDTH_SMALL, nodePair.first, nodePair.second);
+        } else {
+            aLeft = GraphicArrow();
+        }
     }
+    pLeft = pNode;
 }
 
 void GraphicBinaryTreeNode::setRight(GraphicBinaryTreeNode* pNode) {
-    pRight = pNode;
-    if (pNode != nullptr) {
-        std::pair<Vector2, Vector2> nodePair = getPosition(this, pNode);
-        aRight = GraphicArrow(Graphic::ARROW_LINE_WIDTH_SMALL, nodePair.first, nodePair.second);
-    } else {
-        aRight = GraphicArrow();
+    if (pRight == nullptr) {
+        if (pNode != nullptr) {
+            std::pair<Vector2, Vector2> nodePair = getPosition(this, pNode);
+            aRight = GraphicArrow(Graphic::ARROW_LINE_WIDTH_SMALL, nodePair.first, nodePair.second);
+        } else {
+            aRight = GraphicArrow();
+        }
     }
+    pRight = pNode;
 }
 
 GraphicBinaryTreeNode* GraphicBinaryTreeNode::getLeft() {
@@ -57,14 +61,6 @@ GraphicBinaryTreeNode* GraphicBinaryTreeNode::getLeft() {
 
 GraphicBinaryTreeNode* GraphicBinaryTreeNode::getRight() {
     return pRight;
-}
-
-void GraphicBinaryTreeNode::updateLeft(GraphicBinaryTreeNode* newLeft) {
-    pLeft = newLeft;
-}
-
-void GraphicBinaryTreeNode::updateRight(GraphicBinaryTreeNode* newRight) {
-    pRight = newRight;
 }
 
 GraphicArrow* GraphicBinaryTreeNode::getLeftArrow() {
@@ -228,6 +224,9 @@ std::pair<Vector2, Vector2> GraphicBinaryTreeNode::getPosition(GraphicBinaryTree
     Vector2 newA, newB;
     Vector2 cA = nodeA->getNewTransPos() + toSqrVector2(nodeA->size/2);
     Vector2 cB = nodeB->getNewTransPos() + toSqrVector2(nodeB->size/2);
+    if (fabs(cA.x - cB.x) < Geo::EPS && fabs(cA.y - cB.y) < Geo::EPS) {
+        return std::pair{cA, cB};
+    }
     newA = cA + nodeA->outerShapeOut(cB - cA);
     newB = cB + nodeB->outerShapeIn(cA - cB);
     return std::pair{newA, newB};

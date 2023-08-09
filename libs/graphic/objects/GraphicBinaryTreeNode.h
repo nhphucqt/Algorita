@@ -41,8 +41,8 @@ public:
     GraphicBinaryTreeNode* getLeft();
     GraphicBinaryTreeNode* getRight();
 
-    void updateLeft(GraphicBinaryTreeNode* newLeft);
-    void updateRight(GraphicBinaryTreeNode* newRight);
+    // void updateLeft(GraphicBinaryTreeNode* newLeft);
+    // void updateRight(GraphicBinaryTreeNode* newRight);
 
     GraphicArrow* getLeftArrow();
     GraphicArrow* getRightArrow();

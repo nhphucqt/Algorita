@@ -8,6 +8,8 @@
 #include "GraphicBinaryTreeNode.h"
 #include "../../animation/OperationsGroups.h"
 #include "../../animation/ListOfOperationsGroups.h"
+#include "../../core/userfunc.h"
+#include "../../core/ccppfunc.h"
 
 class GraphicAVLTree {
 private:
@@ -35,8 +37,19 @@ private:
     void animateTransformAllNodes(GraphicBinaryTreeNode* pRoot, ListOfOperationsGroups* ALOG);
     void balanceTreeLayout(ListOfOperationsGroups* ALOG);
 
+    GraphicBinaryTreeNode* realRotateLeft(GraphicBinaryTreeNode* pNode);
+    GraphicBinaryTreeNode* realRotateRight(GraphicBinaryTreeNode* pNode);
+    GraphicBinaryTreeNode* realPush(GraphicBinaryTreeNode* pRoot, int val, ListOfOperationsGroups* ALOG);
+    void showEdgeOfTree(GraphicBinaryTreeNode* pRoot, ListOfOperationsGroups* ALOG);
+    void showEdgeOfTree(ListOfOperationsGroups* ALOG);
+
+    void realPush(int val, ListOfOperationsGroups* ALOG);
+
+    void checkAndRebalanceTreeFactor(GraphicBinaryTreeNode*& pRoot, ListOfOperationsGroups* ALOG);
     GraphicBinaryTreeNode* push(GraphicBinaryTreeNode* pRoot, int val, ListOfOperationsGroups* ALOG);
     void search(GraphicBinaryTreeNode* pRoot, int val, ListOfOperationsGroups* ALOG);
+    GraphicBinaryTreeNode* remove(GraphicBinaryTreeNode* pRoot, int val, ListOfOperationsGroups* ALOG);
+    GraphicBinaryTreeNode* removeAtRight(GraphicBinaryTreeNode* pRoot, int val, GraphicBinaryTreeNode* orgNode, ListOfOperationsGroups* ALOG);
     void draw(GraphicBinaryTreeNode* pRoot);
 
 public:
@@ -49,13 +62,15 @@ public:
     GraphicBinaryTreeNode* rotateLeft(GraphicBinaryTreeNode* pNode, ListOfOperationsGroups* ALOG);
     GraphicBinaryTreeNode* rotateRight(GraphicBinaryTreeNode* pNode, ListOfOperationsGroups* ALOG);
 
-
-    ExitStatus initialize(ListOfOperationsGroups* ALOG);
+    ExitStatus initialize(int initSize, ListOfOperationsGroups* ALOG); // Randomly initialize
+    ExitStatus initialize(std::vector<int> vals, ListOfOperationsGroups* ALOG); // Initialize with given values
+    ExitStatus initialize(std::string strVals, ListOfOperationsGroups* ALOG); // Initialize with given values
 
     ExitStatus push(int val, ListOfOperationsGroups* ALOG);
 
     ExitStatus search(int val, ListOfOperationsGroups* ALOG);
 
+    ExitStatus remove(int val, ListOfOperationsGroups* ALOG);
 
     void draw();
 

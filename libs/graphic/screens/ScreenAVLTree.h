@@ -27,15 +27,13 @@ namespace Screen {
 
         GraphicAVLTree obj;
 
-        GuiTextBoxState inputCreateEmptySize;
-        GuiTextBoxState inputCreateRandomNum, inputCreateRandomSize;
-        GuiTextBoxState inputUserDefinedSize, inputUserDefinedVals;
+        GuiTextBoxState inputCreateRandomSize;
+        GuiTextBoxState inputUserDefinedVals;
         GuiTextBoxState inputSearch;
         GuiTextBoxState inputInsert;
         GuiTextBoxState inputRemove;
 
         GuiToggleState toggleCreateType;
-        GuiToggleState toggleCreateEmpty;
         GuiToggleState toggleCreateRandom;
 
         GuiToggleState toggleSearchType;
