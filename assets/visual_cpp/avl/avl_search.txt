@@ -1,0 +1,7 @@
+if (cur == NULL) 
+    return NULL;
+else if (cur->val == v)
+    return cur;
+else if (cur->val < v)
+    return search(cur->right);
+else return search(cur->left);

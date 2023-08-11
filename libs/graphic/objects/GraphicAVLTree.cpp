@@ -367,23 +367,39 @@ GraphicBinaryTreeNode* GraphicAVLTree::rotateRight(GraphicBinaryTreeNode* pNode,
 void GraphicAVLTree::checkAndRebalanceTreeFactor(GraphicBinaryTreeNode*& pRoot, ListOfOperationsGroups* ALOG) {
     int balanceFactor = getBalanceFactor(pRoot);
     if (balanceFactor < -1) { // Right
+        bool flag = false;
         if (getBalanceFactor(pRoot->getRight()) > 0) { // Left
+            flag = true;
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({5});
             pRoot->setRight(rotateRight(pRoot->getRight(), ALOG));
             balanceTreeLayout(ALOG);
         }
         ALOG->addNewGroup();
+        if (flag) {
+            ALOG->backGroup()->setHighlightLines({5});
+        } else {
+            ALOG->backGroup()->setHighlightLines({4});
+        }
         GraphicBinaryTreeNode* tmp = rotateLeft(pRoot, ALOG);
         ALOG->animateNodeFromIterToNormal(pRoot);
         ALOG->animateNodeFromNormalToIter(tmp);
         pRoot = tmp;
     } else if (balanceFactor > 1) {
+        bool flag = false;
         if (getBalanceFactor(pRoot->getLeft()) < 0) { // Right
+            flag = true;
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({3});
             pRoot->setLeft(rotateLeft(pRoot->getLeft(), ALOG));
             balanceTreeLayout(ALOG);
         }
         ALOG->addNewGroup();
+        if (flag) {
+            ALOG->backGroup()->setHighlightLines({3});
+        } else {
+            ALOG->backGroup()->setHighlightLines({2});
+        }
         GraphicBinaryTreeNode* tmp = rotateRight(pRoot, ALOG);
         ALOG->animateNodeFromIterToNormal(pRoot);
         ALOG->animateNodeFromNormalToIter(tmp);
@@ -417,6 +433,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::push(GraphicBinaryTreeNode* pRoot, int va
             pRoot->setLeft(newNode);
 
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({0});
             ALOG->animateFadeIn(newNode);
             ALOG->animateFadeIn(pRoot->getLeftArrow());
             ALOG->animateSlideIn(pRoot->getLeftArrow());
@@ -424,6 +441,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::push(GraphicBinaryTreeNode* pRoot, int va
             balanceTreeLayout(ALOG);
         } else {
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({0});
             ALOG->animateNodeFromIterToNearIter(pRoot);
             ALOG->animateArrowSlideFromNormalToIter(pRoot->getLeftArrow());
             ALOG->animateSlideColorIn(pRoot->getLeftArrow());
@@ -432,6 +450,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::push(GraphicBinaryTreeNode* pRoot, int va
             balanceTreeLayout(ALOG);
 
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({1});
             ALOG->animateNodeFromIterToNormal(pRoot->getLeft());
             ALOG->animateNodeFromNearIterToIter(pRoot);
             ALOG->animateArrowSlideFromIterToNormal(pRoot->getLeftArrow());
@@ -455,6 +474,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::push(GraphicBinaryTreeNode* pRoot, int va
             pRoot->setRight(newNode);
 
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({0});
             ALOG->animateFadeIn(newNode);
             ALOG->animateFadeIn(pRoot->getRightArrow());
             ALOG->animateSlideIn(pRoot->getRightArrow());
@@ -462,6 +482,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::push(GraphicBinaryTreeNode* pRoot, int va
             balanceTreeLayout(ALOG);
         } else {
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({0});
             ALOG->animateNodeFromIterToNearIter(pRoot);
             ALOG->animateArrowSlideFromNormalToIter(pRoot->getRightArrow());
             ALOG->animateSlideColorIn(pRoot->getRightArrow());
@@ -470,6 +491,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::push(GraphicBinaryTreeNode* pRoot, int va
             balanceTreeLayout(ALOG);
 
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({1});
             ALOG->animateNodeFromIterToNormal(pRoot->getRight());
             ALOG->animateNodeFromNearIterToIter(pRoot);
             ALOG->animateArrowSlideFromIterToNormal(pRoot->getRightArrow());
@@ -492,7 +514,7 @@ ExitStatus GraphicAVLTree::push(int val, ListOfOperationsGroups* ALOG) {
     }
 
     ALOG->clearGroup();
-    ALOG->resetCode();
+    ALOG->loadCode(CPath::AVL_PUSH);
     reset();
 
     if (pRoot == nullptr) {
@@ -508,14 +530,21 @@ ExitStatus GraphicAVLTree::push(int val, ListOfOperationsGroups* ALOG) {
         );
         pRoot->updateLevel(1);
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateFadeIn(pRoot);
         ALOG->animateNodeFromNormalToFocus(pRoot);
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({6});
+        ALOG->animateNodeFromFocusToNormal(pRoot);
     } else {
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0});
         pRoot = push(pRoot, val, ALOG);
         balanceTreeLayout(ALOG);
 
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({6});
         ALOG->animateNodeFromIterToNormal(pRoot);
     }
 
@@ -527,21 +556,29 @@ ExitStatus GraphicAVLTree::push(int val, ListOfOperationsGroups* ALOG) {
 void GraphicAVLTree::search(GraphicBinaryTreeNode* pRoot, int val, ListOfOperationsGroups* ALOG) {
     if (pRoot == nullptr) {
         ALOG->addNewGroup();
-        return;
-    }
-
-    if (pRoot->nVal == val) {
-        ALOG->animateNodeFromNormalToFocus(pRoot);
-
-        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0,1});
         return;
     }
 
     ALOG->animateNodeFromNormalToIter(pRoot);
 
+    if (pRoot->nVal == val) {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2,3});
+        ALOG->animateNodeFromIterToFocus(pRoot);
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({3});
+
+        return;
+    }
+
+    int flag = 0;
     ALOG->addNewGroup();
     ALOG->animateNodeFromIterToNearIter(pRoot);
     if (val < pRoot->nVal) {
+        flag = 1;
+        ALOG->backGroup()->setHighlightLines({6});
         if (pRoot->getLeft() != nullptr) {
             ALOG->animateArrowSlideFromNormalToIter(pRoot->getLeftArrow());
             ALOG->animateSlideColorIn(pRoot->getLeftArrow());
@@ -554,6 +591,8 @@ void GraphicAVLTree::search(GraphicBinaryTreeNode* pRoot, int val, ListOfOperati
             ALOG->animateSlideColorOut(pRoot->getLeftArrow());
         }
     } else {
+        flag = 2;
+        ALOG->backGroup()->setHighlightLines({4,5});
         if (pRoot->getRight() != nullptr) {
             ALOG->animateArrowSlideFromNormalToIter(pRoot->getRightArrow());
             ALOG->animateSlideColorIn(pRoot->getRightArrow());
@@ -568,6 +607,12 @@ void GraphicAVLTree::search(GraphicBinaryTreeNode* pRoot, int val, ListOfOperati
     }
 
     ALOG->addNewGroup();
+    assert(flag == 1 || flag == 2);
+    if (flag == 1) {
+        ALOG->backGroup()->setHighlightLines({6});
+    } else {
+        ALOG->backGroup()->setHighlightLines({5});
+    }
     ALOG->animateNodeFromIterToNormal(pRoot);
 }
 
@@ -577,7 +622,7 @@ ExitStatus GraphicAVLTree::search(int val, ListOfOperationsGroups* ALOG) {
     }
 
     ALOG->clearGroup();
-    ALOG->resetCode();
+    ALOG->loadCode(CPath::AVL_SEARCH);
     reset();
 
     ALOG->addNewGroup();
@@ -594,6 +639,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::removeAtRight(GraphicBinaryTreeNode* pRoo
     if (pRoot->getLeft() == nullptr) {
         nodes.push_back(pRoot);
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateAssignValue(orgNode, orgNode->nVal, pRoot->nVal);
         ALOG->animateFadeOut(pRoot);
         if (pRoot->getRight() != nullptr) {
@@ -604,6 +650,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::removeAtRight(GraphicBinaryTreeNode* pRoo
     } 
 
     ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({0});
 
     ALOG->animateNodeFromIterToNearIter(pRoot);
     ALOG->animateSlideColorIn(pRoot->getLeftArrow());
@@ -616,6 +663,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::removeAtRight(GraphicBinaryTreeNode* pRoo
     balanceTreeLayout(ALOG);
 
     ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({1});
     ALOG->animateNodeFromNearIterToIter(pRoot);
     if (pRoot->getLeft() != nullptr) {
         ALOG->animateNodeFromIterToNormal(pRoot->getLeft());
@@ -635,6 +683,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::remove(GraphicBinaryTreeNode* pRoot, int 
         if (pRoot->getRight() == nullptr) {
             nodes.push_back(pRoot);
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({0});
             ALOG->animateFadeOut(pRoot);
             if (pRoot->getLeft() != nullptr) {
                 ALOG->animateSlideOut(pRoot->getLeftArrow());
@@ -643,6 +692,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::remove(GraphicBinaryTreeNode* pRoot, int 
             return pRoot->getLeft();
         } else {
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({0});
             ALOG->animateSlideColorIn(pRoot->getRightArrow());
             ALOG->animateArrowSlideFromNormalToIter(pRoot->getRightArrow());
 
@@ -653,6 +703,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::remove(GraphicBinaryTreeNode* pRoot, int 
             balanceTreeLayout(ALOG);
 
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({1});
             ALOG->animateNodeFromReferToIter(pRoot);
             if (pRoot->getRight() != nullptr) {
                 ALOG->animateNodeFromIterToNormal(pRoot->getRight());
@@ -665,6 +716,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::remove(GraphicBinaryTreeNode* pRoot, int 
         if (val < pRoot->nVal) {
             if (pRoot->getLeft() != nullptr) {
                 ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({0});
                 ALOG->animateNodeFromIterToNearIter(pRoot);
                 ALOG->animateSlideColorIn(pRoot->getLeftArrow());
                 ALOG->animateArrowSlideFromNormalToIter(pRoot->getLeftArrow());
@@ -676,6 +728,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::remove(GraphicBinaryTreeNode* pRoot, int 
                 balanceTreeLayout(ALOG);
 
                 ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({1});
                 ALOG->animateNodeFromNearIterToIter(pRoot);
                 if (pRoot->getLeft() != nullptr) {
                     ALOG->animateNodeFromIterToNormal(pRoot->getLeft());
@@ -686,6 +739,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::remove(GraphicBinaryTreeNode* pRoot, int 
         } else {
             if (pRoot->getRight() != nullptr) {
                 ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({0});
                 ALOG->animateNodeFromIterToNearIter(pRoot);
                 ALOG->animateSlideColorIn(pRoot->getRightArrow());
                 ALOG->animateArrowSlideFromNormalToIter(pRoot->getRightArrow());
@@ -697,6 +751,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::remove(GraphicBinaryTreeNode* pRoot, int 
                 balanceTreeLayout(ALOG);
 
                 ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({1});
                 ALOG->animateNodeFromNearIterToIter(pRoot);
                 if (pRoot->getRight() != nullptr) {
                     ALOG->animateNodeFromIterToNormal(pRoot->getRight());
@@ -715,7 +770,7 @@ GraphicBinaryTreeNode* GraphicAVLTree::remove(GraphicBinaryTreeNode* pRoot, int 
 ExitStatus GraphicAVLTree::remove(int val, ListOfOperationsGroups* ALOG) {
 
     ALOG->clearGroup();
-    ALOG->resetCode();
+    ALOG->loadCode(CPath::AVL_REMOVE);
     reset();
 
     if (pRoot == nullptr) {
@@ -723,9 +778,11 @@ ExitStatus GraphicAVLTree::remove(int val, ListOfOperationsGroups* ALOG) {
     }
 
     ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({0});
     pRoot = remove(pRoot, val, ALOG);
     balanceTreeLayout(ALOG);
     ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({6});
     ALOG->animateNodeFromIterToNormal(pRoot);
 
     ALOG->build();

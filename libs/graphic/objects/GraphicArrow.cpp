@@ -123,9 +123,6 @@ void GraphicArrow::draw() {
         return;
     }
 
-    Vector2 AB = pB - pA;
-    Vector2 BA = pA - pB;
-
     Vector2 aHead = pA + ((pB - pA) * percent);
 
     // create arrow head

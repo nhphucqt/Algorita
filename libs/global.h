@@ -77,6 +77,10 @@ namespace CPath {
     const char* const HASHTABLE_SEARCH = "assets/visual_cpp/ht/hashtable_search.cpp.txt";
     const char* const HASHTABLE_PUSH = "assets/visual_cpp/ht/hashtable_push.cpp.txt";
     const char* const HASHTABLE_POP = "assets/visual_cpp/ht/hashtable_pop.cpp.txt";
+
+    const char* const AVL_PUSH = "assets/visual_cpp/avl/avl_push.txt";
+    const char* const AVL_SEARCH = "assets/visual_cpp/avl/avl_search.txt";
+    const char* const AVL_REMOVE = "assets/visual_cpp/avl/avl_pop.txt";
 }
 namespace App {
     const char* const title = "Algorita";

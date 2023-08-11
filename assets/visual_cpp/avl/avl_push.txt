@@ -1,0 +1,7 @@
+insert v
+check balance factor of this and its children
+    case1: this.rotateRight
+    case2: this.left.rotateLeft, this.rotateRight
+    case3: this.rotateLeft
+    case4: this.right.rotateRight, this.rotateLeft
+    this is balanced
