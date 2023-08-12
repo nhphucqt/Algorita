@@ -1,0 +1,4 @@
+A[A.size++] = v;
+i = A.size-1;
+while ((i > 0) && (A[i] > A[parent(i)]))
+    swap(A[i], A[parent(i)]); i = parent(i);

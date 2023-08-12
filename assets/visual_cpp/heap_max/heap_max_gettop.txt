@@ -1,0 +1,5 @@
+swap(A[0], A[A.size-1]);
+delete A[--A.size];
+i = 0;
+while (A[i] < (L = the larger of i's children))
+    swap(A[i], L); i = L's index
