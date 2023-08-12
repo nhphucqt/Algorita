@@ -176,7 +176,7 @@ void Screen::ScreenHashTable::draw() {
     obj.draw();
     ALOG.draw(keyActive);
     exitMessage.draw(20, (Window::HEIGHT - Layout::BOTTOM_HEIGHT + (Layout::BOTTOM_HEIGHT - exitMessage.dim.y) / 2), Theme::currTheme.EXIT_MESSAGE);
-    Layout::drawTopNavigation(keyActive);
+    LayoutCs163::drawTopNavigation(keyActive);
 }
 
 void Screen::ScreenHashTable::destroy() {

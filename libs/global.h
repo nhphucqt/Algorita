@@ -81,6 +81,16 @@ namespace CPath {
     const char* const AVL_PUSH = "assets/visual_cpp/avl/avl_push.txt";
     const char* const AVL_SEARCH = "assets/visual_cpp/avl/avl_search.txt";
     const char* const AVL_REMOVE = "assets/visual_cpp/avl/avl_pop.txt";
+
+    const char* const HEAP_MIN_PUSH = "assets/visual_cpp/heap_min/heap_min_insert.txt";
+    const char* const HEAP_MIN_GET_TOP = "assets/visual_cpp/heap_min/heap_min_gettop.txt";
+    const char* const HEAP_MIN_REMOVE = "assets/visual_cpp/heap_min/heap_min_remove.txt";
+    const char* const HEAP_MIN_GET_SIZE = "assets/visual_cpp/heap_min/heap_min_getsize.txt";
+
+    const char* const HEAP_MAX_PUSH = "assets/visual_cpp/heap_max/heap_max_insert.txt";
+    const char* const HEAP_MAX_GET_TOP = "assets/visual_cpp/heap_max/heap_max_gettop.txt";
+    const char* const HEAP_MAX_REMOVE = "assets/visual_cpp/heap_max/heap_max_remove.txt";
+    const char* const HEAP_MAX_GET_SIZE = "assets/visual_cpp/heap_max/heap_max_getsize.txt";
 }
 namespace App {
     const char* const title = "Algorita";
@@ -112,6 +122,8 @@ namespace Core {
     const int MAX_NUM_HT_ELM = MAX_NUM_HT_HOR_ELM * MAX_NUM_HT_VER_ELM;
 
     const int MAX_NUM_AVL_ELM = 32;
+
+    const int MAX_NUM_HEAP_ELM = 31;
 }
 
 namespace Window {
@@ -172,7 +184,7 @@ namespace Graphic {
     const int HT_EML_VER_DIST = NODE_SIZE_SMALL + NODE_SIZE_SMALL / 2;
 
     // BINARY SEARCH TREE
-    const int BST_ORG_X = 700;
+    const int BST_ORG_X = Window::WIDTH / 2;
     const int BST_ORG_Y = 100;
     const int BST_VERTICAL_MARGIN = 30;
     const int BST_HORIZONTAL_MARGIN = 15; 
@@ -194,6 +206,8 @@ namespace Screen {
         MAIN_MENU,
         HASH_TABLE,
         AVL_TREE,
+        HEAP_MIN,
+        HEAP_MAX,
         MAIN_MENU_CS163,
         NUM_SCREEN
     } currScreen;

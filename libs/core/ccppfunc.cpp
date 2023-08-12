@@ -4,10 +4,18 @@ std::string cf::num2str(int num) {
     if (num == 0) {
         return "0";
     } else {
+        bool neg = false;
+        if (num < 0) {
+            neg = true;
+            num = -num;
+        }
         std::string str;
         while (num > 0) {
             str += num % 10 +  '0';
             num /= 10;
+        }
+        if (neg) {
+            str += '-';
         }
         std::reverse(str.begin(),str.end());
         return str;

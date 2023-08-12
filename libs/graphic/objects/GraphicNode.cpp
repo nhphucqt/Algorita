@@ -50,7 +50,7 @@ void GraphicNode::displace(int Dx, int Dy) {
 }
 
 void GraphicNode::setValue(int x) {
-    assert(Core::NODE_MIN_VALUE <= x && x <= Core::NODE_MAX_VALUE);
+    // assert(Core::NODE_MIN_VALUE <= x && x <= Core::NODE_MAX_VALUE);
     val.assign(x);
     nVal = x;
 }

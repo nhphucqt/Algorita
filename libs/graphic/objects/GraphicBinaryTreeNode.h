@@ -23,8 +23,8 @@ private:
     Vector2 curPos;
     GraphicBinaryTreeNode* pLeft;
     GraphicBinaryTreeNode* pRight;
-    GraphicArrow aLeft;
-    GraphicArrow aRight;
+    GraphicArrow* aLeft;
+    GraphicArrow* aRight;
     Vector2 trans;
     int level;
     BinaryNodeDimens dim;
@@ -34,9 +34,13 @@ public:
     GraphicBinaryTreeNode(float _x, float _y, float _s, float _bs, bool _sqr, Font* font, int _v, const std::string &_subtext);
     GraphicBinaryTreeNode(float _x, float _y, float _s, bool _sqr, int _v, const std::string &_subtext);
     GraphicBinaryTreeNode(float _x, float _y, float _s, bool _sqr, int _v);
+    ~GraphicBinaryTreeNode();
 
     void setLeft(GraphicBinaryTreeNode* pNode);
     void setRight(GraphicBinaryTreeNode* pNode);
+
+    void assignLeft(GraphicBinaryTreeNode* pNode);
+    void assignRight(GraphicBinaryTreeNode* pNode);
 
     GraphicBinaryTreeNode* getLeft();
     GraphicBinaryTreeNode* getRight();
@@ -46,6 +50,9 @@ public:
 
     GraphicArrow* getLeftArrow();
     GraphicArrow* getRightArrow();
+
+    GraphicArrow*& refLeftArrow();
+    GraphicArrow*& refRightArrow();
 
     Vector2 getCurPos();
     void resetCurPos();

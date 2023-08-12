@@ -98,6 +98,7 @@ public:
     template<typename OT, typename MT> void animateRedirectTail(OT* A, MT* arrow, OT* C);
 
     template<typename OT> void animateNodeFromNormalToIter(OT* node);
+    template<typename OT> void animateNodeFromNormalToNearIter(OT* node);
     template<typename OT> void animateNodeFromNormalToFocus(OT* node);
     template<typename OT> void animateNodeFromNormalToRefer(OT* node);
     template<typename OT> void animateNodeFromNormalToRemove(OT* node);

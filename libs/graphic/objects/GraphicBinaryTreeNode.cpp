@@ -14,6 +14,8 @@ GraphicBinaryTreeNode::GraphicBinaryTreeNode(float _x, float _y, float _s, float
 : GraphicNode(_x, _y, _s, _bs, _sqr, font, _v, _subtext) {
     curPos = Vector2{_x,_y};
     pLeft = pRight = nullptr;
+    aLeft = new GraphicArrow();
+    aRight = new GraphicArrow();
     trans = Z_VECT;
     dim = BinaryNodeDimens(0.0f, size, size);
     if (isSqr) {
@@ -31,13 +33,19 @@ GraphicBinaryTreeNode::GraphicBinaryTreeNode(float _x, float _y, float _s, bool 
 GraphicBinaryTreeNode::GraphicBinaryTreeNode(float _x, float _y, float _s, bool _sqr, int _v)
 : GraphicBinaryTreeNode(_x, _y, _s, Graphic::NODE_BORDER_WIDTH, _sqr, Gfont::defaultFont, _v, "") {}
 
+GraphicBinaryTreeNode::~GraphicBinaryTreeNode() {
+    delete aLeft;
+    delete aRight;
+}
+
+
 void GraphicBinaryTreeNode::setLeft(GraphicBinaryTreeNode* pNode) {
     if (pLeft == nullptr) {
         if (pNode != nullptr) {
             std::pair<Vector2, Vector2> nodePair = getPosition(this, pNode);
-            aLeft = GraphicArrow(Graphic::ARROW_LINE_WIDTH_SMALL, nodePair.first, nodePair.second);
+            *aLeft = GraphicArrow(Graphic::ARROW_LINE_WIDTH_SMALL, nodePair.first, nodePair.second);
         } else {
-            aLeft = GraphicArrow();
+            *aLeft = GraphicArrow();
         }
     }
     pLeft = pNode;
@@ -47,11 +55,19 @@ void GraphicBinaryTreeNode::setRight(GraphicBinaryTreeNode* pNode) {
     if (pRight == nullptr) {
         if (pNode != nullptr) {
             std::pair<Vector2, Vector2> nodePair = getPosition(this, pNode);
-            aRight = GraphicArrow(Graphic::ARROW_LINE_WIDTH_SMALL, nodePair.first, nodePair.second);
+            *aRight = GraphicArrow(Graphic::ARROW_LINE_WIDTH_SMALL, nodePair.first, nodePair.second);
         } else {
-            aRight = GraphicArrow();
+            *aRight = GraphicArrow();
         }
     }
+    pRight = pNode;
+}
+
+void GraphicBinaryTreeNode::assignLeft(GraphicBinaryTreeNode* pNode) {
+    pLeft = pNode;
+}
+
+void GraphicBinaryTreeNode::assignRight(GraphicBinaryTreeNode* pNode) {
     pRight = pNode;
 }
 
@@ -63,12 +79,20 @@ GraphicBinaryTreeNode* GraphicBinaryTreeNode::getRight() {
     return pRight;
 }
 
+GraphicArrow*& GraphicBinaryTreeNode::refLeftArrow() {
+    return aLeft;
+}
+
+GraphicArrow*& GraphicBinaryTreeNode::refRightArrow() {
+    return aRight;
+}
+
 GraphicArrow* GraphicBinaryTreeNode::getLeftArrow() {
-    return &aLeft;
+    return aLeft;
 }
 
 GraphicArrow* GraphicBinaryTreeNode::getRightArrow() {
-    return &aRight;
+    return aRight;
 }
 
 GraphicBinaryTreeNode::BinaryNodeDimens GraphicBinaryTreeNode::getDimens() {
@@ -215,8 +239,8 @@ void GraphicBinaryTreeNode::updateLevel(int newLevel) {
 }
 
 void GraphicBinaryTreeNode::draw() {
-    aLeft.draw();
-    aRight.draw();
+    aLeft->draw();
+    aRight->draw();
     GraphicNode::draw();
 }
 

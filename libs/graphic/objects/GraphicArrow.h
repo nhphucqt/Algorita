@@ -57,8 +57,6 @@ public:
     void resetTransB();
     void resetTrans();
 
-    void copyAttributes(GraphicArrow* arrow);
-
     void resetColor();
 
     void draw();

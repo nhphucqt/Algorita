@@ -17,7 +17,7 @@
 
 #include "../gui/guiTinyDialog.h"
 
-#include "globalLayout.h"
+#include "globalLayoutCs163.h"
 
 namespace Screen {
     class ScreenHashTable: public ScreenView {

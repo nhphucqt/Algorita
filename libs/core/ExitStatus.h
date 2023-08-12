@@ -38,6 +38,10 @@ namespace ExitMess {
 
     const ExitStatus FAIL_AVL_SIZE_OOB(false, "Size is out of bounds: Allow from 0 to " + cf::num2str(Core::MAX_NUM_AVL_ELM));
     const ExitStatus FAIL_AVL_REACH_MAX_SIZE(false, "The AVL Tree has reached maximum size which is " + cf::num2str(Core::MAX_NUM_AVL_ELM));
+
+    const ExitStatus FAIL_HEAP_EMPTY(false, "The heap is empty");
+    const ExitStatus FAIL_HEAP_SIZE_OOB(false, "Size is out of bounds: Allow from 0 to " + cf::num2str(Core::MAX_NUM_HEAP_ELM));
+    const ExitStatus FAIL_HEAP_REACH_MAX_SIZE(false, "The Heap has reached maximum size which is " + cf::num2str(Core::MAX_NUM_HEAP_ELM));
 }
 
 #endif

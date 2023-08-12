@@ -72,6 +72,13 @@ void ListOfOperationsGroups::animateNodeFromNormalToIter(OT* node) {
 }
 
 template<typename OT>
+void ListOfOperationsGroups::animateNodeFromNormalToNearIter(OT* node) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_FOCUS_NEAR_ITER);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_FOCUS_ITER);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND, &Theme::currTheme.NODE_FOREGROUND_FOCUS_ITER);
+}
+
+template<typename OT>
 void ListOfOperationsGroups::animateNodeFromNormalToFocus(OT* node) {
     animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_FOCUS);
     animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_FOCUS);

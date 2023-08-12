@@ -385,7 +385,7 @@ void GraphicAVLTree::checkAndRebalanceTreeFactor(GraphicBinaryTreeNode*& pRoot, 
         ALOG->animateNodeFromIterToNormal(pRoot);
         ALOG->animateNodeFromNormalToIter(tmp);
         pRoot = tmp;
-    } else if (balanceFactor > 1) {
+    } else if (balanceFactor > 1) { // Left
         bool flag = false;
         if (getBalanceFactor(pRoot->getLeft()) < 0) { // Right
             flag = true;

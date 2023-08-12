@@ -31,7 +31,7 @@ void Screen::ScreenAVLTree::load() { // Ensure that obj has to be destroy before
 void Screen::ScreenAVLTree::init() {
     currOperationType = OTNULL;
     currOperation = ONULL;
-    exitMessage.assign(obj.initialize(0, &ALOG).message);
+    exitMessage.assign(obj.initialize(GetRandomValue(1, Core::MAX_NUM_AVL_ELM), &ALOG).message);
 }
 
 void Screen::ScreenAVLTree::draw() {
@@ -148,7 +148,7 @@ void Screen::ScreenAVLTree::draw() {
     obj.draw();
     ALOG.draw(keyActive);
     exitMessage.draw(20, (Window::HEIGHT - Layout::BOTTOM_HEIGHT + (Layout::BOTTOM_HEIGHT - exitMessage.dim.y) / 2), Theme::currTheme.EXIT_MESSAGE);
-    Layout::drawTopNavigation(keyActive);
+    LayoutCs163::drawTopNavigation(keyActive);
 }
 
 void Screen::ScreenAVLTree::destroy() {

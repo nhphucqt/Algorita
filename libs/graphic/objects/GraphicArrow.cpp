@@ -7,6 +7,7 @@ GraphicArrow::GraphicArrow() {
     slidePercent = 0.0;
     pA = pB = Z_VECT;
     curA = curB = Z_VECT;
+    transA = transB = Z_VECT;
     isAppear = false;
 }
 
@@ -98,18 +99,6 @@ void GraphicArrow::resetTransB() {
 void GraphicArrow::resetTrans() {
     resetTransA();
     resetTransB();
-}
-
-void GraphicArrow::copyAttributes(GraphicArrow* arrow) {
-    lineWidth = arrow->lineWidth;
-    slideColor = arrow->slideColor;
-    lineColor = arrow->lineColor;
-    pSlideColor = arrow->pSlideColor;
-    pLineColor = arrow->pLineColor;
-    transparent = arrow->transparent;
-    percent = arrow->percent;
-    slidePercent = arrow->slidePercent;
-    isAppear = arrow->isAppear;
 }
 
 void GraphicArrow::resetColor() {
