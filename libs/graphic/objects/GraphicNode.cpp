@@ -17,6 +17,21 @@ GraphicNode::GraphicNode(float _x, float _y, float _s, float _bs, bool _sqr, Fon
     resetColor();
 }
 
+GraphicNode::GraphicNode(float _x, float _y, float _s, float _bs, bool _sqr, Font* font, std::string str, const std::string &_subtext) {
+    x = _x;
+    y = _y;
+    size = _s;
+    bsize = _bs;
+    isSqr = _sqr;
+    isAppear = false;
+    outerShapeIn = outerShapeOut = cf::outerNull;
+    transparent = 0.0; // vanish at first
+    val = StyledText(str, font);
+    sub = StyledText(_subtext, font, Graphic::NODE_SUBTEXT_PADDING);
+    super = StyledText("", font, Graphic::NODE_SUBTEXT_PADDING);
+    resetColor();
+}
+
 GraphicNode::GraphicNode(float _x, float _y, float _s, bool _sqr, int _v, const std::string &_subtext) 
 : GraphicNode(_x, _y, _s, Graphic::NODE_BORDER_WIDTH, _sqr, Gfont::defaultFont, _v, _subtext) {}
 

@@ -11,6 +11,7 @@
 namespace User {
     ExitStatus getNum(std::stringstream &ss, int &num, bool &flagEOF, int minValue, int maxValue, const std::string &match);
     ExitStatus input2vector(const std::string &input, std::vector<int> &result, const std::string &match);
+    ExitStatus input2vector(const std::string &input, std::vector<std::string> &result, const std::string &match);
     ExitStatus extract2vector(std::stringstream &ss, std::vector<int> &result, const std::string &match);
 }
 

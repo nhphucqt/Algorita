@@ -124,6 +124,9 @@ namespace Core {
     const int MAX_NUM_AVL_ELM = 32;
 
     const int MAX_NUM_HEAP_ELM = 31;
+
+    const int MAX_NUM_TRIE_ELM = 20;
+    const int MAX_LEN_TRIE_ELM = 7;
 }
 
 namespace Window {
@@ -188,6 +191,11 @@ namespace Graphic {
     const int BST_ORG_Y = 100;
     const int BST_VERTICAL_MARGIN = 30;
     const int BST_HORIZONTAL_MARGIN = 15; 
+
+    const int TRIE_ORG_X = Window::WIDTH / 2;
+    const int TRIE_ORG_Y = 100;
+    const int TRIE_VERTICAL_MARGIN = 30;
+    const int TRIE_HORIZONTAL_MARGIN = 15;
 }
 
 namespace Layout {
@@ -208,6 +216,7 @@ namespace Screen {
         AVL_TREE,
         HEAP_MIN,
         HEAP_MAX,
+        TRIE,
         MAIN_MENU_CS163,
         NUM_SCREEN
     } currScreen;

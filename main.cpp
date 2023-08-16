@@ -13,6 +13,7 @@
 #include "libs/graphic/screens/ScreenAVLTree.h"
 #include "libs/graphic/screens/ScreenHeapMin.h"
 #include "libs/graphic/screens/ScreenHeapMax.h"
+#include "libs/graphic/screens/ScreenTrie.h"
 
 int main() {
     SetRandomSeed(time(nullptr));
@@ -47,6 +48,7 @@ int main() {
     Screen::screenViews[Screen::AVL_TREE] = new Screen::ScreenAVLTree();
     Screen::screenViews[Screen::HEAP_MIN] = new Screen::ScreenHeapMin();
     Screen::screenViews[Screen::HEAP_MAX] = new Screen::ScreenHeapMax();
+    Screen::screenViews[Screen::TRIE] = new Screen::ScreenTrie();
     Screen::screenViews[Screen::MAIN_MENU_CS163] = new Screen::ScreenMainMenuCs163();
     Screen::load();
     Screen::setScreen(Screen::MAIN_MENU_CS163);

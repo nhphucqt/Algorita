@@ -63,6 +63,15 @@ int cf::getRandomNode() {
     return GetRandomValue(Core::NODE_MIN_VALUE, Core::NODE_MAX_VALUE);
 }
 
+std::string cf::getRandomString(int len) { // 'a' -> 'z'
+    std::string s;
+    for (int i = 0; i < len; ++i) {
+        s += GetRandomValue('a', 'z');
+    }
+    return s;
+}
+
+
 Vector2 cf::outerNull(const Vector2 &v) {
     return Z_VECT;
 }

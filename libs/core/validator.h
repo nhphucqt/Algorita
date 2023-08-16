@@ -9,6 +9,7 @@
 
 namespace Valid {
     const std::string DIGIT = "0123456789";
+    const std::string LOWERCASE_ALPHABET = "abcdefghijklmnopqrstuvwxyz";
     ExitStatus isNumber(const std::string &str);
     ExitStatus isMatch(const std::string &str, std::string match);
     ExitStatus isMatch(char chr, const std::string &match);

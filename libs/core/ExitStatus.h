@@ -20,6 +20,7 @@ namespace ExitMess {
     const ExitStatus FAIL(false, "");
 
     const ExitStatus FAIL_VALUE_OOB(false, "Value is out of bounds: Allow from " + cf::num2str(Core::NODE_MIN_VALUE) + " to " + cf::num2str(Core::NODE_MAX_VALUE));
+    const ExitStatus FAIL_CHAR_OOB(false, "Character is out of bounds: Allow from \"a\" to \"z\"");
 
     const ExitStatus FAIL_LL_EMPTY(false, "The list is empty");
     const ExitStatus FAIL_LL_SIZE_OOB(false, "Size is out of bounds: Allow from 0 to " + cf::num2str(Core::MAX_NUM_NODE_SLL));
@@ -42,6 +43,10 @@ namespace ExitMess {
     const ExitStatus FAIL_HEAP_EMPTY(false, "The heap is empty");
     const ExitStatus FAIL_HEAP_SIZE_OOB(false, "Size is out of bounds: Allow from 0 to " + cf::num2str(Core::MAX_NUM_HEAP_ELM));
     const ExitStatus FAIL_HEAP_REACH_MAX_SIZE(false, "The Heap has reached maximum size which is " + cf::num2str(Core::MAX_NUM_HEAP_ELM));
+    
+    const ExitStatus FAIL_TRIE_SIZE_OOB(false, "Size is out of bounds: Allow from 0 to " + cf::num2str(Core::MAX_NUM_TRIE_ELM));
+    const ExitStatus FAIL_TRIE_LEN_OOB(false, "String length is out of bounds: Allow from 1 to " + cf::num2str(Core::MAX_LEN_TRIE_ELM));
+    const ExitStatus FAIL_TRIE_REACH_MAX_SIZE(false, "The Trie has reached maximum size which is " + cf::num2str(Core::MAX_NUM_TRIE_ELM));
 }
 
 #endif

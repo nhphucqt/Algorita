@@ -28,6 +28,7 @@ public:
     void fix();
 
     void setnum(int num);
+    void setText(std::string text);
 
     bool isActive() const;
 

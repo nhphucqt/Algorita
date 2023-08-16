@@ -25,6 +25,7 @@ namespace cf {
     void fixNumStr(std::string &num);
 
     int getRandomNode();
+    std::string getRandomString(int len); // 'a' -> 'z'
     
     Vector2 outerNull(const Vector2 &v);
     Vector2 outerCirc(float *size, const Vector2 &v);

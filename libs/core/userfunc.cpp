@@ -54,6 +54,29 @@ ExitStatus User::input2vector(const std::string &input, std::vector<int> &result
     return ExitMess::SUCCESS;
 }
 
+ExitStatus User::input2vector(const std::string &input, std::vector<std::string> &result, const std::string &match) {
+    result.clear();
+    ExitStatus status = Valid::isMatch(input, match);
+    if (!status.success) {
+        status.message = "Input contains invalid characters";
+        return status;
+    }
+    for (int i = 0, cnt = 0; i < (int)input.size(); ++i) {
+        cnt++;
+        if (i+1 == (int)input.size() || (input[i] >= 'a' && input[i] <= 'z') ^ (input[i+1] >= 'a' && input[i+1] <= 'z')) {
+            if (input[i] >= 'a' && input[i] <= 'z') {
+                std::string str = input.substr(i-cnt+1, cnt);
+                if ((int)str.size() < 1 || (int)str.size() > Core::MAX_LEN_TRIE_ELM) {
+                    return ExitMess::FAIL_TRIE_LEN_OOB;
+                }
+                result.push_back(str);
+            }
+            cnt = 0;
+        }
+    }
+    return ExitMess::SUCCESS;
+}
+
 ExitStatus User::extract2vector(std::stringstream &ss, std::vector<int> &result, const std::string &match) {
     result.clear();
     ExitStatus status;

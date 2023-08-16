@@ -68,6 +68,13 @@ void GuiTextBoxState::setnum(int num) {
     text[str.size()] = '\0';
 }
 
+void GuiTextBoxState::setText(std::string str) {
+    for (int i = 0; i < (int)str.size(); ++i) {
+        text[i] = str[i];
+    }
+    text[str.size()] = '\0';
+}
+
 bool GuiTextBoxState::isActive() const {
     return active;
 }

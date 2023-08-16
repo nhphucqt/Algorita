@@ -10,7 +10,7 @@ namespace LayoutCs163 {
     inline DropDownBoxState dropDownList;
 
     void initialize();
-    void setScreen(Screen::ScreenType screen);
+    void setScreen(int id, Screen::ScreenType screen);
     void drawTopNavigation(bool keyActive);
 }
 
