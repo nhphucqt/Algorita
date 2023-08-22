@@ -60,6 +60,8 @@ namespace Theme {
 
         Color EXIT_MESSAGE;
 
+        Color HIGH_LIGHT[10];
+
         void load();
     };
 

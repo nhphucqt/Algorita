@@ -127,6 +127,11 @@ namespace Core {
 
     const int MAX_NUM_TRIE_ELM = 20;
     const int MAX_LEN_TRIE_ELM = 7;
+
+    const int MAX_NUM_234_ELM = 64;
+
+    const int MAX_NUM_GRAPH_NODE = 10;
+    const int MAX_NUM_GRAPH_EDGE = 20;
 }
 
 namespace Window {
@@ -196,6 +201,11 @@ namespace Graphic {
     const int TRIE_ORG_Y = 100;
     const int TRIE_VERTICAL_MARGIN = 30;
     const int TRIE_HORIZONTAL_MARGIN = 15;
+
+    const int T234_ORG_X = Window::WIDTH / 2;
+    const int T234_ORG_Y = 100;
+    const int T234_VERTICAL_MARGIN = 30;
+    const int T234_HORIZONTAL_MARGIN = 15;
 }
 
 namespace Layout {
@@ -217,6 +227,8 @@ namespace Screen {
         HEAP_MIN,
         HEAP_MAX,
         TRIE,
+        TREE234,
+        GRAPH,
         MAIN_MENU_CS163,
         NUM_SCREEN
     } currScreen;

@@ -24,7 +24,7 @@ void Screen::ScreenMainMenuCs163::draw() {
         LayoutCs163::setScreen(1, Screen::AVL_TREE);
     }
     if (GuiButton(Rectangle{1050, 300, 300, 200}, "234 Tree")) {
-        LayoutCs163::setScreen(2, Screen::CIRCULAR_LINKED_LIST);
+        LayoutCs163::setScreen(2, Screen::TREE234);
     }
     if (GuiButton(Rectangle{50, 580, 300, 200}, "Heap Min")) {
         LayoutCs163::setScreen(3, Screen::HEAP_MIN);
@@ -36,7 +36,7 @@ void Screen::ScreenMainMenuCs163::draw() {
         LayoutCs163::setScreen(5, Screen::TRIE);
     }
     if (GuiButton(Rectangle{1250, 580, 300, 200}, "Graph")) {
-        LayoutCs163::setScreen(6, Screen::DYNAMIC_ARRAY);
+        LayoutCs163::setScreen(6, Screen::GRAPH);
     }
     Theme::draw(true);
 }

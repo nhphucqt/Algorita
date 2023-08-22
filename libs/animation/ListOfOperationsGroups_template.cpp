@@ -86,6 +86,13 @@ void ListOfOperationsGroups::animateNodeFromNormalToFocus(OT* node) {
 }
 
 template<typename OT>
+void ListOfOperationsGroups::animateNodeFromNormalToHighlight(OT* node, int i) {
+    animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.HIGH_LIGHT[i]);
+    animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.HIGH_LIGHT[i]);
+    animateTransColor(&node->foreColor, &node->pForeColor, &Theme::currTheme.NODE_FOREGROUND, &Theme::currTheme.NODE_FOREGROUND_FOCUS);
+}
+
+template<typename OT>
 void ListOfOperationsGroups::animateNodeFromNormalToRefer(OT* node) {
     animateTransColor(&node->backColor, &node->pBackColor, &Theme::currTheme.NODE_BACKGROUND, &Theme::currTheme.NODE_BACKGROUND_FOCUS_REFER);
     animateTransColor(&node->bordColor, &node->pBordColor, &Theme::currTheme.NODE_BORDER, &Theme::currTheme.NODE_BORDER_FOCUS_REFER);

@@ -97,6 +97,8 @@ public:
     template<typename OT, typename MT> void animateRedirectHead(OT* A, MT* arrow, OT* C);
     template<typename OT, typename MT> void animateRedirectTail(OT* A, MT* arrow, OT* C);
 
+    template<typename OT> void animateNodeFromNormalToHighlight(OT* node, int i);
+
     template<typename OT> void animateNodeFromNormalToIter(OT* node);
     template<typename OT> void animateNodeFromNormalToNearIter(OT* node);
     template<typename OT> void animateNodeFromNormalToFocus(OT* node);

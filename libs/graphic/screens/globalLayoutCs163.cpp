@@ -26,7 +26,7 @@ void LayoutCs163::drawTopNavigation(bool keyActive) {
                     LayoutCs163::setScreen(1, Screen::AVL_TREE);
                 break;
                 case 2:
-                    LayoutCs163::setScreen(2, Screen::QUEUE);
+                    LayoutCs163::setScreen(2, Screen::TREE234);
                 break;
                 case 3:
                     LayoutCs163::setScreen(3, Screen::HEAP_MIN);
@@ -35,10 +35,10 @@ void LayoutCs163::drawTopNavigation(bool keyActive) {
                     LayoutCs163::setScreen(4, Screen::HEAP_MAX);
                 break;
                 case 5:
-                    LayoutCs163::setScreen(5, Screen::STATIC_ARRAY);
+                    LayoutCs163::setScreen(5, Screen::TRIE);
                 break;
                 case 6:
-                    LayoutCs163::setScreen(6, Screen::DYNAMIC_ARRAY);
+                    LayoutCs163::setScreen(6, Screen::GRAPH);
                 break;
             }
         }

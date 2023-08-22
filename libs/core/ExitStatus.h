@@ -47,6 +47,13 @@ namespace ExitMess {
     const ExitStatus FAIL_TRIE_SIZE_OOB(false, "Size is out of bounds: Allow from 0 to " + cf::num2str(Core::MAX_NUM_TRIE_ELM));
     const ExitStatus FAIL_TRIE_LEN_OOB(false, "String length is out of bounds: Allow from 1 to " + cf::num2str(Core::MAX_LEN_TRIE_ELM));
     const ExitStatus FAIL_TRIE_REACH_MAX_SIZE(false, "The Trie has reached maximum size which is " + cf::num2str(Core::MAX_NUM_TRIE_ELM));
+
+    const ExitStatus FAIL_234_SIZE_OOB(false, "Size is out of bounds: Allow from 0 to " + cf::num2str(Core::MAX_NUM_234_ELM));
+    const ExitStatus FAIL_234_REACH_MAX_SIZE(false, "The 234 Tree has reached maximum size which is " + cf::num2str(Core::MAX_NUM_234_ELM));
+
+    const ExitStatus FAIL_GRAPH_NNODE_OOB(false, "Number of node is out of bounds: Allow from 1 to " + cf::num2str(Core::MAX_NUM_GRAPH_NODE));
+    const ExitStatus FAIL_GRAPH_NEDGE_OOB(false, "Number of edge is out of bounds: Allow from 0 to " + cf::num2str(Core::MAX_NUM_GRAPH_EDGE));
+    const ExitStatus FAIL_GRAPH_NODE_LABEL_OOB(false, "Node label is out of bounds");
 }
 
 #endif

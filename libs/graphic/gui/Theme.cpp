@@ -55,6 +55,18 @@ void Theme::loadTheme() {
 
     themes[LIGHT_THEME_ID].EXIT_MESSAGE = RED;
 
+    themes[LIGHT_THEME_ID].HIGH_LIGHT[0] = GOLD;
+    themes[LIGHT_THEME_ID].HIGH_LIGHT[1] = ORANGE;
+    themes[LIGHT_THEME_ID].HIGH_LIGHT[2] = PINK;
+    themes[LIGHT_THEME_ID].HIGH_LIGHT[3] = RED;
+    themes[LIGHT_THEME_ID].HIGH_LIGHT[4] = GREEN;
+    themes[LIGHT_THEME_ID].HIGH_LIGHT[5] = BLUE;
+    themes[LIGHT_THEME_ID].HIGH_LIGHT[6] = PURPLE;
+    themes[LIGHT_THEME_ID].HIGH_LIGHT[7] = BROWN;
+    themes[LIGHT_THEME_ID].HIGH_LIGHT[8] = MAGENTA;
+    themes[LIGHT_THEME_ID].HIGH_LIGHT[9] = GRAY;
+
+
     // DARK THEME
     themes[DARK_THEME_ID].iconText = Gicon::DARK_THEME;
     themes[DARK_THEME_ID].stylePath = "assets/styles/dark.rgs";
@@ -105,6 +117,17 @@ void Theme::loadTheme() {
     themes[DARK_THEME_ID].CODEBLOCK_FOREGROUND_FOCUS = BLACK;
 
     themes[DARK_THEME_ID].EXIT_MESSAGE = Color{255, 117, 151, 255};
+
+    themes[DARK_THEME_ID].HIGH_LIGHT[0] = GOLD;
+    themes[DARK_THEME_ID].HIGH_LIGHT[1] = ORANGE;
+    themes[DARK_THEME_ID].HIGH_LIGHT[2] = PINK;
+    themes[DARK_THEME_ID].HIGH_LIGHT[3] = RED;
+    themes[DARK_THEME_ID].HIGH_LIGHT[4] = GREEN;
+    themes[DARK_THEME_ID].HIGH_LIGHT[5] = BLUE;
+    themes[DARK_THEME_ID].HIGH_LIGHT[6] = PURPLE;
+    themes[DARK_THEME_ID].HIGH_LIGHT[7] = BROWN;
+    themes[DARK_THEME_ID].HIGH_LIGHT[8] = MAGENTA;
+    themes[DARK_THEME_ID].HIGH_LIGHT[9] = GRAY;
 
     // Get last theme
     std::ifstream fin(CPath::THEME_DATA);
