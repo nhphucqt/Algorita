@@ -113,7 +113,7 @@ void GraphicGraph::updatePosition() {
     for (int i = 0; i < numNode; ++i) {
         float repConst = 0.003;
         float distUp = nodes[i]->getCenter().y;
-        float distDown = Window::HEIGHT - nodes[i]->getCenter().y;
+        float distDown = 640 - nodes[i]->getCenter().y;
         float distLeft = nodes[i]->getCenter().x;
         float distRight = Window::WIDTH - nodes[i]->getCenter().x;
         Vector2 accUp = Vector2{0,-1} * repConst * distUp;
@@ -296,11 +296,19 @@ ExitStatus GraphicGraph::initialize(std::string str, ListOfOperationsGroups* ALO
 void GraphicGraph::dfs(int u, std::vector<int>& mark, int num, ListOfOperationsGroups* ALOG) {
     mark[u] = num;
     ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({1});
     ALOG->animateNodeFromNormalToHighlight(nodes[u], mark[u]);
     for (int i = 0; i < numEdge; ++i) {
         if (edges[i]->nodeA->nVal == u || edges[i]->nodeB->nVal == u) {
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({2});
             int v = u ^ edges[i]->nodeA->nVal ^ edges[i]->nodeB->nVal;
             if (mark[v] == -1) {
+                ALOG->animateArrowFromNormalToIter(edges[i]);
+            }
+            if (mark[v] == -1) {
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({3});
                 dfs(v, mark, num, ALOG);
             }
         }
@@ -309,13 +317,15 @@ void GraphicGraph::dfs(int u, std::vector<int>& mark, int num, ListOfOperationsG
 
 ExitStatus GraphicGraph::findConnectedComponents(ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
-    ALOG->resetCode();
+    ALOG->loadCode(CPath::GRAPH_CC);
     reset();
 
     std::vector<int> mark(numNode, -1);
     int num = 0;
     for (int i = 0; i < numNode; ++i) {
         if (mark[i] == -1) {
+            ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({5,6});
             dfs(i, mark, num++, ALOG);
         }
     }
@@ -327,21 +337,32 @@ ExitStatus GraphicGraph::findConnectedComponents(ListOfOperationsGroups* ALOG) {
 
 ExitStatus GraphicGraph::findMinimumSpanningTree(ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
-    ALOG->resetCode();
+    ALOG->loadCode(CPath::GRAPH_MST);
     reset();
 
     std::sort(edges.begin(), edges.end(), [&](GraphEdge* a, GraphEdge* b) {
         return a->cost < b->cost;
     });
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({0,1});
 
     DSU dsu(numNode);
     for (int i = 0; i < numEdge; ++i) {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2});
+        ALOG->animateArrowFromNormalToIter(edges[i]);
+
         int u = dsu.getRoot(edges[i]->nodeA->nVal);
         int v = dsu.getRoot(edges[i]->nodeB->nVal);
+
+        ALOG->addNewGroup();
         if (u != v) {
-            ALOG->addNewGroup();
-            ALOG->animateArrowFromNormalToFocus(edges[i]);
+            ALOG->backGroup()->setHighlightLines({3,4});
+            ALOG->animateArrowFromIterToFocus(edges[i]);
             dsu.unite(u, v);
+        } else {
+            ALOG->backGroup()->setHighlightLines({5});
+            ALOG->animateArrowFromIterToBlank(edges[i]);
         }
     }
 
@@ -352,7 +373,7 @@ ExitStatus GraphicGraph::findMinimumSpanningTree(ListOfOperationsGroups* ALOG) {
 
 ExitStatus GraphicGraph::dijkstra(int source, ListOfOperationsGroups* ALOG) {
     ALOG->clearGroup();
-    ALOG->resetCode();
+    ALOG->loadCode(CPath::GRAPH_DIJKSTRA);
     reset();
 
     std::priority_queue<std::pair<int, int>> heap;
@@ -362,6 +383,7 @@ ExitStatus GraphicGraph::dijkstra(int source, ListOfOperationsGroups* ALOG) {
     heap.emplace(-dist[source], source);
 
     ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({0});
     ALOG->animateTransText(&nodes[source]->sub, "", cf::num2str(dist[source]));
 
     while (!heap.empty()) {
@@ -372,16 +394,19 @@ ExitStatus GraphicGraph::dijkstra(int source, ListOfOperationsGroups* ALOG) {
         if (w != dist[u]) continue;
 
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2});
         ALOG->animateNodeFromNormalToIter(nodes[u]);
 
         for (int i = 0; i < numEdge; ++i) {
             if (u == edges[i]->nodeA->nVal || u == edges[i]->nodeB->nVal) {
                 int v = u ^ edges[i]->nodeA->nVal ^ edges[i]->nodeB->nVal;
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({3});
                 if (dist[v] > dist[u] + edges[i]->cost) {
-                    ALOG->addNewGroup();
                     ALOG->animateArrowFromNormalToIter(edges[i]);
                     
                     ALOG->addNewGroup();
+                    ALOG->backGroup()->setHighlightLines({4});
                     if (dist[v] == 0x3f3f3f3f) {
                         ALOG->animateTransText(&nodes[v]->sub, "", cf::num2str(dist[u] + edges[i]->cost));
                     } else {
@@ -428,7 +453,7 @@ void GraphicGraph::draw() {
     // for (int i = 0; i < numNode; ++i) {
     //     DrawLineEx(nodes[i]->getCenter(), nodes[i]->getCenter()+nodes[i]->acceleration * 1000, 2, RED);
     // }
-    Vector2 center = getCenter();
+    // Vector2 center = getCenter();
     // for (int i = 0; i < numNode; ++i) {
     //     Vector2 yVect = unitVector(nodes[i]->getCenter() - center);
     //     Vector2 xVect = {yVect.y, -yVect.x};
@@ -437,5 +462,5 @@ void GraphicGraph::draw() {
     //     DrawLineEx(nodes[i]->getCenter(), nodes[i]->getCenter() + yVect * n * 1000, 2, BLUE);
     //     DrawLineEx(nodes[i]->getCenter(), nodes[i]->getCenter() + xVect * m * 1000, 2, GREEN);
     // }
-    DrawCircleV(center, 3, ORANGE);
+    // DrawCircleV(center, 3, ORANGE);
 }

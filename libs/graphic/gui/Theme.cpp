@@ -66,6 +66,8 @@ void Theme::loadTheme() {
     themes[LIGHT_THEME_ID].HIGH_LIGHT[8] = MAGENTA;
     themes[LIGHT_THEME_ID].HIGH_LIGHT[9] = GRAY;
 
+    themes[LIGHT_THEME_ID].BLANK_COLOR = BLANK;
+
 
     // DARK THEME
     themes[DARK_THEME_ID].iconText = Gicon::DARK_THEME;
@@ -128,6 +130,8 @@ void Theme::loadTheme() {
     themes[DARK_THEME_ID].HIGH_LIGHT[7] = BROWN;
     themes[DARK_THEME_ID].HIGH_LIGHT[8] = MAGENTA;
     themes[DARK_THEME_ID].HIGH_LIGHT[9] = GRAY;
+
+    themes[DARK_THEME_ID].BLANK_COLOR = BLANK;
 
     // Get last theme
     std::ifstream fin(CPath::THEME_DATA);

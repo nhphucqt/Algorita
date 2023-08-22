@@ -62,6 +62,8 @@ namespace Theme {
 
         Color HIGH_LIGHT[10];
 
+        Color BLANK_COLOR;
+
         void load();
     };
 

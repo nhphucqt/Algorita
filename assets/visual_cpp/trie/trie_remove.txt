@@ -1,0 +1,11 @@
+if (depth == str.size()):
+  if (!cur->isWord): return
+  cur->isWord = false
+  if cur->next.empty():
+    delete cur
+  return
+char x = str[depth]
+if (cur->next[x] == NULL): return
+erase(cur->next[x], str, depth + 1)
+if (!cur->isWord && cur->next.empty()):
+  delete cur

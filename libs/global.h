@@ -91,10 +91,18 @@ namespace CPath {
     const char* const HEAP_MAX_GET_TOP = "assets/visual_cpp/heap_max/heap_max_gettop.txt";
     const char* const HEAP_MAX_REMOVE = "assets/visual_cpp/heap_max/heap_max_remove.txt";
     const char* const HEAP_MAX_GET_SIZE = "assets/visual_cpp/heap_max/heap_max_getsize.txt";
+
+    const char* const GRAPH_CC = "assets/visual_cpp/graph/graph_cc.cpp.txt";
+    const char* const GRAPH_MST = "assets/visual_cpp/graph/graph_mst.txt";
+    const char* const GRAPH_DIJKSTRA = "assets/visual_cpp/graph/graph_dijkstra.txt";
+
+    const char* const TRIE_PUSH = "assets/visual_cpp/trie/trie_push.txt";
+    const char* const TRIE_REMOVE = "assets/visual_cpp/trie/trie_remove.txt";
+    const char* const TRIE_SEARCH = "assets/visual_cpp/trie/trie_search.txt";
 }
 namespace App {
     const char* const title = "Algorita";
-    const char* const description = "Project Lab CS162 - A data structures visualizer based on VisuAlgo";
+    const char* const description = "Project Lab CS163 - A data structures visualizer based on VisuAlgo";
     const char* const author = "by Nguyen Hoang Phuc - 22125077";
 }
 

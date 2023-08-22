@@ -226,6 +226,11 @@ void ListOfOperationsGroups::animateNodeFromDisabledToFocus(OT* node) {
 }
 
 template<typename OT>
+void ListOfOperationsGroups::animateArrowFromIterToBlank(OT* arrow) {
+    animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE_FOCUS_ITER, &Theme::currTheme.BLANK_COLOR);
+}
+
+template<typename OT>
 void ListOfOperationsGroups::animateArrowFromNormalToIter(OT* arrow) {
     animateTransColor(&arrow->lineColor, &arrow->pLineColor, &Theme::currTheme.ARROW_LINE, &Theme::currTheme.ARROW_LINE_FOCUS_ITER);
 }

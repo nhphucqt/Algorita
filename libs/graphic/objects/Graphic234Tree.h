@@ -44,6 +44,7 @@ private:
     void showEdgeOfTree(ListOfOperationsGroups* ALOG);
 
     void push(Graphic234Node* pRoot, int val, ListOfOperationsGroups* ALOG);
+    void search(Graphic234Node* pRoot, int val, ListOfOperationsGroups* ALOG);
 
     void draw(Graphic234Node* pRoot);
 
@@ -56,11 +57,9 @@ public:
 
     ExitStatus push(int val, ListOfOperationsGroups* ALOG);
 
-    ExitStatus getTop(ListOfOperationsGroups* ALOG);
+    ExitStatus search(int val, ListOfOperationsGroups* ALOG);
 
-    ExitStatus remove(int id, ListOfOperationsGroups* ALOG);
-
-    ExitStatus animGetSize(ListOfOperationsGroups* ALOG);
+    ExitStatus remove(int val, ListOfOperationsGroups* ALOG);
 
     void draw();
 

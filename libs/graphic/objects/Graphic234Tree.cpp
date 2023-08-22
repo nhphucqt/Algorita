@@ -339,6 +339,7 @@ void Graphic234Tree::push(Graphic234Node* pRoot, int val, ListOfOperationsGroups
         pRoot->pushVal(newNode);
         ALOG->addNewGroup();
         ALOG->animateFadeIn(newNode);
+        ALOG->animateNodeFromNormalToIter(newNode);
         balanceTreeLayout(ALOG);
         return;
     }
@@ -356,7 +357,9 @@ void Graphic234Tree::push(Graphic234Node* pRoot, int val, ListOfOperationsGroups
             pRoot->getChild(p)->getNewTransPos().y
         );
 
-        pRoot->pushVal(pLeft->getVal(1));
+        GraphicTransNode* midNode = pLeft->getVal(1);
+
+        pRoot->pushVal(midNode);
         pRoot->pushChild(pRight, p+1);
 
         pRight->pushVal(pLeft->getVal(2));
@@ -381,6 +384,7 @@ void Graphic234Tree::push(Graphic234Node* pRoot, int val, ListOfOperationsGroups
         }
 
         ALOG->addNewGroup();
+        ALOG->animateNodeFromNormalToIter(midNode);
         ALOG->animateFadeIn(aRight);
         ALOG->animateSlideIn(aRight);
         balanceTreeLayout(ALOG);
@@ -392,6 +396,17 @@ void Graphic234Tree::push(Graphic234Node* pRoot, int val, ListOfOperationsGroups
             return;
         }
     }
+
+    ALOG->addNewGroup();
+    for (int i = 0; i < pRoot->getNumVals(); ++i) {
+        ALOG->animateNodeFromIterToNearIter(pRoot->getVal(i));
+    }
+    for (int i = 0; i < pRoot->getChild(p)->getNumVals(); ++i) {
+        ALOG->animateNodeFromNormalToIter(pRoot->getChild(p)->getVal(i));
+    }
+    ALOG->animateArrowSlideFromNormalToIter(pRoot->getArrow(p));
+    ALOG->animateSlideColorIn(pRoot->getArrow(p));
+
     push(pRoot->getChild(p), val, ALOG);
 }
 
@@ -414,6 +429,11 @@ ExitStatus Graphic234Tree::push(int val, ListOfOperationsGroups* ALOG) {
             Graphic::T234_ORG_X, 
             Graphic::T234_ORG_Y
         );
+    } else {
+        ALOG->addNewGroup();
+        for (int i = 0; i < pRoot->getNumVals(); ++i) {
+            ALOG->animateNodeFromNormalToIter(pRoot->getVal(i));
+        }
     }
     if (pRoot->getNumVals() == 3) {
         Graphic234Node* newLeft = new Graphic234Node(
@@ -453,6 +473,8 @@ ExitStatus Graphic234Tree::push(int val, ListOfOperationsGroups* ALOG) {
         pRoot->pushArrow(aRight);
 
         ALOG->addNewGroup();
+        ALOG->animateNodeFromIterToNormal(newLeft->getVal(0));
+        ALOG->animateNodeFromIterToNormal(newRight->getVal(0));
         ALOG->animateFadeIn(aLeft);
         ALOG->animateSlideIn(aLeft);
         ALOG->animateFadeIn(aRight);
@@ -461,9 +483,52 @@ ExitStatus Graphic234Tree::push(int val, ListOfOperationsGroups* ALOG) {
     }
 
     push(pRoot, val, ALOG);
-    ALOG->addNewGroup();
 
     ALOG->build();
+
+    return ExitMess::SUCCESS;
+}
+
+void Graphic234Tree::search(Graphic234Node* pRoot, int val, ListOfOperationsGroups* ALOG) {
+    for (int i = 0; i < pRoot->getNumVals(); ++i) {
+        ALOG->animateNodeFromNormalToIter(pRoot->getVal(i));
+    }
+    int p = 0;
+    while (p < pRoot->getNumVals() && val > pRoot->getVal(p)->nVal) {
+        p++;
+    }
+    if (p < pRoot->getNumVals() && val == pRoot->getVal(p)->nVal) {
+        ALOG->addNewGroup();
+        ALOG->animateNodeFromIterToFocus(pRoot->getVal(p));
+    } else {
+        ALOG->addNewGroup();
+        for (int i = 0; i < pRoot->getNumVals(); ++i) {
+            ALOG->animateNodeFromIterToNearIter(pRoot->getVal(i));
+        }
+        if (pRoot->getNumChild() == 0) {
+        } else {
+            for (int i = 0; i < pRoot->getChild(p)->getNumVals(); ++i) {
+                ALOG->animateNodeFromIterToNearIter(pRoot->getChild(p)->getVal(i));
+            } 
+            ALOG->animateArrowSlideFromNormalToIter(pRoot->getArrow(p));
+            ALOG->animateSlideColorIn(pRoot->getArrow(p));
+            search(pRoot->getChild(p), val, ALOG);
+        }
+    }
+}
+
+
+ExitStatus Graphic234Tree::search(int val, ListOfOperationsGroups* ALOG) {
+    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
+        return ExitMess::FAIL_VALUE_OOB;
+    }
+
+    ALOG->clearGroup();
+    ALOG->resetCode();
+    reset();
+    
+    ALOG->addNewGroup();
+    search(pRoot, val, ALOG);
 
     return ExitMess::SUCCESS;
 }

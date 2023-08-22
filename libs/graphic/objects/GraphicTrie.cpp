@@ -253,12 +253,12 @@ ExitStatus GraphicTrie::push(std::string s, ListOfOperationsGroups* ALOG) {
     }
 
     ALOG->clearGroup();
-    ALOG->resetCode();
-    // ALOG->loadCode(CPath::AVL_PUSH);
+    ALOG->loadCode(CPath::TRIE_PUSH);
     reset();
     
     GraphicTrieNode* cur = pRoot;
     ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({0});
     ALOG->animateNodeFromNormalToIter(cur);
     for (int i = 0; i < (int)s.size(); ++i) {
         // std::cerr << s[i] << '\n';
@@ -277,6 +277,7 @@ ExitStatus GraphicTrie::push(std::string s, ListOfOperationsGroups* ALOG) {
             cur->setChild(c, newNode);
 
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({2,3});
             ALOG->animateFadeIn(newNode);
             ALOG->animateFadeIn(cur->getArrow(c));
             ALOG->animateSlideIn(cur->getArrow(c));
@@ -284,6 +285,7 @@ ExitStatus GraphicTrie::push(std::string s, ListOfOperationsGroups* ALOG) {
         }
 
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({4});
         ALOG->animateNodeFromIterToNearIter(cur);
         ALOG->animateSlideColorIn(cur->getArrow(c));
         ALOG->animateArrowSlideFromNormalToIter(cur->getArrow(c));
@@ -293,6 +295,7 @@ ExitStatus GraphicTrie::push(std::string s, ListOfOperationsGroups* ALOG) {
     if (!cur->isLeaf()) {
         _size++;
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({5});
         ALOG->animateTransText(&cur->val, cur->val.content, cur->val.content + "*");
         cur->setLeaf();
     }
@@ -313,17 +316,19 @@ ExitStatus GraphicTrie::search(std::string s, ListOfOperationsGroups* ALOG) {
     }
 
     ALOG->clearGroup();
-    ALOG->loadCode(CPath::AVL_SEARCH);
+    ALOG->loadCode(CPath::TRIE_SEARCH);
     reset();
 
     GraphicTrieNode* cur = pRoot;
     ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({0});
     ALOG->animateNodeFromNormalToIter(cur);
 
     for (int i = 0; i < (int)s.size(); ++i) {
         int c = s[i] - GraphicTrieNode::MIN_CHAR;
         if (cur->getChild(c) == nullptr) {
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({2});
             ALOG->animateNodeFromIterToNearIter(cur);
 
             ALOG->build();
@@ -331,6 +336,7 @@ ExitStatus GraphicTrie::search(std::string s, ListOfOperationsGroups* ALOG) {
             return ExitMess::SUCCESS;
         } else {
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({3});
             ALOG->animateNodeFromIterToNearIter(cur);
             ALOG->animateSlideColorIn(cur->getArrow(c));
             ALOG->animateArrowSlideFromNormalToIter(cur->getArrow(c));
@@ -341,9 +347,11 @@ ExitStatus GraphicTrie::search(std::string s, ListOfOperationsGroups* ALOG) {
 
     if (cur->isLeaf()) {
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({4});
         ALOG->animateNodeFromIterToFocus(cur);
     } else {
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({4});
         ALOG->animateNodeFromIterToNearIter(cur);
     }
 
@@ -358,28 +366,41 @@ bool GraphicTrie::remove(GraphicTrieNode* pRoot, int i, const std::string& s, Li
     if (i == (int)s.size()) {
         if (!pRoot->isLeaf()) {
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({1});
             ALOG->animateNodeFromIterToNormal(pRoot);
             return false;
         }
+
         _size--;
-        if (!pRoot->isRealLeaf()) {
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2});
+        ALOG->animateNodeFromIterToNormal(pRoot);
+        ALOG->animateTransText(&pRoot->val, pRoot->val.content, pRoot->val.content.substr(0,1));
+
+        if (pRoot->isRealLeaf()) {
+            nodes.push_back(pRoot);
             ALOG->addNewGroup();
-            ALOG->animateNodeFromIterToNormal(pRoot);
-            ALOG->animateTransText(&pRoot->val, pRoot->val.content, pRoot->val.content.substr(0,1));
+            ALOG->backGroup()->setHighlightLines({3,4});
+            ALOG->animateFadeOut(pRoot);
+            return true;
+        } else {
             return false;
         }
-        nodes.push_back(pRoot);
-        ALOG->addNewGroup();
-        ALOG->animateFadeOut(pRoot);
-        return true;
     }
 
     int c = s[i] - GraphicTrieNode::MIN_CHAR;
+    ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({6});
+
     if (pRoot->getChild(c) == nullptr) {
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({7});
         return false;
     }
 
     ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({8});
     ALOG->animateNodeFromIterToNearIter(pRoot);
     ALOG->animateSlideColorIn(pRoot->getArrow(c));
     ALOG->animateArrowSlideFromNormalToIter(pRoot->getArrow(c));
@@ -393,9 +414,10 @@ bool GraphicTrie::remove(GraphicTrieNode* pRoot, int i, const std::string& s, Li
         ALOG->animateSlideOut(pRoot->getArrow(c));
         pRoot->setChild(c, nullptr);
 
-        if (pRoot != this->pRoot && pRoot->isRealLeaf()) {
+        if (pRoot != this->pRoot && pRoot->isRealLeaf() && !pRoot->isLeaf()) {
             nodes.push_back(pRoot);
             ALOG->addNewGroup();
+            ALOG->backGroup()->setHighlightLines({9,10});
             ALOG->animateFadeOut(pRoot);
             return true;
         }
@@ -418,7 +440,7 @@ ExitStatus GraphicTrie::remove(std::string s, ListOfOperationsGroups* ALOG) {
     }
 
     ALOG->clearGroup();
-    ALOG->loadCode(CPath::AVL_REMOVE);
+    ALOG->loadCode(CPath::TRIE_REMOVE);
     reset();
 
     ALOG->addNewGroup();

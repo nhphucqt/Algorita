@@ -1,0 +1,5 @@
+initSSSP, PQ.push((0,sourceVertex))
+while !PQ.empty() // PQ is a Priority Queue
+  u = PQ.front(), PQ.pop()
+  for each neighbor v of u if u is valid
+    update(u, v, w(u, v)) + insert new pair to PQ
