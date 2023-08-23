@@ -99,6 +99,10 @@ namespace CPath {
     const char* const TRIE_PUSH = "assets/visual_cpp/trie/trie_push.txt";
     const char* const TRIE_REMOVE = "assets/visual_cpp/trie/trie_remove.txt";
     const char* const TRIE_SEARCH = "assets/visual_cpp/trie/trie_search.txt";
+
+    const char* const T234_PUSH = "assets/visual_cpp/t234/t234_push.txt";
+    const char* const T234_REMOVE = "assets/visual_cpp/t234/t234_pop.txt";
+    const char* const T234_SEARCH = "assets/visual_cpp/t234/t234_search.txt";
 }
 namespace App {
     const char* const title = "Algorita";
@@ -136,7 +140,7 @@ namespace Core {
     const int MAX_NUM_TRIE_ELM = 20;
     const int MAX_LEN_TRIE_ELM = 7;
 
-    const int MAX_NUM_234_ELM = 64;
+    const int MAX_NUM_234_ELM = 50;
 
     const int MAX_NUM_GRAPH_NODE = 10;
     const int MAX_NUM_GRAPH_EDGE = 20;

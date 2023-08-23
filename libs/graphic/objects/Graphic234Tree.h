@@ -15,7 +15,7 @@ class Graphic234Tree {
 private:
     Graphic234Node* pRoot;
     std::list<GraphicTransNode*> nodes;
-    std::list<Graphic234Node*> nodes234;
+    std::list<GraphicArrow*> arrows;
     int _size;
 
     void resetColorAllNodes(Graphic234Node* pRoot);
@@ -25,6 +25,7 @@ private:
     void resetCurPosAllNodes(Graphic234Node* pRoot);
     void resetCurPosAllNodes();
     void clearSaparated();
+    void clearArrows();
     void reset();
     void destroy(Graphic234Node* pRoot);
 
@@ -45,6 +46,10 @@ private:
 
     void push(Graphic234Node* pRoot, int val, ListOfOperationsGroups* ALOG);
     void search(Graphic234Node* pRoot, int val, ListOfOperationsGroups* ALOG);
+
+    int getMostLeft(Graphic234Node* pRoot);
+    int getMostRight(Graphic234Node* pRoot);
+    void remove(Graphic234Node* pRoot, int val, ListOfOperationsGroups* ALOG);
 
     void draw(Graphic234Node* pRoot);
 

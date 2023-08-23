@@ -31,6 +31,13 @@ void Graphic234Node::popBackVal() {
     pVals.pop_back();
 }
 
+void Graphic234Node::popVal(int pos) {
+    auto it = pVals.begin();
+    while (pos--) it++;
+    pVals.erase(it);
+}
+
+
 
 void Graphic234Node::pushChild(Graphic234Node* pNode) {
     pChild.push_back(pNode);
@@ -46,6 +53,13 @@ void Graphic234Node::popBackChild() {
     pChild.pop_back();
 }
 
+void Graphic234Node::popChild(int pos) {
+    auto it = pChild.begin();
+    while (pos--) it++;
+    pChild.erase(it);
+}
+
+
 void Graphic234Node::pushArrow(GraphicArrow* pArrow) {
     aChild.push_back(pArrow);
 }
@@ -59,6 +73,13 @@ void Graphic234Node::pushArrow(GraphicArrow* pArrow, int pos) {
 void Graphic234Node::popBackArrow() {
     aChild.pop_back();
 }
+
+void Graphic234Node::popArrow(int pos) {
+    auto it = aChild.begin();
+    while (pos--) it++;
+    aChild.erase(it);
+}
+
 
 int Graphic234Node::getNumChild() {
     return pChild.size();

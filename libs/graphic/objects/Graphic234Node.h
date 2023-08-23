@@ -42,6 +42,10 @@ public:
     void popBackChild();
     void popBackVal();
 
+    void popVal(int pos);
+    void popArrow(int pos);
+    void popChild(int pos);
+
     int getNumVals();
     GraphicTransNode* getVal(int i);
 

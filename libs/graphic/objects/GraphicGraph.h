@@ -95,6 +95,7 @@ public:
     void draw() override;
 
     void resetColor();
+    void resetSubtext();
     void reset();
 };
 

@@ -1,0 +1,14 @@
+if node->found(val): 
+  if node->isLeaf: node->remove(val)
+  else: p = node->find(val)
+    if sibling(p)->numval > 1:
+      v = nearest(sibling(p),val); node->upd(val,v)
+      remove(sibling(p), v)
+    else: 
+      merge(node, sibling(p))
+      remove(node->child(p), val)
+else: p = node->upper(val)
+  if node->child(p)->numval() == 1:
+    if sibling->numval > 1: rotate(node, p)
+    else: merge(node, sibling(p))
+  remove(node->child(p), val)

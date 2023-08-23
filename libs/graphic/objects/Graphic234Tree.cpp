@@ -322,6 +322,8 @@ void Graphic234Tree::push(Graphic234Node* pRoot, int val, ListOfOperationsGroups
     if (pRoot->getNumChild() == 0) {
         for (int i = 0; i < pRoot->getNumVals(); ++i) {
             if (pRoot->getVal(i)->nVal == val) {
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({1});
                 return;
             }
         }
@@ -338,6 +340,7 @@ void Graphic234Tree::push(Graphic234Node* pRoot, int val, ListOfOperationsGroups
         _size++;
         pRoot->pushVal(newNode);
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({2,3});
         ALOG->animateFadeIn(newNode);
         ALOG->animateNodeFromNormalToIter(newNode);
         balanceTreeLayout(ALOG);
@@ -384,6 +387,7 @@ void Graphic234Tree::push(Graphic234Node* pRoot, int val, ListOfOperationsGroups
         }
 
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateNodeFromNormalToIter(midNode);
         ALOG->animateFadeIn(aRight);
         ALOG->animateSlideIn(aRight);
@@ -398,6 +402,7 @@ void Graphic234Tree::push(Graphic234Node* pRoot, int val, ListOfOperationsGroups
     }
 
     ALOG->addNewGroup();
+    ALOG->backGroup()->setHighlightLines({5});
     for (int i = 0; i < pRoot->getNumVals(); ++i) {
         ALOG->animateNodeFromIterToNearIter(pRoot->getVal(i));
     }
@@ -421,7 +426,7 @@ ExitStatus Graphic234Tree::push(int val, ListOfOperationsGroups* ALOG) {
     }
 
     ALOG->clearGroup();
-    ALOG->resetCode();
+    ALOG->loadCode(CPath::T234_PUSH);
     reset();
 
     if (pRoot == nullptr) {
@@ -473,6 +478,7 @@ ExitStatus Graphic234Tree::push(int val, ListOfOperationsGroups* ALOG) {
         pRoot->pushArrow(aRight);
 
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateNodeFromIterToNormal(newLeft->getVal(0));
         ALOG->animateNodeFromIterToNormal(newRight->getVal(0));
         ALOG->animateFadeIn(aLeft);
@@ -499,6 +505,7 @@ void Graphic234Tree::search(Graphic234Node* pRoot, int val, ListOfOperationsGrou
     }
     if (p < pRoot->getNumVals() && val == pRoot->getVal(p)->nVal) {
         ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({0});
         ALOG->animateNodeFromIterToFocus(pRoot->getVal(p));
     } else {
         ALOG->addNewGroup();
@@ -506,7 +513,9 @@ void Graphic234Tree::search(Graphic234Node* pRoot, int val, ListOfOperationsGrou
             ALOG->animateNodeFromIterToNearIter(pRoot->getVal(i));
         }
         if (pRoot->getNumChild() == 0) {
+            ALOG->backGroup()->setHighlightLines({1});
         } else {
+            ALOG->backGroup()->setHighlightLines({3});
             for (int i = 0; i < pRoot->getChild(p)->getNumVals(); ++i) {
                 ALOG->animateNodeFromIterToNearIter(pRoot->getChild(p)->getVal(i));
             } 
@@ -524,7 +533,7 @@ ExitStatus Graphic234Tree::search(int val, ListOfOperationsGroups* ALOG) {
     }
 
     ALOG->clearGroup();
-    ALOG->resetCode();
+    ALOG->loadCode(CPath::T234_SEARCH);
     reset();
     
     ALOG->addNewGroup();
@@ -533,10 +542,340 @@ ExitStatus Graphic234Tree::search(int val, ListOfOperationsGroups* ALOG) {
     return ExitMess::SUCCESS;
 }
 
-ExitStatus Graphic234Tree::remove(int val, ListOfOperationsGroups* ALOG) {
-    
+int Graphic234Tree::getMostLeft(Graphic234Node* pRoot) {
+    if (pRoot->getNumChild() == 0) {
+        return pRoot->getVal(0)->nVal;
+    }
+    return getMostLeft(pRoot->getChild(0));
+}
 
-    // ALOG->build();
+int Graphic234Tree::getMostRight(Graphic234Node* pRoot) {
+    if (pRoot->getNumChild() == 0) {
+        return pRoot->getVal(pRoot->getNumVals()-1)->nVal;
+    }
+    return getMostRight(pRoot->getChild(pRoot->getNumChild()-1));
+}
+
+void Graphic234Tree::remove(Graphic234Node* pRoot, int val, ListOfOperationsGroups* ALOG) {
+    int p = 0;
+    while (p < pRoot->getNumVals() && val > pRoot->getVal(p)->nVal) {
+        p++;
+    }
+    for (int i = 0; i < pRoot->getNumVals(); ++i) {
+        ALOG->animateNodeFromNormalToIter(pRoot->getVal(i));
+    }
+    if (p < pRoot->getNumVals() && val == pRoot->getVal(p)->nVal) {
+        if (pRoot->getNumChild() == 0) {
+            if (pRoot == this->pRoot) {
+                nodes.push_back(pRoot->getVal(p));
+                pRoot->popVal(p);
+                if (pRoot->getNumVals() == 0) {
+                    delete pRoot;
+                    this->pRoot = nullptr;
+                }
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({0,1});
+                ALOG->animateFadeOut(nodes.back());
+                balanceTreeLayout(ALOG);
+            } else if (pRoot->getNumVals() > 1) {
+                nodes.push_back(pRoot->getVal(p));
+                pRoot->popVal(p);
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({0,1});
+                ALOG->animateFadeOut(nodes.back());
+                balanceTreeLayout(ALOG);
+            } 
+            _size--;
+        } else {
+            if (pRoot->getChild(p)->getNumVals() > 1) {
+                Graphic234Node* leftChild = pRoot->getChild(p);
+                int newVal = getMostRight(leftChild);
+                // int newVal = leftChild->getVal(leftChild->getNumVals()-1)->nVal;
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({4});
+                ALOG->animateAssignValue(pRoot->getVal(p), val, newVal);
+
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({5});
+                for (int i = 0; i < pRoot->getNumVals(); ++i) {
+                    ALOG->animateNodeFromIterToNearIter(pRoot->getVal(i));
+                }
+                ALOG->animateArrowSlideFromNormalToIter(pRoot->getArrow(p));
+                ALOG->animateSlideColorIn(pRoot->getArrow(p));
+
+                remove(leftChild, newVal, ALOG);
+
+                for (int i = 0; i < pRoot->getNumVals(); ++i) {
+                    ALOG->animateNodeFromNearIterToIter(pRoot->getVal(i));
+                }
+                ALOG->animateArrowSlideFromIterToNormal(pRoot->getArrow(p));
+                ALOG->animateSlideColorOut(pRoot->getArrow(p));
+            } else if (pRoot->getChild(p+1)->getNumVals() > 1) {
+                Graphic234Node* rightChild = pRoot->getChild(p+1);
+                int newVal = getMostLeft(rightChild);
+                // int newVal = rightChild->getVal(0)->nVal;
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({4});
+                ALOG->animateAssignValue(pRoot->getVal(p), val, newVal);
+
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({5});
+                for (int i = 0; i < pRoot->getNumVals(); ++i) {
+                    ALOG->animateNodeFromIterToNearIter(pRoot->getVal(i));
+                }
+                ALOG->animateArrowSlideFromNormalToIter(pRoot->getArrow(p+1));
+                ALOG->animateSlideColorIn(pRoot->getArrow(p+1));
+
+                remove(rightChild, newVal, ALOG);
+
+                for (int i = 0; i < pRoot->getNumVals(); ++i) {
+                    ALOG->animateNodeFromNearIterToIter(pRoot->getVal(i));
+                }
+                ALOG->animateArrowSlideFromIterToNormal(pRoot->getArrow(p+1));
+                ALOG->animateSlideColorOut(pRoot->getArrow(p+1));
+            } else {
+                Graphic234Node* leftChild = pRoot->getChild(p);
+                Graphic234Node* rightChild = pRoot->getChild(p+1);
+                GraphicTransNode* midVal = pRoot->getVal(p);
+                leftChild->pushVal(pRoot->getVal(p));
+                leftChild->pushVal(rightChild->getVal(0));
+                pRoot->popVal(p);
+                rightChild->popBackVal();
+
+                if (leftChild->getNumChild() > 0) {
+                    leftChild->pushArrow(rightChild->getArrow(0));
+                    leftChild->pushArrow(rightChild->getArrow(1));
+                    leftChild->pushChild(rightChild->getChild(0));
+                    leftChild->pushChild(rightChild->getChild(1));
+
+                    rightChild->popBackArrow();
+                    rightChild->popBackArrow();
+                    rightChild->popBackChild();
+                    rightChild->popBackChild();
+                }
+
+                arrows.push_back(pRoot->getArrow(p+1));
+                pRoot->popArrow(p+1);
+                pRoot->popChild(p+1);
+                delete rightChild;
+
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({7});
+                ALOG->animateNodeFromIterToNormal(midVal);
+                ALOG->animateSlideOut(arrows.back());
+                if (pRoot == this->pRoot && pRoot->getNumVals() == 0) {
+                    ALOG->backGroup()->setHighlightLines({7,8});
+                    arrows.push_back(pRoot->getArrow(0));
+                    pRoot->popBackArrow();
+                    ALOG->animateSlideOut(arrows.back());
+
+                    this->pRoot = leftChild;
+                    delete pRoot;
+                }
+                balanceTreeLayout(ALOG);
+
+                if (this->pRoot != leftChild) {
+                    ALOG->addNewGroup();
+                    ALOG->backGroup()->setHighlightLines({8});
+                    for (int i = 0; i < pRoot->getNumVals(); ++i) {
+                        ALOG->animateNodeFromIterToNearIter(pRoot->getVal(i));
+                    }
+                    ALOG->animateArrowSlideFromNormalToIter(pRoot->getArrow(p));
+                    ALOG->animateSlideColorIn(pRoot->getArrow(p));
+                }
+
+                remove(leftChild, val, ALOG);
+
+                if (this->pRoot != leftChild) {
+                    for (int i = 0; i < pRoot->getNumVals(); ++i) {
+                        ALOG->animateNodeFromNearIterToIter(pRoot->getVal(i));
+                    }
+                    ALOG->animateArrowSlideFromIterToNormal(pRoot->getArrow(p));
+                    ALOG->animateSlideColorOut(pRoot->getArrow(p));
+                }
+            }
+        }
+    } else if (pRoot->getNumChild() > 0) {
+        Graphic234Node* pChild = pRoot->getChild(p);
+        if (pChild->getNumVals() == 1) {
+            if (p > 0 && pRoot->getChild(p-1)->getNumVals() > 1) {
+                Graphic234Node* leftSibling = pRoot->getChild(p-1);
+
+                GraphicTransNode* tmpVal_pRoot = pRoot->getVal(p-1);
+                GraphicTransNode* tmpVal_leftSibling = leftSibling->getVal(leftSibling->getNumVals()-1);
+
+                pChild->pushVal(pRoot->getVal(p-1));
+                pRoot->popVal(p-1);
+                pRoot->pushVal(leftSibling->getVal(leftSibling->getNumVals()-1));
+                leftSibling->popBackVal();
+
+                if (pChild->getNumChild() > 0) {
+                    pChild->pushArrow(leftSibling->getArrow(leftSibling->getNumArrow()-1), 0);
+                    leftSibling->popBackArrow();
+                    pChild->pushChild(leftSibling->getChild(leftSibling->getNumChild()-1), 0);
+                    leftSibling->popBackChild();
+                }
+
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({11});
+                ALOG->animateNodeFromIterToNormal(tmpVal_pRoot);
+                ALOG->animateNodeFromNormalToIter(tmpVal_leftSibling);
+                balanceTreeLayout(ALOG);
+            } else if (p < pRoot->getNumChild()-1 && pRoot->getChild(p+1)->getNumVals() > 1) {
+                Graphic234Node* rightSibling = pRoot->getChild(p+1);
+
+                GraphicTransNode* tmpVal_pRoot = pRoot->getVal(p);
+                GraphicTransNode* tmpVal_rightSibling = rightSibling->getVal(0);
+
+                pChild->pushVal(pRoot->getVal(p));
+                pRoot->popVal(p);
+                pRoot->pushVal(rightSibling->getVal(0));
+                rightSibling->popVal(0);
+
+                if (pChild->getNumChild() > 0) {
+                    pChild->pushArrow(rightSibling->getArrow(0));
+                    rightSibling->popArrow(0);
+                    pChild->pushChild(rightSibling->getChild(0));
+                    rightSibling->popChild(0);
+                }
+
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({11});
+                ALOG->animateNodeFromIterToNormal(tmpVal_pRoot);
+                ALOG->animateNodeFromNormalToIter(tmpVal_rightSibling);
+                balanceTreeLayout(ALOG);
+            } else if (p > 0) {
+                Graphic234Node* leftSibling = pRoot->getChild(p-1);
+
+                GraphicTransNode* tmpVal_pRoot = pRoot->getVal(p-1);
+
+                pChild->pushVal(pRoot->getVal(p-1));
+                pChild->pushVal(leftSibling->getVal(0));
+                pRoot->popVal(p-1);
+                leftSibling->popVal(0);
+
+                if (pChild->getNumChild() > 0) {
+                    pChild->pushArrow(leftSibling->getArrow(1), 0);
+                    pChild->pushArrow(leftSibling->getArrow(0), 0);
+                    pChild->pushChild(leftSibling->getChild(1), 0);
+                    pChild->pushChild(leftSibling->getChild(0), 0);
+
+                    leftSibling->popBackArrow();
+                    leftSibling->popBackArrow();
+                    leftSibling->popBackChild();
+                    leftSibling->popBackChild();
+                }
+
+                arrows.push_back(pRoot->getArrow(p-1));
+                pRoot->popArrow(p-1);
+                pRoot->popChild(p-1);
+                delete leftSibling;
+
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({12});
+                ALOG->animateNodeFromIterToNormal(tmpVal_pRoot);
+                ALOG->animateSlideOut(arrows.back());
+                if (pRoot == this->pRoot && pRoot->getNumVals() == 0) {
+                    arrows.push_back(pRoot->getArrow(0));
+                    pRoot->popBackArrow();
+                    ALOG->animateSlideOut(arrows.back());
+
+                    this->pRoot = pChild;
+                    delete pRoot;
+                }
+                balanceTreeLayout(ALOG);
+
+                p--;
+            } else {
+                Graphic234Node* rightSibling = pRoot->getChild(p+1);
+
+                GraphicTransNode* tmpVal_pRoot = pRoot->getVal(p);
+
+                pChild->pushVal(pRoot->getVal(p));
+                pChild->pushVal(rightSibling->getVal(0));
+                pRoot->popVal(p);
+                rightSibling->popVal(0);
+
+                if (pChild->getNumChild() > 0) {
+                    pChild->pushArrow(rightSibling->getArrow(0));
+                    pChild->pushArrow(rightSibling->getArrow(1));
+                    pChild->pushChild(rightSibling->getChild(0));
+                    pChild->pushChild(rightSibling->getChild(1));
+
+                    rightSibling->popBackArrow();
+                    rightSibling->popBackArrow();
+                    rightSibling->popBackChild();
+                    rightSibling->popBackChild();
+                }
+
+                arrows.push_back(pRoot->getArrow(p+1));
+                pRoot->popArrow(p+1);
+                pRoot->popChild(p+1);
+                delete rightSibling;
+
+                ALOG->addNewGroup();
+                ALOG->backGroup()->setHighlightLines({12});
+                ALOG->animateNodeFromIterToNormal(tmpVal_pRoot);
+                ALOG->animateSlideOut(arrows.back());
+                if (pRoot == this->pRoot && pRoot->getNumVals() == 0) {
+                    arrows.push_back(pRoot->getArrow(0));
+                    pRoot->popBackArrow();
+                    ALOG->animateSlideOut(arrows.back());
+
+                    this->pRoot = pChild;
+                    delete pRoot;
+                }
+                balanceTreeLayout(ALOG);
+            }
+        }
+
+        ALOG->addNewGroup();
+        ALOG->backGroup()->setHighlightLines({13});
+        if (this->pRoot != pChild) {
+            for (int i = 0; i < pRoot->getNumVals(); ++i) {
+                ALOG->animateNodeFromIterToNearIter(pRoot->getVal(i));
+            }
+            ALOG->animateArrowSlideFromNormalToIter(pRoot->getArrow(p));
+            ALOG->animateSlideColorIn(pRoot->getArrow(p));
+        }
+
+        remove(pChild, val, ALOG);
+
+        if (this->pRoot != pChild) {
+            for (int i = 0; i < pRoot->getNumVals(); ++i) {
+                ALOG->animateNodeFromNearIterToIter(pRoot->getVal(i));
+            }
+            ALOG->animateArrowSlideFromIterToNormal(pRoot->getArrow(p));
+            ALOG->animateSlideColorOut(pRoot->getArrow(p));
+        }
+    }
+
+    ALOG->addNewGroup();
+    for (int i = 0; i < pRoot->getNumVals(); ++i) {
+        ALOG->animateNodeFromIterToNormal(pRoot->getVal(i));
+    }
+}
+
+ExitStatus Graphic234Tree::remove(int val, ListOfOperationsGroups* ALOG) {
+    if (val < Core::NODE_MIN_VALUE || val > Core::NODE_MAX_VALUE) {
+        return ExitMess::FAIL_VALUE_OOB;
+    }
+
+    ALOG->clearGroup();
+    ALOG->loadCode(CPath::T234_REMOVE);
+    reset();
+
+    if (pRoot == nullptr) {
+        ALOG->addNewGroup();
+        return ExitMess::SUCCESS;
+    }
+
+    assert(pRoot->getNumVals() > 0);
+
+    ALOG->addNewGroup();
+    remove(pRoot, val, ALOG);
+
+    ALOG->build();
 
     return ExitMess::SUCCESS;
 }
@@ -552,11 +891,11 @@ void Graphic234Tree::draw(Graphic234Node* pRoot) {
 }
 
 void Graphic234Tree::draw() {
+    for (GraphicArrow* arrow : arrows) {
+        arrow->draw();
+    }
     draw(pRoot);
     for (GraphicTransNode* pNode : nodes) {
-        pNode->draw();
-    }
-    for (Graphic234Node* pNode : nodes234) {
         pNode->draw();
     }
 }
@@ -566,15 +905,19 @@ void Graphic234Tree::clearSaparated() {
     for (GraphicTransNode* node : nodes) {
         delete node;
     }
-    for (Graphic234Node* node : nodes234) {
-        delete node;
-    }
     nodes.clear();
-    nodes234.clear();
+}
+
+void Graphic234Tree::clearArrows() {
+    for (GraphicArrow* arrow : arrows) {
+        delete arrow;
+    }
+    arrows.clear();
 }
 
 void Graphic234Tree::reset() {
     clearSaparated();
+    clearArrows();
     resetColorAllNodes();
     resetTransAllNodes();
     resetCurPosAllNodes();

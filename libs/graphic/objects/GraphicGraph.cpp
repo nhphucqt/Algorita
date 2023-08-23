@@ -437,8 +437,16 @@ void GraphicGraph::resetColor() {
     }
 }
 
+void GraphicGraph::resetSubtext() {
+    for (int i = 0; i < numNode; ++i) {
+        nodes[i]->setSubText("");
+    }
+}
+
+
 void GraphicGraph::reset() {
     resetColor();
+    resetSubtext();
 }
 
 
