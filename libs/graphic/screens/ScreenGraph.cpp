@@ -110,8 +110,9 @@ void Screen::ScreenGraph::draw() {
 
     ALOG.run();
     obj.draw();
-    ALOG.draw(keyActive);
+    ALOG.draw(keyActive && !GuiIsLocked());
     exitMessage.draw(20, (Window::HEIGHT - Layout::BOTTOM_HEIGHT + (Layout::BOTTOM_HEIGHT - exitMessage.dim.y) / 2), Theme::currTheme.EXIT_MESSAGE);
+    LayoutCs163::drawTopNavigation(keyActive);
 
     if (textEditor.isEnabled) {
         GuiUnlock();
@@ -124,7 +125,6 @@ void Screen::ScreenGraph::draw() {
             exitMessage.assign(obj.initialize(textEditor.getContent(), &ALOG).message);
         }
     }
-    LayoutCs163::drawTopNavigation(keyActive);
 }
 
 void Screen::ScreenGraph::destroy() {

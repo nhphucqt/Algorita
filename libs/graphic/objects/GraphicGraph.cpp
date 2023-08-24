@@ -65,12 +65,18 @@ void GraphicGraph::create(int _numNode, std::vector<CoreEdge>& edg) {
 }
 
 void GraphicGraph::destroy() {
-    // for (int i = 0; i < numEdge; ++i) {
-    //     delete edges[i];
-    // }
-    // for (int i = 0; i < numNode; ++i) {
-    //     delete nodes[i];
-    // }
+    for (int i = 0; i < numEdge; ++i) {
+        delete edges[i];
+    }
+    for (int i = 0; i < numNode; ++i) {
+        delete nodes[i];
+    }
+    numNode = 0;
+    numEdge = 0;
+    holdNode = nullptr;
+    isPhysicsLocked = false;
+    edges.clear();
+    nodes.clear();
     assert(numEdge == (int)edges.size());
 }
 
