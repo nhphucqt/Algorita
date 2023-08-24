@@ -85,17 +85,17 @@ void TextEditor::draw(Rectangle bounds) {
     //----------------------------------------------------------------------------------
     int cursorX = 0, cursorY = 0;
     page.GetCursorXY(cursorX, cursorY);
-    DrawRectanglePro(bounds, {0,0}, 0, LIGHTGRAY);
+    DrawRectanglePro(bounds, {0,0}, 0, Theme::currTheme.TEXT_EDITOR_BACKGROUND);
     if (isBlinking)
     {
         if (frameCounter < blinkTime)
         {
-            DrawRectangle(bounds.x + 20 + cursorX, bounds.y + 10 + cursorY, 12, 20, GRAY);
+            DrawRectangle(bounds.x + 20 + cursorX, bounds.y + 10 + cursorY, 12, 20, DARKGRAY);
         }
     }
     else
     {
-        DrawRectangle(bounds.x + 20 + cursorX, bounds.y + 10 + cursorY, 12, 20, GRAY);
+        DrawRectangle(bounds.x + 20 + cursorX, bounds.y + 10 + cursorY, 12, 20, DARKGRAY);
     }
     page.Draw(bounds);
 }

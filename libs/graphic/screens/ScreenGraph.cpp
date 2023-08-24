@@ -116,11 +116,12 @@ void Screen::ScreenGraph::draw() {
 
     if (textEditor.isEnabled) {
         GuiUnlock();
-        textEditor.draw({200, 200, 500, 500});
-        if (GuiButton(Rectangle{200, 700, 50, 50}, "hide")) {
+        // 640
+        textEditor.draw({210, 640 - 500, 500, 500});
+        if (GuiButton(Rectangle{210 + 500, 640 - 500, 50, 50}, "Hide")) {
             textEditor.isEnabled = false;
         }
-        if (GuiButton(Rectangle{250, 700, 50, 50}, "go")) {
+        if (GuiButton(Rectangle{210 + 500, 640 - 500 + 50, 50, 50}, "Go")) {
             textEditor.isEnabled = false;
             exitMessage.assign(obj.initialize(textEditor.getContent(), &ALOG).message);
         }

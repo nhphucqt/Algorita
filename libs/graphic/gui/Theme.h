@@ -64,6 +64,11 @@ namespace Theme {
 
         Color BLANK_COLOR;
 
+        Color TEXT_EDITOR_BACKGROUND;
+        Color TEXT_EDITOR_FOREGROUND;
+        Color TEXT_EDITOR_LINE_NUMBER_BACKGROUND;
+        Color TEXT_EDITOR_LINE_NUMBER_FOREGROUND;
+
         void load();
     };
 
