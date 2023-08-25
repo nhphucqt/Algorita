@@ -550,7 +550,7 @@ ExitStatus GraphicHeap::getTop(ListOfOperationsGroups* ALOG) {
             ALOG->addNewGroup();
             ALOG->backGroup()->setHighlightLines({4});
             balanceTreeLayout(ALOG);
-            ALOG->animateTransText(&heapNodes[id]->sub, cf::num2str(getRight(id)), cf::num2str(id));
+            ALOG->animateTransText(&heapNodes[id]->sub, cf::num2str(child), cf::num2str(id));
             ALOG->animateTransText(&heapNodes[child]->sub, cf::num2str(id), cf::num2str(child));
 
             ALOG->addNewGroup();

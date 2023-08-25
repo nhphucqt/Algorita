@@ -23,7 +23,7 @@
 namespace Screen {
     class ScreenGraph: public ScreenView {
     private:
-        enum OperationType {OTNULL, CREATE, CONNECT_C, FIND_MST, DIJKSTRA} currOperationType;
+        enum OperationType {OTNULL, CREATE, CONNECT_C, FIND_MST, DIJKSTRA, PHYSICS} currOperationType;
         enum Operation {ONULL, CREATE_RANDOM, CREATE_USER_DEF, CREATE_FILE} currOperation;
 
         GraphicGraph obj;
@@ -36,6 +36,8 @@ namespace Screen {
 
         GuiToggleState toggleDijkstraType;
         GuiToggleState toggleUserDefine;
+
+        GuiToggleState togglePhysics;
 
         StyledText exitMessage;
 

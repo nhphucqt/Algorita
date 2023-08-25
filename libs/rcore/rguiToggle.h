@@ -18,6 +18,10 @@ public:
 
     void deactive();
 
+    bool isActive();
+
+    void setText(std::string newText);
+
     bool draw();
 };
 

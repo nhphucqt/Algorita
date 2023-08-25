@@ -14,6 +14,8 @@ void Screen::ScreenGraph::load() { // Ensure that obj has to be destroy before (
 
     toggleDijkstraType.init(Rectangle{0, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 1, Gui::BUTTON_OPER_WIDTH, Gui::BUTTON_OPER_HEIGHT}, "Dijkstra", false);
 
+    togglePhysics.init(Rectangle{0, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 5, Gui::BUTTON_OPER_WIDTH, Gui::BUTTON_OPER_HEIGHT}, "Physics: ON", false);
+
     exitMessage = StyledText(std::string(), Gfont::defaultFont);
 }
 
@@ -30,6 +32,18 @@ void Screen::ScreenGraph::draw() {
         GuiLock();
     }
     bool keyActive = true;
+
+    togglePhysics.draw();
+    if (togglePhysics.justToggle()) {
+        if (togglePhysics.isActive()) {
+            obj.isPhysicsLocked = true;
+            togglePhysics.setText("Physics: OFF");
+        } else {
+            obj.isPhysicsLocked = false;
+            togglePhysics.setText("Physics: ON");
+        }
+    }
+
     if (toggleCreateType.draw()) {
         if (toggleCreateType.justToggle()) {
             currOperationType = CREATE;
@@ -48,11 +62,11 @@ void Screen::ScreenGraph::draw() {
             if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 1 + Gui::BUTTON_OPER_WIDTH - (Gui::BUTTON_OPER_GO_WIDTH + 5) * 2, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 3 + 5, Gui::BUTTON_OPER_GO_WIDTH, Gui::BUTTON_OPER_GO_HEIGHT}, Gicon::BUTTON_RANDOM)) {
                 inputCreateRandomNode.setnum(GetRandomValue(1, Core::MAX_NUM_GRAPH_NODE));
             }
-            GuiLabel(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 1 + Gui::LABEL_PADDING_LEFT, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 2, Gui::BUTTON_OPER_GO_WIDTH, Gui::BUTTON_OPER_HEIGHT}, "n =");
+            GuiLabel(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 1 + Gui::LABEL_PADDING_LEFT, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 2, Gui::BUTTON_OPER_GO_WIDTH, Gui::BUTTON_OPER_HEIGHT}, "m =");
             keyActive &= !inputCreateRandomEdge.draw();
             if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 1 + Gui::BUTTON_OPER_WIDTH - (Gui::BUTTON_OPER_GO_WIDTH + 5) * 2, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 2 + 5, Gui::BUTTON_OPER_GO_WIDTH, Gui::BUTTON_OPER_GO_HEIGHT}, Gicon::BUTTON_RANDOM)) {
                 int nNode = inputCreateRandomNode.getNum();
-                inputCreateRandomEdge.setnum(GetRandomValue(0, std::min(nNode, Core::MAX_NUM_GRAPH_EDGE)));
+                inputCreateRandomEdge.setnum(GetRandomValue(0, std::min(nNode * (nNode-1) / 2, Core::MAX_NUM_GRAPH_EDGE)));
             }
             if (GuiButton(Rectangle{(Gui::BUTTON_OPER_WIDTH + Gui::BUTTON_OPER_DIST_X) * 1 + Gui::BUTTON_OPER_WIDTH - (Gui::BUTTON_OPER_GO_WIDTH + 5) * 1, Window::HEIGHT - Layout::BOTTOM_HEIGHT - Gui::BUTTON_OPER_HEIGHT * 3 + 5, Gui::BUTTON_OPER_GO_WIDTH, Gui::BUTTON_OPER_GO_HEIGHT * 2 + 10}, "Go") || (keyActive && IsKeyPressed(KEY_ENTER))) {
                 exitMessage.assign(obj.initialize(inputCreateRandomNode.getNum(), inputCreateRandomEdge.getNum(), &ALOG).message);

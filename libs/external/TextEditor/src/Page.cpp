@@ -96,21 +96,22 @@ void Page::DeleteCharacterAtCursor()
 void Page::Draw(Rectangle bounds)
 {
 	static char buffer[20];
-	DrawRectangle(bounds.x, bounds.y, 20, bounds.height, Theme::currTheme.TEXT_EDITOR_LINE_NUMBER_BACKGROUND);
+	int lineNumberWidth = 30;
+	DrawRectangle(bounds.x, bounds.y, lineNumberWidth, bounds.height, Theme::currTheme.TEXT_EDITOR_LINE_NUMBER_BACKGROUND);
 	for (int i = 0; i < m_Lines.size(); ++i)
 	{
 		const char* lineNumber = itoa(i + 1, buffer, 10);
 		// int width = MeasureText(lineNumber, 20);
 		int width = MeasureTextEx(*Gfont::defaultFont, lineNumber, 30, 0).x;
 		// DrawText(lineNumber, bounds.x + 15 - width, bounds.y + 10 + i * 20, 20, BLACK);
-		DrawTextEx(*Gfont::defaultFont, lineNumber, {bounds.x + 15 - width, bounds.y + 10 + i * 20}, 30, 0, Theme::currTheme.TEXT_EDITOR_LINE_NUMBER_FOREGROUND);
+		DrawTextEx(*Gfont::defaultFont, lineNumber, {bounds.x + 25 - width, bounds.y + 10 + i * 20}, 30, 0, Theme::currTheme.TEXT_EDITOR_LINE_NUMBER_FOREGROUND);
 	}
 
 	for (int i = 0; i < (int)m_Lines.size(); ++i)
 	{
 		std::string text = m_Lines[i]->ToString();
 		// DrawText(text.c_str(), bounds.x + 20, bounds.y + 10 + i * 20, 20, BLACK);
-		DrawTextEx(*Gfont::defaultFont, text.c_str(), {bounds.x + 20, bounds.y + 10 + i * 20}, 30, 0, Theme::currTheme.TEXT_EDITOR_FOREGROUND);
+		DrawTextEx(*Gfont::defaultFont, text.c_str(), {bounds.x + lineNumberWidth, bounds.y + 10 + i * 20}, 30, 0, Theme::currTheme.TEXT_EDITOR_FOREGROUND);
 	}
 }
 

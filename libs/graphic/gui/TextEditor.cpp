@@ -90,12 +90,12 @@ void TextEditor::draw(Rectangle bounds) {
     {
         if (frameCounter < blinkTime)
         {
-            DrawRectangle(bounds.x + 20 + cursorX, bounds.y + 10 + cursorY, 12, 20, DARKGRAY);
+            DrawRectangle(bounds.x + 20 + cursorX, bounds.y + 10 + cursorY, 12, 30, DARKGRAY);
         }
     }
     else
     {
-        DrawRectangle(bounds.x + 20 + cursorX, bounds.y + 10 + cursorY, 12, 20, DARKGRAY);
+    DrawRectangle(bounds.x + 20 + cursorX, bounds.y + 10 + cursorY, 12, 30, DARKGRAY);
     }
     page.Draw(bounds);
 }

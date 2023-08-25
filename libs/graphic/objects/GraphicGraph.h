@@ -6,6 +6,7 @@
 
 #include "raylib.h"
 #include "../../core/ccppfunc.h"
+#include "../../core/validator.h"
 #include "../../global.h"
 #include "../../rcore/rVector2.h"
 #include "../../animation/ListOfOperationsGroups.h"

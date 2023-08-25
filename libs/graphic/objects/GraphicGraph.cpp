@@ -95,9 +95,9 @@ void GraphicGraph::update() {
     } else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
         holdNode = nullptr;
     }
-    if (IsKeyPressed(KEY_G)) {
-        isPhysicsLocked ^= 1;
-    }
+    // if (IsKeyPressed(KEY_G)) {
+    //     isPhysicsLocked ^= 1;
+    // }
     int subStep = 3;
     for (int i = 0; i < subStep; ++i) {
         updatePosition();
@@ -284,6 +284,12 @@ ExitStatus GraphicGraph::initialize(int nNode, std::vector<CoreEdge>& edges, Lis
 ExitStatus GraphicGraph::initialize(std::string str, ListOfOperationsGroups* ALOG) {
     int nNode = 0;
     std::vector<CoreEdge> edges;
+
+    ExitStatus status = Valid::isMatch(str, Valid::DIGIT + " \r\n");
+
+    if (!status.success) {
+        return status;
+    }
 
     std::stringstream ss(str);
     ss >> nNode;

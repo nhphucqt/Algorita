@@ -71,7 +71,7 @@ void GraphicTrie::realPush(std::string s, ListOfOperationsGroups* ALOG) {
     }
     if (!cur->isLeaf()) {
         cur->setLeaf();
-        cur->val.assign(cur->val.content + "*");
+        cur->val.assign(cur->val.content + std::string{END_CHAR});
         _size++;
     }
 }
@@ -296,7 +296,7 @@ ExitStatus GraphicTrie::push(std::string s, ListOfOperationsGroups* ALOG) {
         _size++;
         ALOG->addNewGroup();
         ALOG->backGroup()->setHighlightLines({5});
-        ALOG->animateTransText(&cur->val, cur->val.content, cur->val.content + "*");
+        ALOG->animateTransText(&cur->val, cur->val.content, cur->val.content + std::string{END_CHAR});
         cur->setLeaf();
     }
 

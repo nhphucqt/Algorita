@@ -13,6 +13,7 @@
 
 class GraphicTrie {
 private:
+    const static char END_CHAR = '#';
     GraphicTrieNode* pRoot;
     int _size;
 

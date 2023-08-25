@@ -15,6 +15,14 @@ void GuiToggleState::deactive() {
     active = false;
 }
 
+bool GuiToggleState::isActive() {
+    return active;
+}
+
+void GuiToggleState::setText(std::string newText) {
+    text = newText;
+}
+
 bool GuiToggleState::draw() {
     pre = active;
     return active = GuiToggle(bounds, text.c_str(), active);
